@@ -20,7 +20,7 @@ final class MoccaApp: App, ObservableObject {
     // Capture manager is the intermediary class dealing with all communication with the device's physical camera hardware.
     private let captureManager : DeviceCaptureManager? = {
         var manager : DeviceCaptureManager?
-        do { try manager = DeviceCaptureManager() } catch { manager = nil }
+        do {  try manager = DeviceCaptureManager() } catch { manager = nil }
         return manager
     }()
     
