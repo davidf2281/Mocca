@@ -1,0 +1,887 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8C1A5C86252203D800D92F3C /* CameraErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1A5C85252203D800D92F3C /* CameraErrorView.swift */; };
+		8C1C872B252F300700001B14 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C872A252F300700001B14 /* Enums.swift */; };
+		8C1C8766252F50DE00001B14 /* WidgetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */; };
+		8C1C876E252F58A100001B14 /* PreviewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C876D252F58A100001B14 /* PreviewViewModelTests.swift */; };
+		8C1C8777252F5C3B00001B14 /* ViewConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C8776252F5C3B00001B14 /* ViewConversion.swift */; };
+		8C3E35B62529D4AD00D5E971 /* ShutterButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E35B52529D4AD00D5E971 /* ShutterButtonView.swift */; };
+		8C3E35BB2529DB7900D5E971 /* ShutterButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E35BA2529DB7900D5E971 /* ShutterButtonViewModel.swift */; };
+		8C3E35C02529E6C400D5E971 /* PhotoTaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E35BF2529E6C400D5E971 /* PhotoTaker.swift */; };
+		8C62FEA5252B8B8B007459C9 /* SimulatorPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C62FEA4252B8B8B007459C9 /* SimulatorPreview.swift */; };
+		8C6728AB251E10610066A836 /* MockAVCaptureSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6728A6251E10600066A836 /* MockAVCaptureSession.swift */; };
+		8C6728AC251E10610066A836 /* MockAVCaptureDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6728A7251E10600066A836 /* MockAVCaptureDevice.swift */; };
+		8C6728AE251E10610066A836 /* UnavailableInitFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C6728AA251E10610066A836 /* UnavailableInitFactory.m */; };
+		8C6728C0251E14180066A836 /* PreviewUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6728BF251E14180066A836 /* PreviewUIView.swift */; };
+		8C68B18025301AF80040AC9A /* OrientationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C68B17F25301AF80040AC9A /* OrientationTests.swift */; };
+		8C6A926F25289EE70069ADE0 /* PreviewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6A926E25289EE70069ADE0 /* PreviewWrapper.swift */; };
+		8C6A92742528AACB0069ADE0 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6A92732528AACB0069ADE0 /* PreviewView.swift */; };
+		8C7EF030251CEAB500CF9CFE /* MoccaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7EF02F251CEAB500CF9CFE /* MoccaApp.swift */; };
+		8C7EF032251CEAB500CF9CFE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7EF031251CEAB500CF9CFE /* ContentView.swift */; };
+		8C7EF034251CEAB700CF9CFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C7EF033251CEAB700CF9CFE /* Assets.xcassets */; };
+		8C7EF037251CEAB700CF9CFE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C7EF036251CEAB700CF9CFE /* Preview Assets.xcassets */; };
+		8C7EF04D251CEAB700CF9CFE /* MoccaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7EF04C251CEAB700CF9CFE /* MoccaUITests.swift */; };
+		8CA9F408252DD04F00730F4C /* ProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9F407252DD04F00730F4C /* ProjectTests.swift */; };
+		8CA9F413252DDB7200730F4C /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9F412252DDB7200730F4C /* System.swift */; };
+		8CBEB527252B2F9800D6525F /* MockPHPhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CBEB526252B2F9800D6525F /* MockPHPhotoLibrary.swift */; };
+		8CBEB52F252B302400D6525F /* DevicePhotoTakerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CBEB52E252B302400D6525F /* DevicePhotoTakerTests.swift */; };
+		8CC3C44B251DFD2F00CC4698 /* DeviceCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3C448251DFD2F00CC4698 /* DeviceCaptureManager.swift */; };
+		8CC3C44C251DFD2F00CC4698 /* CaptureUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3C449251DFD2F00CC4698 /* CaptureUtils.swift */; };
+		8CC3C44D251DFD2F00CC4698 /* TestableExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3C44A251DFD2F00CC4698 /* TestableExtensions.swift */; };
+		8CCE88A925247D450086AF83 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6728C8251E16F50066A836 /* PreviewViewController.swift */; };
+		8CCE88B425248F070086AF83 /* Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCE88B325248F070086AF83 /* Orientation.swift */; };
+		8CD793C9252A22F00071F3F6 /* ShutterButtonViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD793C8252A22F00071F3F6 /* ShutterButtonViewModelTests.swift */; };
+		8CDE03DB25262BDF0083F736 /* WidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE03DA25262BDF0083F736 /* WidgetViewModel.swift */; };
+		8CDE0404252756560083F736 /* PreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE0403252756560083F736 /* PreviewViewModel.swift */; };
+		8CDEB0212520A5110010DCCB /* CameraSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDEB0202520A5110010DCCB /* CameraSetting.swift */; };
+		8CDEB03D2520BE180010DCCB /* WidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDEB03C2520BE180010DCCB /* WidgetView.swift */; };
+		8CDEB0452520C9C90010DCCB /* ExposureSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDEB0442520C9C90010DCCB /* ExposureSetting.swift */; };
+		8CDEB04A2520C9E00010DCCB /* FocusSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDEB0492520C9E00010DCCB /* FocusSetting.swift */; };
+		8CE07E3B252B3D5A00702E14 /* CaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE07E3A252B3D5A00702E14 /* CaptureManager.swift */; };
+		8CE07E43252B457100702E14 /* MockCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE07E42252B457100702E14 /* MockCaptureManager.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8C7EF03E251CEAB700CF9CFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C7EF024251CEAB500CF9CFE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C7EF02B251CEAB500CF9CFE;
+			remoteInfo = Mocca;
+		};
+		8C7EF049251CEAB700CF9CFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C7EF024251CEAB500CF9CFE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C7EF02B251CEAB500CF9CFE;
+			remoteInfo = Mocca;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		8C063F49251DC47E00B47331 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		8C1A5C85252203D800D92F3C /* CameraErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraErrorView.swift; sourceTree = "<group>"; };
+		8C1C872A252F300700001B14 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetViewModelTests.swift; sourceTree = "<group>"; };
+		8C1C876D252F58A100001B14 /* PreviewViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewModelTests.swift; sourceTree = "<group>"; };
+		8C1C8776252F5C3B00001B14 /* ViewConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConversion.swift; sourceTree = "<group>"; };
+		8C3E35B52529D4AD00D5E971 /* ShutterButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButtonView.swift; sourceTree = "<group>"; };
+		8C3E35BA2529DB7900D5E971 /* ShutterButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButtonViewModel.swift; sourceTree = "<group>"; };
+		8C3E35BF2529E6C400D5E971 /* PhotoTaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoTaker.swift; sourceTree = "<group>"; };
+		8C62FEA4252B8B8B007459C9 /* SimulatorPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorPreview.swift; sourceTree = "<group>"; };
+		8C6728A2251E10600066A836 /* MoccaTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MoccaTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		8C6728A6251E10600066A836 /* MockAVCaptureSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAVCaptureSession.swift; sourceTree = "<group>"; };
+		8C6728A7251E10600066A836 /* MockAVCaptureDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAVCaptureDevice.swift; sourceTree = "<group>"; };
+		8C6728A9251E10610066A836 /* UnavailableInitFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnavailableInitFactory.h; sourceTree = "<group>"; };
+		8C6728AA251E10610066A836 /* UnavailableInitFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnavailableInitFactory.m; sourceTree = "<group>"; };
+		8C6728BF251E14180066A836 /* PreviewUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewUIView.swift; sourceTree = "<group>"; };
+		8C6728C8251E16F50066A836 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
+		8C68B17F25301AF80040AC9A /* OrientationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationTests.swift; sourceTree = "<group>"; };
+		8C6A926E25289EE70069ADE0 /* PreviewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWrapper.swift; sourceTree = "<group>"; };
+		8C6A92732528AACB0069ADE0 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
+		8C7EF02C251CEAB500CF9CFE /* Mocca.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mocca.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C7EF02F251CEAB500CF9CFE /* MoccaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoccaApp.swift; sourceTree = "<group>"; };
+		8C7EF031251CEAB500CF9CFE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		8C7EF033251CEAB700CF9CFE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8C7EF036251CEAB700CF9CFE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		8C7EF038251CEAB700CF9CFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8C7EF03D251CEAB700CF9CFE /* MoccaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoccaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C7EF043251CEAB700CF9CFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8C7EF048251CEAB700CF9CFE /* MoccaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoccaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C7EF04C251CEAB700CF9CFE /* MoccaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoccaUITests.swift; sourceTree = "<group>"; };
+		8C7EF04E251CEAB700CF9CFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8CA9F407252DD04F00730F4C /* ProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTests.swift; sourceTree = "<group>"; };
+		8CA9F412252DDB7200730F4C /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
+		8CBEB526252B2F9800D6525F /* MockPHPhotoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPHPhotoLibrary.swift; sourceTree = "<group>"; };
+		8CBEB52E252B302400D6525F /* DevicePhotoTakerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicePhotoTakerTests.swift; sourceTree = "<group>"; };
+		8CC3C43D251DD30F00CC4698 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		8CC3C448251DFD2F00CC4698 /* DeviceCaptureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceCaptureManager.swift; sourceTree = "<group>"; };
+		8CC3C449251DFD2F00CC4698 /* CaptureUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureUtils.swift; sourceTree = "<group>"; };
+		8CC3C44A251DFD2F00CC4698 /* TestableExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestableExtensions.swift; sourceTree = "<group>"; };
+		8CCE88B325248F070086AF83 /* Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orientation.swift; sourceTree = "<group>"; };
+		8CD793C8252A22F00071F3F6 /* ShutterButtonViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButtonViewModelTests.swift; sourceTree = "<group>"; };
+		8CDE03DA25262BDF0083F736 /* WidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetViewModel.swift; sourceTree = "<group>"; };
+		8CDE0403252756560083F736 /* PreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewModel.swift; sourceTree = "<group>"; };
+		8CDEB0202520A5110010DCCB /* CameraSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSetting.swift; sourceTree = "<group>"; };
+		8CDEB03C2520BE180010DCCB /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
+		8CDEB0442520C9C90010DCCB /* ExposureSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExposureSetting.swift; sourceTree = "<group>"; };
+		8CDEB0492520C9E00010DCCB /* FocusSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetting.swift; sourceTree = "<group>"; };
+		8CE07E3A252B3D5A00702E14 /* CaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureManager.swift; sourceTree = "<group>"; };
+		8CE07E42252B457100702E14 /* MockCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCaptureManager.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8C7EF029251CEAB500CF9CFE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C7EF03A251CEAB700CF9CFE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C7EF045251CEAB700CF9CFE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8C0E39F22525F6B1004BFFCA /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				8CE07E3A252B3D5A00702E14 /* CaptureManager.swift */,
+				8CC3C448251DFD2F00CC4698 /* DeviceCaptureManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		8C0E39F32525F6C4004BFFCA /* Testing */ = {
+			isa = PBXGroup;
+			children = (
+				8CC3C44A251DFD2F00CC4698 /* TestableExtensions.swift */,
+			);
+			path = Testing;
+			sourceTree = "<group>";
+		};
+		8C1C8761252F4FEA00001B14 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8C1C8763252F501900001B14 /* Widget */,
+				8C1C8762252F500C00001B14 /* Preview */,
+				8CD793C7252A22CD0071F3F6 /* ShutterButton */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8C1C8762252F500C00001B14 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				8C1C876D252F58A100001B14 /* PreviewViewModelTests.swift */,
+			);
+			path = Preview;
+			sourceTree = "<group>";
+		};
+		8C1C8763252F501900001B14 /* Widget */ = {
+			isa = PBXGroup;
+			children = (
+				8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */,
+			);
+			path = Widget;
+			sourceTree = "<group>";
+		};
+		8C1C8764252F502700001B14 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8CBEB525252B2F7500D6525F /* PhotoTaker */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8C1C8772252F5A8200001B14 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				8C6728A9251E10610066A836 /* UnavailableInitFactory.h */,
+				8C6728AA251E10610066A836 /* UnavailableInitFactory.m */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		8C68B17D25301A9D0040AC9A /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				8C1C8761252F4FEA00001B14 /* ViewModel */,
+				8C1C8764252F502700001B14 /* Model */,
+				8C68B17E25301AC30040AC9A /* Utility */,
+				8CA9F406252DD01100730F4C /* Misc */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		8C68B17E25301AC30040AC9A /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				8C68B17F25301AF80040AC9A /* OrientationTests.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		8C6A927E2528AFA60069ADE0 /* Unused */ = {
+			isa = PBXGroup;
+			children = (
+				8C063F49251DC47E00B47331 /* SettingsView.swift */,
+				8CC3C43D251DD30F00CC4698 /* UserSettings.swift */,
+			);
+			path = Unused;
+			sourceTree = "<group>";
+		};
+		8C7EF023251CEAB500CF9CFE = {
+			isa = PBXGroup;
+			children = (
+				8C7EF02E251CEAB500CF9CFE /* Mocca */,
+				8C7EF040251CEAB700CF9CFE /* MoccaTests */,
+				8C7EF04B251CEAB700CF9CFE /* MoccaUITests */,
+				8C7EF02D251CEAB500CF9CFE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8C7EF02D251CEAB500CF9CFE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C7EF02C251CEAB500CF9CFE /* Mocca.app */,
+				8C7EF03D251CEAB700CF9CFE /* MoccaTests.xctest */,
+				8C7EF048251CEAB700CF9CFE /* MoccaUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8C7EF02E251CEAB500CF9CFE /* Mocca */ = {
+			isa = PBXGroup;
+			children = (
+				8C7EF02F251CEAB500CF9CFE /* MoccaApp.swift */,
+				8C1C872A252F300700001B14 /* Enums.swift */,
+				8CDEB01C251FDFB10010DCCB /* View */,
+				8CDE03D925262BCD0083F736 /* ViewModel */,
+				8CDEB01B251FDFA20010DCCB /* Model */,
+				8C0E39F22525F6B1004BFFCA /* Manager */,
+				8CCE88B825248F160086AF83 /* Utility */,
+				8C0E39F32525F6C4004BFFCA /* Testing */,
+				8C6A927E2528AFA60069ADE0 /* Unused */,
+				8C7EF033251CEAB700CF9CFE /* Assets.xcassets */,
+				8C7EF038251CEAB700CF9CFE /* Info.plist */,
+				8C7EF035251CEAB700CF9CFE /* Preview Content */,
+			);
+			path = Mocca;
+			sourceTree = "<group>";
+		};
+		8C7EF035251CEAB700CF9CFE /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				8C7EF036251CEAB700CF9CFE /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		8C7EF040251CEAB700CF9CFE /* MoccaTests */ = {
+			isa = PBXGroup;
+			children = (
+				8C68B17D25301A9D0040AC9A /* Tests */,
+				8CE07E4D252B607F00702E14 /* Mock Objects */,
+				8C1C8772252F5A8200001B14 /* Helper */,
+				8C6728A2251E10600066A836 /* MoccaTests-Bridging-Header.h */,
+				8C7EF043251CEAB700CF9CFE /* Info.plist */,
+			);
+			path = MoccaTests;
+			sourceTree = "<group>";
+		};
+		8C7EF04B251CEAB700CF9CFE /* MoccaUITests */ = {
+			isa = PBXGroup;
+			children = (
+				8C7EF04C251CEAB700CF9CFE /* MoccaUITests.swift */,
+				8C7EF04E251CEAB700CF9CFE /* Info.plist */,
+			);
+			path = MoccaUITests;
+			sourceTree = "<group>";
+		};
+		8CA9F406252DD01100730F4C /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				8CA9F407252DD04F00730F4C /* ProjectTests.swift */,
+			);
+			path = Misc;
+			sourceTree = "<group>";
+		};
+		8CBEB525252B2F7500D6525F /* PhotoTaker */ = {
+			isa = PBXGroup;
+			children = (
+				8CBEB52E252B302400D6525F /* DevicePhotoTakerTests.swift */,
+			);
+			path = PhotoTaker;
+			sourceTree = "<group>";
+		};
+		8CCE88B825248F160086AF83 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				8CCE88B325248F070086AF83 /* Orientation.swift */,
+				8CC3C449251DFD2F00CC4698 /* CaptureUtils.swift */,
+				8C6A926E25289EE70069ADE0 /* PreviewWrapper.swift */,
+				8CA9F412252DDB7200730F4C /* System.swift */,
+				8C1C8776252F5C3B00001B14 /* ViewConversion.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		8CD793C7252A22CD0071F3F6 /* ShutterButton */ = {
+			isa = PBXGroup;
+			children = (
+				8CD793C8252A22F00071F3F6 /* ShutterButtonViewModelTests.swift */,
+			);
+			path = ShutterButton;
+			sourceTree = "<group>";
+		};
+		8CDE03D925262BCD0083F736 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8CDE03DA25262BDF0083F736 /* WidgetViewModel.swift */,
+				8CDE0403252756560083F736 /* PreviewViewModel.swift */,
+				8C3E35BA2529DB7900D5E971 /* ShutterButtonViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8CDEB01B251FDFA20010DCCB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8C3E35BF2529E6C400D5E971 /* PhotoTaker.swift */,
+				8CDEB0202520A5110010DCCB /* CameraSetting.swift */,
+				8CDEB0492520C9E00010DCCB /* FocusSetting.swift */,
+				8CDEB0442520C9C90010DCCB /* ExposureSetting.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8CDEB01C251FDFB10010DCCB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8C7EF031251CEAB500CF9CFE /* ContentView.swift */,
+				8C6A92732528AACB0069ADE0 /* PreviewView.swift */,
+				8C6728BF251E14180066A836 /* PreviewUIView.swift */,
+				8C6728C8251E16F50066A836 /* PreviewViewController.swift */,
+				8C62FEA4252B8B8B007459C9 /* SimulatorPreview.swift */,
+				8CDEB03C2520BE180010DCCB /* WidgetView.swift */,
+				8C3E35B52529D4AD00D5E971 /* ShutterButtonView.swift */,
+				8C1A5C85252203D800D92F3C /* CameraErrorView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8CE07E4D252B607F00702E14 /* Mock Objects */ = {
+			isa = PBXGroup;
+			children = (
+				8C6728A6251E10600066A836 /* MockAVCaptureSession.swift */,
+				8C6728A7251E10600066A836 /* MockAVCaptureDevice.swift */,
+				8CE07E42252B457100702E14 /* MockCaptureManager.swift */,
+				8CBEB526252B2F9800D6525F /* MockPHPhotoLibrary.swift */,
+			);
+			path = "Mock Objects";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8C7EF02B251CEAB500CF9CFE /* Mocca */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C7EF051251CEAB800CF9CFE /* Build configuration list for PBXNativeTarget "Mocca" */;
+			buildPhases = (
+				8C7EF028251CEAB500CF9CFE /* Sources */,
+				8C7EF029251CEAB500CF9CFE /* Frameworks */,
+				8C7EF02A251CEAB500CF9CFE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Mocca;
+			productName = Mocca;
+			productReference = 8C7EF02C251CEAB500CF9CFE /* Mocca.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8C7EF03C251CEAB700CF9CFE /* MoccaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C7EF054251CEAB800CF9CFE /* Build configuration list for PBXNativeTarget "MoccaTests" */;
+			buildPhases = (
+				8C7EF039251CEAB700CF9CFE /* Sources */,
+				8C7EF03A251CEAB700CF9CFE /* Frameworks */,
+				8C7EF03B251CEAB700CF9CFE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8C7EF03F251CEAB700CF9CFE /* PBXTargetDependency */,
+			);
+			name = MoccaTests;
+			productName = MoccaTests;
+			productReference = 8C7EF03D251CEAB700CF9CFE /* MoccaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8C7EF047251CEAB700CF9CFE /* MoccaUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C7EF057251CEAB800CF9CFE /* Build configuration list for PBXNativeTarget "MoccaUITests" */;
+			buildPhases = (
+				8C7EF044251CEAB700CF9CFE /* Sources */,
+				8C7EF045251CEAB700CF9CFE /* Frameworks */,
+				8C7EF046251CEAB700CF9CFE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8C7EF04A251CEAB700CF9CFE /* PBXTargetDependency */,
+			);
+			name = MoccaUITests;
+			productName = MoccaUITests;
+			productReference = 8C7EF048251CEAB700CF9CFE /* MoccaUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8C7EF024251CEAB500CF9CFE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1200;
+				LastUpgradeCheck = 1200;
+				TargetAttributes = {
+					8C7EF02B251CEAB500CF9CFE = {
+						CreatedOnToolsVersion = 12.0;
+					};
+					8C7EF03C251CEAB700CF9CFE = {
+						CreatedOnToolsVersion = 12.0;
+						LastSwiftMigration = 1200;
+						TestTargetID = 8C7EF02B251CEAB500CF9CFE;
+					};
+					8C7EF047251CEAB700CF9CFE = {
+						CreatedOnToolsVersion = 12.0;
+						TestTargetID = 8C7EF02B251CEAB500CF9CFE;
+					};
+				};
+			};
+			buildConfigurationList = 8C7EF027251CEAB500CF9CFE /* Build configuration list for PBXProject "Mocca" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8C7EF023251CEAB500CF9CFE;
+			productRefGroup = 8C7EF02D251CEAB500CF9CFE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8C7EF02B251CEAB500CF9CFE /* Mocca */,
+				8C7EF03C251CEAB700CF9CFE /* MoccaTests */,
+				8C7EF047251CEAB700CF9CFE /* MoccaUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8C7EF02A251CEAB500CF9CFE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C7EF037251CEAB700CF9CFE /* Preview Assets.xcassets in Resources */,
+				8C7EF034251CEAB700CF9CFE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C7EF03B251CEAB700CF9CFE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C7EF046251CEAB700CF9CFE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8C7EF028251CEAB500CF9CFE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C6A926F25289EE70069ADE0 /* PreviewWrapper.swift in Sources */,
+				8C62FEA5252B8B8B007459C9 /* SimulatorPreview.swift in Sources */,
+				8CC3C44D251DFD2F00CC4698 /* TestableExtensions.swift in Sources */,
+				8C7EF032251CEAB500CF9CFE /* ContentView.swift in Sources */,
+				8C3E35C02529E6C400D5E971 /* PhotoTaker.swift in Sources */,
+				8CC3C44B251DFD2F00CC4698 /* DeviceCaptureManager.swift in Sources */,
+				8CA9F413252DDB7200730F4C /* System.swift in Sources */,
+				8CDEB04A2520C9E00010DCCB /* FocusSetting.swift in Sources */,
+				8CC3C44C251DFD2F00CC4698 /* CaptureUtils.swift in Sources */,
+				8C3E35BB2529DB7900D5E971 /* ShutterButtonViewModel.swift in Sources */,
+				8CE07E3B252B3D5A00702E14 /* CaptureManager.swift in Sources */,
+				8C6A92742528AACB0069ADE0 /* PreviewView.swift in Sources */,
+				8C1C8777252F5C3B00001B14 /* ViewConversion.swift in Sources */,
+				8C3E35B62529D4AD00D5E971 /* ShutterButtonView.swift in Sources */,
+				8CDEB0212520A5110010DCCB /* CameraSetting.swift in Sources */,
+				8CDE03DB25262BDF0083F736 /* WidgetViewModel.swift in Sources */,
+				8CCE88B425248F070086AF83 /* Orientation.swift in Sources */,
+				8CCE88A925247D450086AF83 /* PreviewViewController.swift in Sources */,
+				8C7EF030251CEAB500CF9CFE /* MoccaApp.swift in Sources */,
+				8C6728C0251E14180066A836 /* PreviewUIView.swift in Sources */,
+				8CDEB0452520C9C90010DCCB /* ExposureSetting.swift in Sources */,
+				8C1A5C86252203D800D92F3C /* CameraErrorView.swift in Sources */,
+				8CDEB03D2520BE180010DCCB /* WidgetView.swift in Sources */,
+				8C1C872B252F300700001B14 /* Enums.swift in Sources */,
+				8CDE0404252756560083F736 /* PreviewViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C7EF039251CEAB700CF9CFE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C6728AE251E10610066A836 /* UnavailableInitFactory.m in Sources */,
+				8C1C876E252F58A100001B14 /* PreviewViewModelTests.swift in Sources */,
+				8C68B18025301AF80040AC9A /* OrientationTests.swift in Sources */,
+				8C1C8766252F50DE00001B14 /* WidgetViewModelTests.swift in Sources */,
+				8CBEB527252B2F9800D6525F /* MockPHPhotoLibrary.swift in Sources */,
+				8C6728AB251E10610066A836 /* MockAVCaptureSession.swift in Sources */,
+				8CBEB52F252B302400D6525F /* DevicePhotoTakerTests.swift in Sources */,
+				8CE07E43252B457100702E14 /* MockCaptureManager.swift in Sources */,
+				8C6728AC251E10610066A836 /* MockAVCaptureDevice.swift in Sources */,
+				8CD793C9252A22F00071F3F6 /* ShutterButtonViewModelTests.swift in Sources */,
+				8CA9F408252DD04F00730F4C /* ProjectTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C7EF044251CEAB700CF9CFE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C7EF04D251CEAB700CF9CFE /* MoccaUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8C7EF03F251CEAB700CF9CFE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8C7EF02B251CEAB500CF9CFE /* Mocca */;
+			targetProxy = 8C7EF03E251CEAB700CF9CFE /* PBXContainerItemProxy */;
+		};
+		8C7EF04A251CEAB700CF9CFE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8C7EF02B251CEAB500CF9CFE /* Mocca */;
+			targetProxy = 8C7EF049251CEAB700CF9CFE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		8C7EF04F251CEAB800CF9CFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		8C7EF050251CEAB800CF9CFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8C7EF052251CEAB800CF9CFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"Mocca/Preview Content\"";
+				DEVELOPMENT_TEAM = UE24L5QUH7;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = Mocca/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.davidfearon.Mocca;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8C7EF053251CEAB800CF9CFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"Mocca/Preview Content\"";
+				DEVELOPMENT_TEAM = UE24L5QUH7;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = Mocca/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.davidfearon.Mocca;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8C7EF055251CEAB800CF9CFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UE24L5QUH7;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				INFOPLIST_FILE = MoccaTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.davidfearon.MoccaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MoccaTests/MoccaTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mocca.app/Mocca";
+			};
+			name = Debug;
+		};
+		8C7EF056251CEAB800CF9CFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UE24L5QUH7;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				INFOPLIST_FILE = MoccaTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.davidfearon.MoccaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MoccaTests/MoccaTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mocca.app/Mocca";
+			};
+			name = Release;
+		};
+		8C7EF058251CEAB800CF9CFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UE24L5QUH7;
+				INFOPLIST_FILE = MoccaUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.davidfearon.MoccaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Mocca;
+			};
+			name = Debug;
+		};
+		8C7EF059251CEAB800CF9CFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UE24L5QUH7;
+				INFOPLIST_FILE = MoccaUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.davidfearon.MoccaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Mocca;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8C7EF027251CEAB500CF9CFE /* Build configuration list for PBXProject "Mocca" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C7EF04F251CEAB800CF9CFE /* Debug */,
+				8C7EF050251CEAB800CF9CFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C7EF051251CEAB800CF9CFE /* Build configuration list for PBXNativeTarget "Mocca" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C7EF052251CEAB800CF9CFE /* Debug */,
+				8C7EF053251CEAB800CF9CFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C7EF054251CEAB800CF9CFE /* Build configuration list for PBXNativeTarget "MoccaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C7EF055251CEAB800CF9CFE /* Debug */,
+				8C7EF056251CEAB800CF9CFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C7EF057251CEAB800CF9CFE /* Build configuration list for PBXNativeTarget "MoccaUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C7EF058251CEAB800CF9CFE /* Debug */,
+				8C7EF059251CEAB800CF9CFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8C7EF024251CEAB500CF9CFE /* Project object */;
+}
