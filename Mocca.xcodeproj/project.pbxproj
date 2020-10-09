@@ -262,9 +262,7 @@
 				8CCE88B825248F160086AF83 /* Utility */,
 				8C0E39F32525F6C4004BFFCA /* Testing */,
 				8C6A927E2528AFA60069ADE0 /* Unused */,
-				8C7EF033251CEAB700CF9CFE /* Assets.xcassets */,
-				8C7EF038251CEAB700CF9CFE /* Info.plist */,
-				8C7EF035251CEAB700CF9CFE /* Preview Content */,
+				8CADB30C253044A50061447C /* Supporting files */,
 			);
 			path = Mocca;
 			sourceTree = "<group>";
@@ -304,6 +302,16 @@
 				8CA9F407252DD04F00730F4C /* ProjectTests.swift */,
 			);
 			path = Misc;
+			sourceTree = "<group>";
+		};
+		8CADB30C253044A50061447C /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				8C7EF035251CEAB700CF9CFE /* Preview Content */,
+				8C7EF033251CEAB700CF9CFE /* Assets.xcassets */,
+				8C7EF038251CEAB700CF9CFE /* Info.plist */,
+			);
+			path = "Supporting files";
 			sourceTree = "<group>";
 		};
 		8CBEB525252B2F7500D6525F /* PhotoTaker */ = {
@@ -711,10 +719,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Mocca/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Mocca/Supporting files/Preview Content\"";
 				DEVELOPMENT_TEAM = UE24L5QUH7;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = Mocca/Info.plist;
+				INFOPLIST_FILE = "Mocca/Supporting files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -723,7 +731,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.davidfearon.Mocca;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -733,10 +741,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Mocca/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Mocca/Supporting files/Preview Content\"";
 				DEVELOPMENT_TEAM = UE24L5QUH7;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = Mocca/Info.plist;
+				INFOPLIST_FILE = "Mocca/Supporting files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -745,7 +753,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.davidfearon.Mocca;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
