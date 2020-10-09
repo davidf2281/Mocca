@@ -1,0 +1,5 @@
+language: swift
+osx_image: xcode12
+xcode_project: Mocca.xcodeproj
+xcode_scheme: MoccaTests
+xcode_destination: platform=iOS Simulator,OS=14.0,name=iPhone SE (2nd generation)
