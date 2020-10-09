@@ -5,7 +5,7 @@ Mocca - the **MO**re **C**ontrollable **C**amera **A**pp - is a minimalist still
 Mocca is very much a work in progress, but the Master branch is always in a useable state. It's currently very simple indeed (just a camera preview, shutter button and a tap-to-set focus/exposure reticle) but entirely functional.
 
 #### About the code
-Mocca is written entirely in Swift, using the new declarative SwiftUI framework and based on the MVVM (model-view-viewmodel) design pattern, which suits SwiftUI well.
+With the exception of a bit of Objective-C in the unit tests, Mocca is written entirely in Swift, using the new declarative SwiftUI framework and based on the MVVM (model-view-viewmodel) design pattern, which suits SwiftUI well.
 
 #### Upcoming features
 * Physical camera selection for multiple-camera devices
