@@ -66,7 +66,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8C063F49251DC47E00B47331 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8C1A5C85252203D800D92F3C /* CameraErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraErrorView.swift; sourceTree = "<group>"; };
 		8C1C872A252F300700001B14 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetViewModelTests.swift; sourceTree = "<group>"; };
@@ -101,7 +100,6 @@
 		8CA9F412252DDB7200730F4C /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		8CBEB526252B2F9800D6525F /* MockPHPhotoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPHPhotoLibrary.swift; sourceTree = "<group>"; };
 		8CBEB52E252B302400D6525F /* DevicePhotoTakerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicePhotoTakerTests.swift; sourceTree = "<group>"; };
-		8CC3C43D251DD30F00CC4698 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		8CC3C448251DFD2F00CC4698 /* DeviceCaptureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceCaptureManager.swift; sourceTree = "<group>"; };
 		8CC3C449251DFD2F00CC4698 /* CaptureUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureUtils.swift; sourceTree = "<group>"; };
 		8CC3C44A251DFD2F00CC4698 /* TestableExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestableExtensions.swift; sourceTree = "<group>"; };
@@ -221,15 +219,6 @@
 			path = Utility;
 			sourceTree = "<group>";
 		};
-		8C6A927E2528AFA60069ADE0 /* Unused */ = {
-			isa = PBXGroup;
-			children = (
-				8C063F49251DC47E00B47331 /* SettingsView.swift */,
-				8CC3C43D251DD30F00CC4698 /* UserSettings.swift */,
-			);
-			path = Unused;
-			sourceTree = "<group>";
-		};
 		8C7EF023251CEAB500CF9CFE = {
 			isa = PBXGroup;
 			children = (
@@ -261,7 +250,6 @@
 				8C0E39F22525F6B1004BFFCA /* Manager */,
 				8CCE88B825248F160086AF83 /* Utility */,
 				8C0E39F32525F6C4004BFFCA /* Testing */,
-				8C6A927E2528AFA60069ADE0 /* Unused */,
 				8CADB30C253044A50061447C /* Supporting files */,
 			);
 			path = Mocca;
