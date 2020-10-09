@@ -10,13 +10,9 @@ import Foundation
 public final class System {
     final class func runningInSimulator() -> Bool {
         
-        // Production builds always return false
-        // as an extra layer of safety
-        #if !DEBUG
+        #if !DEBUG // Production builds always return false as an extra layer of safety
         return false
-        #endif
-
-        #if targetEnvironment(simulator)
+        #elseif targetEnvironment(simulator)
         return true
         #else
         return false
