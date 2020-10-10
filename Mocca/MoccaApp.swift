@@ -17,14 +17,14 @@ final class MoccaApp: App, ObservableObject {
  
     private var photoTaker: DevicePhotoTaker?
     
-    // Capture manager is the intermediary class dealing with all communication with the device's physical camera hardware.
+    /// Capture manager is the intermediary class dealing with all communication with the device's physical camera hardware.
     private let captureManager : DeviceCaptureManager? = {
         var manager : DeviceCaptureManager?
         do { try manager = DeviceCaptureManager() } catch { manager = nil }
         return manager
     }()
     
-    // Session queue is used to take blocking calls to the physical camera hardware off the main thread.
+    /// Queue used to take blocking calls to the physical camera hardware off the main thread.
     private let sessionQueue = DispatchQueue(label: "com.mocca-app.sessionQueue")
     
     /// Main view hierarchy for the app.
