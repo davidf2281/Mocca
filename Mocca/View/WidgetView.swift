@@ -14,7 +14,6 @@ struct WidgetView: View {
     
     private let reticleRadius: CGFloat = 25
     
-    @Environment(\.verticalSizeClass) var verticalSizeClass
     @EnvironmentObject var orientationPublisher: OrientationPublisher
     @ObservedObject var viewModel: WidgetViewModel
     
@@ -26,6 +25,7 @@ struct WidgetView: View {
             })
             .contentShape(Rectangle())
             .position(ViewConversion.clamp(position: ViewConversion.displayPosition(position: self.viewModel.position, orientation: orientationPublisher.interfaceOrientation, parentFrame: parent.size), frame: parent.size, inset: reticleRadius))
+            .animation( Animation.easeOut(duration: 0.2) )
         }
     }
     
