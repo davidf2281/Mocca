@@ -82,6 +82,8 @@ final class MoccaApp: App, ObservableObject {
             previewViewModel: previewViewModel,
             cameraErrorView: CameraErrorView())
             .environmentObject(orientationPublisher)
+            .background(Color.black)
+            .statusBar(hidden: true)
     }
     
     var body: some Scene {
