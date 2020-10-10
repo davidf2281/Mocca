@@ -25,20 +25,4 @@ class ProjectTests: XCTestCase {
         
         XCTAssertEqual(message, "Mocca needs to save the photos you take to your photo library.")
     }
-        
-    private func bundlePlistCameraUsageDescription() -> String? {
-        if let dictionary = Bundle.main.infoDictionary {
-            return dictionary["NSCameraUsageDescription"] as? String
-        }
-        
-        return nil
-    }
-    
-    private func bundlePlistPhotoLibraryAddUsageDescription() -> String? {
-        if let dictionary = Bundle.main.infoDictionary {
-            return dictionary["NSPhotoLibraryAddUsageDescription"] as? String
-        }
-        
-        return nil
-    }
 }

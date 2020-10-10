@@ -15,6 +15,8 @@
 		8C3E35B62529D4AD00D5E971 /* ShutterButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E35B52529D4AD00D5E971 /* ShutterButtonView.swift */; };
 		8C3E35BB2529DB7900D5E971 /* ShutterButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E35BA2529DB7900D5E971 /* ShutterButtonViewModel.swift */; };
 		8C3E35C02529E6C400D5E971 /* PhotoTaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E35BF2529E6C400D5E971 /* PhotoTaker.swift */; };
+		8C464366253208A400889AC3 /* CameraPermissionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C464365253208A400889AC3 /* CameraPermissionUITests.swift */; };
+		8C46436E25320C1F00889AC3 /* BundlePlistValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C46436D25320C1F00889AC3 /* BundlePlistValues.swift */; };
 		8C62FEA5252B8B8B007459C9 /* SimulatorPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C62FEA4252B8B8B007459C9 /* SimulatorPreview.swift */; };
 		8C6728AB251E10610066A836 /* MockAVCaptureSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6728A6251E10600066A836 /* MockAVCaptureSession.swift */; };
 		8C6728AC251E10610066A836 /* MockAVCaptureDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6728A7251E10600066A836 /* MockAVCaptureDevice.swift */; };
@@ -27,7 +29,6 @@
 		8C7EF032251CEAB500CF9CFE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7EF031251CEAB500CF9CFE /* ContentView.swift */; };
 		8C7EF034251CEAB700CF9CFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C7EF033251CEAB700CF9CFE /* Assets.xcassets */; };
 		8C7EF037251CEAB700CF9CFE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C7EF036251CEAB700CF9CFE /* Preview Assets.xcassets */; };
-		8C7EF04D251CEAB700CF9CFE /* MoccaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7EF04C251CEAB700CF9CFE /* MoccaUITests.swift */; };
 		8CA9F408252DD04F00730F4C /* ProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9F407252DD04F00730F4C /* ProjectTests.swift */; };
 		8CA9F413252DDB7200730F4C /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9F412252DDB7200730F4C /* System.swift */; };
 		8CBEB527252B2F9800D6525F /* MockPHPhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CBEB526252B2F9800D6525F /* MockPHPhotoLibrary.swift */; };
@@ -74,6 +75,8 @@
 		8C3E35B52529D4AD00D5E971 /* ShutterButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButtonView.swift; sourceTree = "<group>"; };
 		8C3E35BA2529DB7900D5E971 /* ShutterButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButtonViewModel.swift; sourceTree = "<group>"; };
 		8C3E35BF2529E6C400D5E971 /* PhotoTaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoTaker.swift; sourceTree = "<group>"; };
+		8C464365253208A400889AC3 /* CameraPermissionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPermissionUITests.swift; sourceTree = "<group>"; };
+		8C46436D25320C1F00889AC3 /* BundlePlistValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundlePlistValues.swift; sourceTree = "<group>"; };
 		8C62FEA4252B8B8B007459C9 /* SimulatorPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorPreview.swift; sourceTree = "<group>"; };
 		8C6728A2251E10600066A836 /* MoccaTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MoccaTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		8C6728A6251E10600066A836 /* MockAVCaptureSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAVCaptureSession.swift; sourceTree = "<group>"; };
@@ -94,7 +97,6 @@
 		8C7EF03D251CEAB700CF9CFE /* MoccaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoccaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C7EF043251CEAB700CF9CFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C7EF048251CEAB700CF9CFE /* MoccaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoccaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8C7EF04C251CEAB700CF9CFE /* MoccaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoccaUITests.swift; sourceTree = "<group>"; };
 		8C7EF04E251CEAB700CF9CFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8CA9F407252DD04F00730F4C /* ProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTests.swift; sourceTree = "<group>"; };
 		8CA9F412252DDB7200730F4C /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 			children = (
 				8C6728A9251E10610066A836 /* UnavailableInitFactory.h */,
 				8C6728AA251E10610066A836 /* UnavailableInitFactory.m */,
+				8C46436D25320C1F00889AC3 /* BundlePlistValues.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -278,7 +281,7 @@
 		8C7EF04B251CEAB700CF9CFE /* MoccaUITests */ = {
 			isa = PBXGroup;
 			children = (
-				8C7EF04C251CEAB700CF9CFE /* MoccaUITests.swift */,
+				8C464365253208A400889AC3 /* CameraPermissionUITests.swift */,
 				8C7EF04E251CEAB700CF9CFE /* Info.plist */,
 			);
 			path = MoccaUITests;
@@ -540,6 +543,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C6728AE251E10610066A836 /* UnavailableInitFactory.m in Sources */,
+				8C46436E25320C1F00889AC3 /* BundlePlistValues.swift in Sources */,
 				8C1C876E252F58A100001B14 /* PreviewViewModelTests.swift in Sources */,
 				8C68B18025301AF80040AC9A /* OrientationTests.swift in Sources */,
 				8C1C8766252F50DE00001B14 /* WidgetViewModelTests.swift in Sources */,
@@ -557,7 +561,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C7EF04D251CEAB700CF9CFE /* MoccaUITests.swift in Sources */,
+				8C464366253208A400889AC3 /* CameraPermissionUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
