@@ -35,7 +35,7 @@ class ConcretePhotoTaker: NSObject, PhotoTaker {
     public func takePhoto() { fatalError("Subclasses must override") }
 }
 
-/// Communicates with capture manager to kick off capture of a photo, saving the resulting AVCapturePhoto objects to device
+/// Communicates with capture manager to kick off capture of a photo, saving the resulting AVCapturePhoto object to device.
 class DevicePhotoTaker: ConcretePhotoTaker, AVCapturePhotoCaptureDelegate, ObservableObject  {
     
     private let captureManager: CaptureManager?
