@@ -32,7 +32,7 @@ class ReticleUITests: XCTestCase {
         
         tapPoint = CGPoint(x: 50,y: 50)
         tapCoordinate(app, tapPoint.x, tapPoint.y)
-        sleep(1) // Wait for animation. Test process is in its own thread so blocking is not an issue
+        sleep(1) // Wait for animation. UI testing is a separate process so blocking is not an issue
         reticlePosition = centrePoint(reticle)
         XCTAssertEqual(tapPoint, reticlePosition)
         
