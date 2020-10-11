@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/davidf2281/Mocca.svg?branch=main)](https://travis-ci.org/davidf2281/Mocca)
 
-# Mocca - A More Controllable Camera App for iOS
+# Mocca - a More Controllable Camera App for iOS
 
 Mocca - the **MO**re **C**ontrollable **C**amera **A**pp - is a minimalist stills-only iOS camera. Its design goal is to appeal to those accustomed to manual photography who often want more predictable control than the stock iOS camera app affords. With Mocca you must set the focus/exposure point yourself and — unlike the stock iOS app — it stays where you put it, instead of resetting itself on a whim just as you're about to hit the shutter button.
 
