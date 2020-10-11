@@ -9,10 +9,6 @@ import XCTest
 @testable import Mocca
 class OrientationTests: XCTestCase {
 
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
     func testAVOrientationForUIOrientation() {
         XCTAssertEqual(Orientation.AVOrientation(for: UIInterfaceOrientation.portrait), AVCaptureVideoOrientation.portrait)
         XCTAssertEqual(Orientation.AVOrientation(for: UIInterfaceOrientation.landscapeLeft), AVCaptureVideoOrientation.landscapeLeft)
