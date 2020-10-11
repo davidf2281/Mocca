@@ -39,7 +39,7 @@ class ReticleUITests: XCTestCase {
         var coordinate = normalizedCoordinate(previewView, CGPoint.zero)
         var convertedPoint = CGPoint.zero
         
-        tapPoint = CGPoint(x: 300,y: 300)
+        tapPoint = CGPoint(x: 200,y: 50)
         coordinate = normalizedCoordinate(previewView, tapPoint)
         coordinate.tap()
         sleep(1)
@@ -81,8 +81,8 @@ class ReticleUITests: XCTestCase {
         var coordinate = normalizedCoordinate(previewView, CGPoint.zero)
         var convertedPoint = CGPoint.zero
         
-        // Put the reticle somewhere near the centre
-        tapPoint = CGPoint(x: 300,y: 300)
+        // Put the reticle somewhere away from the edge
+        tapPoint = CGPoint(x: 200,y: 200)
         coordinate = normalizedCoordinate(previewView, tapPoint)
         coordinate.tap()
         sleep(1)
