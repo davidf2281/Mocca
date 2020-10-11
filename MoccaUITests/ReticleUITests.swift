@@ -28,40 +28,20 @@ class ReticleUITests: XCTestCase {
     
     func testReticleMovesToCorrectPositionOnTap() {
         
-        let previewView = appPreviewView()
-        XCTAssert(previewView.exists)
-        
-        let reticle = app.otherElements["reticle"]
-        XCTAssert(reticle.exists)
-        
         var tapPoint = CGPoint.zero
-        var reticlePosition = CGPoint.zero
-        var coordinate = normalizedCoordinate(previewView, CGPoint.zero)
-        var convertedPoint = CGPoint.zero
+        var destinationPoint = CGPoint.zero
         
         tapPoint = CGPoint(x: 200,y: 50)
-        coordinate = normalizedCoordinate(previewView, tapPoint)
-        coordinate.tap()
-        sleep(1)
-        reticlePosition = centrePoint(reticle)
-        convertedPoint = convertPoint(reticlePosition, to: previewView)
-        XCTAssert(point(tapPoint, equalTo: convertedPoint, tolerance: self.tolerance))
+        destinationPoint = tapPreviewView(at: tapPoint)
+        XCTAssert(point(destinationPoint, equalTo: tapPoint, tolerance: self.tolerance))
 
         tapPoint = CGPoint(x: 200,y: 120)
-        coordinate = normalizedCoordinate(previewView, tapPoint)
-        coordinate.tap()
-        sleep(1)
-        reticlePosition = centrePoint(reticle)
-        convertedPoint = convertPoint(reticlePosition, to: previewView)
-        XCTAssert(point(tapPoint, equalTo: convertedPoint, tolerance: self.tolerance))
+        destinationPoint = tapPreviewView(at: tapPoint)
+        XCTAssert(point(destinationPoint, equalTo: tapPoint, tolerance: self.tolerance))
 
-        tapPoint = CGPoint(x: 50, y: 50)
-        coordinate = normalizedCoordinate(previewView, tapPoint)
-        coordinate.tap()
-        sleep(1)
-        reticlePosition = centrePoint(reticle)
-        convertedPoint = convertPoint(reticlePosition, to: previewView)
-        XCTAssert(point(tapPoint, equalTo: convertedPoint, tolerance: self.tolerance))
+        tapPoint = CGPoint(x: 50,y: 50)
+        destinationPoint = tapPreviewView(at: tapPoint)
+        XCTAssert(point(destinationPoint, equalTo: tapPoint, tolerance: self.tolerance))
     }
     
     /*
@@ -70,39 +50,44 @@ class ReticleUITests: XCTestCase {
     #if targetEnvironment(simulator)
     func testReticleKeepsToCameraPreviewBounds() {
         
+        var tapPoint = CGPoint.zero
+        var destinationPoint = CGPoint.zero
+        
+        // Put the reticle somewhere away from the edge
+        tapPoint = CGPoint(x: 200,y: 200)
+        destinationPoint = tapPreviewView(at: tapPoint)
+        XCTAssert(point(destinationPoint, equalTo: tapPoint, tolerance: self.tolerance))
+
+        // Tap near the edge of the camera preview
+        tapPoint = CGPoint(x: 1,y: 1)
+        
+        // We expect reticle position to be clamped to within the camera preview
+        let expectedReticlePosition = CGPoint(x: 25, y: 12)
+        
+        destinationPoint = tapPreviewView(at: tapPoint)
+        XCTAssert(point(destinationPoint, equalTo: expectedReticlePosition, tolerance: self.tolerance))
+    }
+    
+    #endif
+    
+    
+    /// Taps the preview at the given point
+    /// - Parameter tapPoint: The point to tap
+    /// - Returns: The actual UI position of the reticle after the tap
+    func tapPreviewView(at tapPoint: CGPoint) -> CGPoint {
         let previewView = appPreviewView()
         XCTAssert(previewView.exists)
         
         let reticle = app.otherElements["reticle"]
         XCTAssert(reticle.exists)
         
-        var tapPoint = CGPoint.zero
-        var reticlePosition = CGPoint.zero
-        var coordinate = normalizedCoordinate(previewView, CGPoint.zero)
-        var convertedPoint = CGPoint.zero
-        
-        // Put the reticle somewhere away from the edge
-        tapPoint = CGPoint(x: 200,y: 200)
-        coordinate = normalizedCoordinate(previewView, tapPoint)
+        let coordinate = normalizedCoordinate(previewView, tapPoint)
         coordinate.tap()
-        sleep(1)
-        reticlePosition = centrePoint(reticle)
-        convertedPoint = convertPoint(reticlePosition, to: previewView)
-        XCTAssert(point(tapPoint, equalTo: convertedPoint, tolerance: self.tolerance))
-        
-        // Tap near the edge of the camera preview
-        tapPoint = CGPoint(x: 1,y: 1)
-        coordinate = normalizedCoordinate(previewView, tapPoint)
-        coordinate.tap()
-        sleep(1)
-        reticlePosition = centrePoint(reticle)
-        convertedPoint = convertPoint(reticlePosition, to: previewView)
-        
-        // We expect reticle position to be clamped to within the camera preview
-        let expectedReticlePosition = CGPoint(x: 25, y: 12)
-        XCTAssert(point(expectedReticlePosition, equalTo: convertedPoint, tolerance: self.tolerance))
+        usleep(500000) // UI tests run in their own process; blocking call to usleep() is not a problem
+        let reticlePosition = centrePoint(reticle)
+        let convertedPoint = convertPoint(reticlePosition, to: previewView)
+        return convertedPoint
     }
-    #endif
     
     func centrePoint(_ element:XCUIElement) -> CGPoint {
         return CGPoint(x: element.frame.origin.x + element.frame.size.width / 2,
