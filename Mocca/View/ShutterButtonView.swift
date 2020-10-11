@@ -28,5 +28,7 @@ struct ShutterButtonView: View {
         }.onTapGesture(count: 1, perform: {
             self.viewModel.tapped()
         }).disabled(viewModel.state != .ready)
+        .accessibility(label: Text("shutterButton"))
+        .accessibility(value: Text(viewModel.state == .ready ? "ready" : "busy"))
     }
 }

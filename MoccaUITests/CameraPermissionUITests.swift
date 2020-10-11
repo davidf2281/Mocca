@@ -8,29 +8,27 @@
 import XCTest
 
 /*
- NOTE: Camera-permission tests must be run on a physical device, not the simulator.
+ NOTE: Camera-permission tests must run on a physical device, not the simulator.
  */
 
 class CameraPermissionUITests: XCTestCase {
-
+    
     var app: XCUIApplication!
     
-    override func setUpWithError() throws {
-
+    override func setUp() {
         continueAfterFailure = false
-
         app = XCUIApplication()
         app.launch()
     }
     
-#if !targetEnvironment(simulator)
-
-    func testCameraPermissionAlertAppearsOnLaunch() throws {
-
+    #if !targetEnvironment(simulator)
+    
+    func testCameraPermissionAlertAppearsOnLaunch() {
+        
         app.resetAuthorizationStatus(for: .camera)
         
         app.launch() // Resetting authorization status kills the app
-
+        
         let alertExpectation = expectation(description: "Alert expectation")
         
         addUIInterruptionMonitor(withDescription: "Permission alert") { (alert) -> Bool in
@@ -48,6 +46,7 @@ class CameraPermissionUITests: XCTestCase {
         app.tap() // We need to attempt a blocked interaction in order for UIInterruptionMonitor to fire
         waitForExpectations(timeout: 5, handler: nil)
     }
-
-#endif
+    
+    #endif
+    
 }
