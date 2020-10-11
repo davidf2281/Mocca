@@ -7,7 +7,6 @@
 
 import Foundation
 import CoreGraphics
-import SwiftUI
 
 public class FocusSetting: CameraSetting {
     typealias Unit = Float64
