@@ -11,6 +11,10 @@ class ReticleUITests: XCTestCase {
     
     var app: XCUIApplication!
     
+    /// Reticle position after a tap can vary by a fraction of a point depending on device,
+    /// so we allow a point's worth of tolerance.
+    let tolerance = CGFloat(1)
+    
     override func setUp() {
         continueAfterFailure = false
         app = XCUIApplication()
@@ -24,59 +28,117 @@ class ReticleUITests: XCTestCase {
     
     func testReticleMovesToCorrectPositionOnTap() {
         
+        let previewView = appPreviewView()
+        XCTAssert(previewView.exists)
+        
         let reticle = app.otherElements["reticle"]
         XCTAssert(reticle.exists)
         
         var tapPoint = CGPoint.zero
         var reticlePosition = CGPoint.zero
+        var coordinate = normalizedCoordinate(previewView, CGPoint.zero)
+        var convertedPoint = CGPoint.zero
         
-        tapPoint = CGPoint(x: 50,y: 50)
-        tapCoordinate(app, tapPoint.x, tapPoint.y)
-        sleep(1) // Wait for animation. UI testing is a separate process so blocking is not an issue
-        reticlePosition = centrePoint(reticle)
-        XCTAssertEqual(tapPoint, reticlePosition)
-        
-        tapPoint = CGPoint(x: 300,y: 300)
-        tapCoordinate(app, tapPoint.x, tapPoint.y)
+        tapPoint = CGPoint(x: 200,y: 50)
+        coordinate = normalizedCoordinate(previewView, tapPoint)
+        coordinate.tap()
         sleep(1)
         reticlePosition = centrePoint(reticle)
-        XCTAssertEqual(tapPoint, reticlePosition)
+        convertedPoint = convertPoint(reticlePosition, to: previewView)
+        XCTAssert(point(tapPoint, equalTo: convertedPoint, tolerance: self.tolerance))
+
+        tapPoint = CGPoint(x: 200,y: 120)
+        coordinate = normalizedCoordinate(previewView, tapPoint)
+        coordinate.tap()
+        sleep(1)
+        reticlePosition = centrePoint(reticle)
+        convertedPoint = convertPoint(reticlePosition, to: previewView)
+        XCTAssert(point(tapPoint, equalTo: convertedPoint, tolerance: self.tolerance))
+
+        tapPoint = CGPoint(x: 50, y: 50)
+        coordinate = normalizedCoordinate(previewView, tapPoint)
+        coordinate.tap()
+        sleep(1)
+        reticlePosition = centrePoint(reticle)
+        convertedPoint = convertPoint(reticlePosition, to: previewView)
+        XCTAssert(point(tapPoint, equalTo: convertedPoint, tolerance: self.tolerance))
     }
     
+    /*
+     This test fails on physical devices due to what looks like an internal bug in XCUITest's query matching
+     */
+    #if targetEnvironment(simulator)
     func testReticleKeepsToCameraPreviewBounds() {
+        
+        let previewView = appPreviewView()
+        XCTAssert(previewView.exists)
         
         let reticle = app.otherElements["reticle"]
         XCTAssert(reticle.exists)
         
         var tapPoint = CGPoint.zero
         var reticlePosition = CGPoint.zero
+        var coordinate = normalizedCoordinate(previewView, CGPoint.zero)
+        var convertedPoint = CGPoint.zero
         
-        // Put the reticle somewhere in the middle
-        tapPoint = CGPoint(x: 300,y: 300)
-        tapCoordinate(app, tapPoint.x, tapPoint.y)
+        // Put the reticle somewhere away from the edge
+        tapPoint = CGPoint(x: 200,y: 200)
+        coordinate = normalizedCoordinate(previewView, tapPoint)
+        coordinate.tap()
         sleep(1)
         reticlePosition = centrePoint(reticle)
-        XCTAssertEqual(tapPoint, reticlePosition)
+        convertedPoint = convertPoint(reticlePosition, to: previewView)
+        XCTAssert(point(tapPoint, equalTo: convertedPoint, tolerance: self.tolerance))
         
         // Tap near the edge of the camera preview
-        tapPoint = CGPoint(x: 20,y: 20)
-        tapCoordinate(app, tapPoint.x, tapPoint.y)
+        tapPoint = CGPoint(x: 1,y: 1)
+        coordinate = normalizedCoordinate(previewView, tapPoint)
+        coordinate.tap()
         sleep(1)
         reticlePosition = centrePoint(reticle)
+        convertedPoint = convertPoint(reticlePosition, to: previewView)
         
         // We expect reticle position to be clamped to within the camera preview
-        let expectedReticlePosition = CGPoint(x: 35, y: 45.5)
-        XCTAssertEqual(expectedReticlePosition, reticlePosition)
+        let expectedReticlePosition = CGPoint(x: 25, y: 12)
+        XCTAssert(point(expectedReticlePosition, equalTo: convertedPoint, tolerance: self.tolerance))
     }
+    #endif
     
     func centrePoint(_ element:XCUIElement) -> CGPoint {
         return CGPoint(x: element.frame.origin.x + element.frame.size.width / 2,
                        y: element.frame.origin.y + element.frame.size.height / 2)
     }
     
-    func tapCoordinate(_ element:XCUIElement, _ x: CGFloat,_ y: CGFloat) {
-        let normalized = app.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
-        let coordinate = normalized.withOffset(CGVector(dx: x, dy: y))
-        coordinate.tap()
+    func normalizedCoordinate(_ element:XCUIElement, _ point: CGPoint) -> XCUICoordinate {
+        let normalized = element.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
+        return normalized.withOffset(CGVector(dx: point.x, dy: point.y))
+    }
+    
+    func convertPoint(_ point: CGPoint, to: XCUIElement) -> CGPoint {
+        return CGPoint(x: point.x - to.frame.origin.x, y:point.y - to.frame.origin.y)
+    }
+    
+    func point(_ pointA: CGPoint, equalTo point: CGPoint, tolerance: CGFloat) -> Bool {
+        return abs(point.x - pointA.x) < tolerance && abs(point.y - pointA.y) < tolerance
+    }
+    
+    /// - Returns: The camera preview if running on device, or the placeholder image view on the simulator.
+    /// Both have the same position and bounds so are good for the purpose of relative tap placement.
+    func appPreviewView() -> XCUIElement {
+        
+        #if targetEnvironment(simulator)
+        return XCUIApplication().images["simulator_preview"]
+        #else
+        
+        /*
+         We need to ferret about in the view hierarchy to find the camera preview because accessibility elements can't have sub-elements,
+         thus we can't label both 'preview' and 'reticle' -- the first masks the second since one is the child of the other
+         */
+        return self.app.windows.children(matching: .other)
+            .element.children(matching: .other)
+            .element.children(matching: .other)
+            .element.children(matching: .other)
+            .element(boundBy: 0).children(matching: .other).element
+        #endif
     }
 }

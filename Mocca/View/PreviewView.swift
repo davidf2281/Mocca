@@ -57,7 +57,7 @@ struct PreviewModifier: ViewModifier {
             GeometryReader { parent in
                 content
                     .border(Color(white: 0.75), width: 5)
-                    .overlay(WidgetView( viewModel: widgetViewModel))
+                    .overlay(WidgetView( viewModel: widgetViewModel).accessibility(label: Text("reticle")))
                     .padding(edgeInsets)
                     // Drag gesture is simulating a tap gesture because SwiftUI won't tell us the location of actual tap gestures:
                     .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
