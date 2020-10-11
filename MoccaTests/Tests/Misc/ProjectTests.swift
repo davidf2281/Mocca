@@ -7,6 +7,7 @@
 
 import XCTest
 @testable import Mocca
+
 class ProjectTests: XCTestCase {
     
     func testAppDisplayName() throws {
