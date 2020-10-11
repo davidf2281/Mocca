@@ -26,7 +26,7 @@ struct WidgetView: View {
             .contentShape(Rectangle())
             .position(ViewConversion.clamp(position: ViewConversion.displayPosition(position: self.viewModel.position, orientation: orientationPublisher.interfaceOrientation, parentFrame: parent.size), frame: parent.size, inset: reticleRadius))
             .animation( Animation.easeOut(duration: 0.2) )
-        }
+        }.accessibility(label: Text("reticle"))
     }
     
     struct WidgetView_Previews: PreviewProvider {

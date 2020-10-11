@@ -17,6 +17,8 @@
 		8C3E35C02529E6C400D5E971 /* PhotoTaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E35BF2529E6C400D5E971 /* PhotoTaker.swift */; };
 		8C464366253208A400889AC3 /* CameraPermissionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C464365253208A400889AC3 /* CameraPermissionUITests.swift */; };
 		8C46436E25320C1F00889AC3 /* BundlePlistValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C46436D25320C1F00889AC3 /* BundlePlistValues.swift */; };
+		8C4643912533347500889AC3 /* ShutterButtonUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4643902533347500889AC3 /* ShutterButtonUITests.swift */; };
+		8C4643962533374500889AC3 /* ReticleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4643952533374500889AC3 /* ReticleUITests.swift */; };
 		8C62FEA5252B8B8B007459C9 /* SimulatorPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C62FEA4252B8B8B007459C9 /* SimulatorPreview.swift */; };
 		8C6728AB251E10610066A836 /* MockAVCaptureSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6728A6251E10600066A836 /* MockAVCaptureSession.swift */; };
 		8C6728AC251E10610066A836 /* MockAVCaptureDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6728A7251E10600066A836 /* MockAVCaptureDevice.swift */; };
@@ -77,6 +79,8 @@
 		8C3E35BF2529E6C400D5E971 /* PhotoTaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoTaker.swift; sourceTree = "<group>"; };
 		8C464365253208A400889AC3 /* CameraPermissionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPermissionUITests.swift; sourceTree = "<group>"; };
 		8C46436D25320C1F00889AC3 /* BundlePlistValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundlePlistValues.swift; sourceTree = "<group>"; };
+		8C4643902533347500889AC3 /* ShutterButtonUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButtonUITests.swift; sourceTree = "<group>"; };
+		8C4643952533374500889AC3 /* ReticleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReticleUITests.swift; sourceTree = "<group>"; };
 		8C62FEA4252B8B8B007459C9 /* SimulatorPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorPreview.swift; sourceTree = "<group>"; };
 		8C6728A2251E10600066A836 /* MoccaTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MoccaTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		8C6728A6251E10600066A836 /* MockAVCaptureSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAVCaptureSession.swift; sourceTree = "<group>"; };
@@ -282,6 +286,8 @@
 			isa = PBXGroup;
 			children = (
 				8C464365253208A400889AC3 /* CameraPermissionUITests.swift */,
+				8C4643902533347500889AC3 /* ShutterButtonUITests.swift */,
+				8C4643952533374500889AC3 /* ReticleUITests.swift */,
 				8C7EF04E251CEAB700CF9CFE /* Info.plist */,
 			);
 			path = MoccaUITests;
@@ -562,6 +568,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C464366253208A400889AC3 /* CameraPermissionUITests.swift in Sources */,
+				8C4643912533347500889AC3 /* ShutterButtonUITests.swift in Sources */,
+				8C4643962533374500889AC3 /* ReticleUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
