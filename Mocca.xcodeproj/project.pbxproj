@@ -250,7 +250,6 @@
 			isa = PBXGroup;
 			children = (
 				8C7EF02F251CEAB500CF9CFE /* MoccaApp.swift */,
-				8C1C872A252F300700001B14 /* Enums.swift */,
 				8CDEB01C251FDFB10010DCCB /* View */,
 				8CDE03D925262BCD0083F736 /* ViewModel */,
 				8CDEB01B251FDFA20010DCCB /* Model */,
@@ -322,6 +321,7 @@
 		8CCE88B825248F160086AF83 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				8C1C872A252F300700001B14 /* Enums.swift */,
 				8CCE88B325248F070086AF83 /* Orientation.swift */,
 				8CC3C449251DFD2F00CC4698 /* CaptureUtils.swift */,
 				8C6A926E25289EE70069ADE0 /* PreviewWrapper.swift */,
