@@ -75,8 +75,9 @@ final class MoccaApp: App, ObservableObject {
         }
     }
     
-    /// Returns main view hierarchy for the app.
+    /// Main view hierarchy for the app.
     private var ContentViews: some View {
+        // Compose our main app view.
         return ContentView(
             app: self,
             previewViewController:  previewViewController,
