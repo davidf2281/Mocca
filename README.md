@@ -9,6 +9,8 @@ Mocca is very much a work in progress, but the main branch is always in a useabl
 #### About the code
 With the exception of a bit of Objective-C in the unit tests, Mocca is written entirely in Swift, using the new declarative SwiftUI framework and based on the MVVM (model-view-viewmodel) design pattern, which suits SwiftUI well.
 
+An important goal of Mocca is a clean, highly testable codebase: new features will only be added when existing features have sufficient test coverage to be confident of moving forward.
+
 #### Upcoming features
 * Physical-camera selection for multiple-camera devices
 * Exposure compensation
