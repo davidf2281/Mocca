@@ -11,7 +11,7 @@ import UIKit
 
 class ViewConversion {
     
-    /// Converts a logical position to a position to display, accounting for view orientstion
+    /// Converts a logical position to a position to display, accounting for view orientation
     /// - Parameters:
     ///   - position: The logical position in a given view
     ///   - orientation: Orientation of the view
@@ -35,7 +35,7 @@ class ViewConversion {
         }
     }
     
-    /// Converts a tap position to a logical view position, accounting for view orientstion
+    /// Converts a tap position to a logical view position, accounting for view orientation
     /// - Parameters:
     ///   - position: The position of the tap in a given view
     ///   - orientation: Orientation of the view
