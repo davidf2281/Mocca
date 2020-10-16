@@ -8,7 +8,12 @@
 import Foundation
 import Combine
 
-class ShutterButtonViewModel: ObservableObject {
+protocol ShutterButtonViewModelProtocol: ObservableObject {
+    var state: PhotoTakerState { get }
+    func tapped()
+}
+
+class ShutterButtonViewModel: ShutterButtonViewModelProtocol {
     
     @Published private(set) var state: PhotoTakerState
     
