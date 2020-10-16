@@ -35,7 +35,7 @@ struct ContentView: View {
         
         let previewView = PreviewView(widgetViewModel: widgetViewModel, previewViewModel: self.previewViewModel, previewViewController: self.previewController)
         
-        let shutterButtonView = ShutterButtonView(viewModel: shutterButtonViewModel)
+        let shutterButtonView = ShutterButtonView<ShutterButtonViewModel>(viewModel: shutterButtonViewModel)
             .padding(20)
         
         if self.app.appState == .nominal {
