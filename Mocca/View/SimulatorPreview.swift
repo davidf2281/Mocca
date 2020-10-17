@@ -21,9 +21,3 @@ struct SimulatorPreview: View {
         }).background(Color.black)
     }
 }
-
-struct SimulatorPreview_Previews: PreviewProvider {
-    static var previews: some View {
-        SimulatorPreview()
-    }
-}
