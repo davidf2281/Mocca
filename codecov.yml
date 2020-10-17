@@ -1,3 +1,4 @@
 ignore:
 - "MoccaTests"
 - "MoccaUITests"
+- "Mocca/Testing"
