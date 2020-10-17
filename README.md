@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/davidf2281/Mocca.svg?branch=main)](https://travis-ci.org/davidf2281/Mocca)
+[![Build Status](https://travis-ci.org/davidf2281/Mocca.svg?branch=main)](https://travis-ci.org/davidf2281/Mocca) [![codecov](https://codecov.io/gh/davidf2281/Mocca/branch/master/graph/badge.svg)](https://codecov.io/gh/davidf2281/Mocca)
 
 # Mocca - a More Controllable Camera App for iOS
 
