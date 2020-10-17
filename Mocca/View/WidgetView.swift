@@ -28,12 +28,4 @@ struct WidgetView: View {
             .animation( Animation.easeOut(duration: 0.2) )
         }.accessibility(label: Text("reticle"))
     }
-    
-    struct WidgetView_Previews: PreviewProvider {
-        static var previews: some View {
-            StatefulPreviewWrapper(CGPoint(x: 100,y: 100)) {_ in
-                WidgetView(viewModel: WidgetViewModel(captureManager: nil, dockedPosition: CGPoint(x: 50,y: 100), displayCharacter: "f"))
-            }
-        }
-    }
 }

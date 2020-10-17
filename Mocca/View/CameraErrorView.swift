@@ -23,8 +23,3 @@ struct CameraErrorView: View {
     }
 }
 
-struct CameraErrorView_Previews: PreviewProvider {
-    static var previews: some View {
-        CameraErrorView()
-    }
-}
