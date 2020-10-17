@@ -12,23 +12,22 @@ import AVFoundation
 
 class MockAVCaptureSession: TestableAVCaptureSession {
   
- 
     // MARK: Protocol requirements
     var sessionPreset: AVCaptureSession.Preset = .inputPriority
     
     // MARK: Test vars
-    private var canAddInput =                             false
-    private var canAddOutput =                            false
-    private var beginConfigirationCalled =                false
-    private var addInputCalled =                          false
-    private var addOuputCalled =                          false
-    private var commitConfigurationCalled =               false
-    private var startRunningCalled =                      false
-    private var stopRunningCalled =                       false
-    private var beginConfigurationNotCalledWhenRequired = false
-    private var commitConfigurationCalledPrematurely =    false
+    internal var canAddInputResponse =                     true
+    internal var canAddOutputResponse =                    true
+    internal var beginConfigirationCalled =                false
+    internal var addInputCalled =                          false
+    internal var addOuputCalled =                          false
+    internal var commitConfigurationCalled =               false
+    internal var startRunningCalled =                      false
+    internal var stopRunningCalled =                       false
+    internal var beginConfigurationNotCalledWhenRequired = false
+    internal var commitConfigurationCalledPrematurely =    false
     
-    internal private(set) var lastAddedInput: TestableAVCaptureDeviceInput?
+    internal private(set) var lastAddedInput: AVCaptureDeviceInput?
     internal private(set) var lastAddedOutout: AVCaptureOutput?
     
     // MARK: Protocol implementation
@@ -38,22 +37,22 @@ class MockAVCaptureSession: TestableAVCaptureSession {
     }
     
     func canAddInput(_: AVCaptureInput) -> Bool {
-        return self.canAddInput
+        return self.canAddInputResponse
     }
     
     func addInput(_ input: AVCaptureInput) {
         beginConfigurationNotCalledWhenRequired = !beginConfigirationCalled
-        commitConfigurationCalledPrematurely = !commitConfigurationCalled
+        commitConfigurationCalledPrematurely = commitConfigurationCalled
         addInputCalled = true
     }
     
     func canAddOutput(_ output: AVCaptureOutput) -> Bool {
-        return self.canAddOutput
+        return self.canAddOutputResponse
     }
     
     func addOutput(_ output: AVCaptureOutput) {
         beginConfigurationNotCalledWhenRequired = !beginConfigirationCalled
-        commitConfigurationCalledPrematurely = !commitConfigurationCalled
+        commitConfigurationCalledPrematurely = commitConfigurationCalled
         addOuputCalled = true
         lastAddedOutout = output
     }

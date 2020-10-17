@@ -9,6 +9,4 @@ import Foundation
 import AVFoundation
 @testable import Mocca
 
-class MockAVCaptureDeviceInput: TestableAVCaptureDeviceInput {
-    
-}
+class MockAVCaptureDeviceInput: TestableAVCaptureDeviceInput {}

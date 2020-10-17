@@ -32,9 +32,7 @@ protocol TestableAVCaptureDevice {
     func unlockForConfiguration()
 }
 
-protocol TestableAVCaptureDeviceInput {
-    // MARK: TODO
-}
+protocol TestableAVCaptureDeviceInput {}
 
 protocol TestableAVCaptureSession {
     var sessionPreset: AVCaptureSession.Preset { get set }
