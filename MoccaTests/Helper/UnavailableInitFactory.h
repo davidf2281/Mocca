@@ -17,9 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UnavailableInitFactory : NSObject
 
-+ (AVCaptureDevice *)      instanceOfAVCaptureDevice;
-+ (AVCaptureDeviceFormat *)instanceOfAVCaptureDeviceFormat;
 + (AVCapturePhoto *)       instanceOfAVCapturePhoto;
++ (AVCaptureDevice *)      instanceOfAVCaptureDevice;
++ (AVCaptureDeviceInput *) instanceOfAVCaptureDeviceInput;
++ (AVCaptureDeviceFormat *)instanceOfAVCaptureDeviceFormat;
 
 @end
 

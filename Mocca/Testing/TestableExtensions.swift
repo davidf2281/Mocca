@@ -10,10 +10,11 @@ import Foundation
 import AVFoundation
 import Photos
 
-extension AVCaptureDevice:  TestableAVCaptureDevice          { /* Empty extension: required. */ }
-extension AVCaptureSession: TestableAVCaptureSession         { /* Empty extension: required. */ }
+extension AVCaptureDevice:      TestableAVCaptureDevice      { /* Empty extension: required. */ }
+extension AVCaptureDeviceInput: TestableAVCaptureDeviceInput { /* Empty extension: required. */ }
+extension AVCaptureSession:     TestableAVCaptureSession     { /* Empty extension: required. */ }
 extension AVCapturePhotoOutput: TestableAVCapturePhotoOutput { /* Empty extension: required. */ }
-extension PHPhotoLibrary: TestablePHPhotoLibrary             { /* Empty extension: required. */ }
+extension PHPhotoLibrary:       TestablePHPhotoLibrary       { /* Empty extension: required. */ }
 
 protocol TestableAVCaptureDevice {
     var activeFormat: AVCaptureDevice.Format { get set }
@@ -30,6 +31,8 @@ protocol TestableAVCaptureDevice {
     func lockForConfiguration() throws
     func unlockForConfiguration()
 }
+
+protocol TestableAVCaptureDeviceInput {}
 
 protocol TestableAVCaptureSession {
     var sessionPreset: AVCaptureSession.Preset { get set }

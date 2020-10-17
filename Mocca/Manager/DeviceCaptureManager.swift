@@ -54,7 +54,7 @@ class DeviceCaptureManager: CaptureManager {
         try self.init(captureSession: captureSession, output: photoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput)
     }
     
-    public init(captureSession: TestableAVCaptureSession, output: AVCapturePhotoOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: AVCaptureDeviceInput) throws {
+    public init(captureSession: TestableAVCaptureSession, output: AVCapturePhotoOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: TestableAVCaptureDeviceInput) throws {
         
         self.photoOutput =          output
         self.captureSession =       captureSession
@@ -64,8 +64,8 @@ class DeviceCaptureManager: CaptureManager {
         self.captureSession.beginConfiguration()
         
         // MARK: Capture-session inputs
-        if self.captureSession.canAddInput(videoInput) {
-            self.captureSession.addInput(videoInput)
+        if self.captureSession.canAddInput(videoInput as! AVCaptureDeviceInput) {
+            self.captureSession.addInput(videoInput as! AVCaptureDeviceInput)
         } else {
             throw CaptureManagerError.addVideoInputFailed
         }

@@ -29,4 +29,8 @@
     return (AVCapturePhoto *) [self instanceOfClassWithName:@"AVCapturePhoto"];
 }
 
++ (AVCaptureDeviceInput *)instanceOfAVCaptureDeviceInput {
+    return (AVCaptureDeviceInput *) [self instanceOfClassWithName:@"AVCaptureDeviceInput"];
+}
+
 @end
