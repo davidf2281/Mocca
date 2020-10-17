@@ -54,7 +54,7 @@ class DeviceCaptureManager: CaptureManager {
         try self.init(captureSession: captureSession, output: photoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput)
     }
     
-    public init(captureSession: TestableAVCaptureSession, output: AVCapturePhotoOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: AVCaptureDeviceInput) throws {
+    public init(captureSession: TestableAVCaptureSession, output: AVCapturePhotoOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: TestableAVCaptureDeviceInput) throws {
         
         self.photoOutput =          output
         self.captureSession =       captureSession
