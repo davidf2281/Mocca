@@ -21,10 +21,11 @@ protocol PhotoTaker {
     var state: PhotoTakerState { get }
     
     func resetState() -> Outcome
-    func takePhoto()
+    func takePhoto() -> Outcome
 }
 
 class ConcretePhotoTaker: NSObject, PhotoTaker {
+    
     @Published fileprivate(set) var state: PhotoTakerState = .ready
     
     public func resetState() -> Outcome {
@@ -32,7 +33,7 @@ class ConcretePhotoTaker: NSObject, PhotoTaker {
         return .success
     }
     
-    public func takePhoto() { fatalError("Subclasses must override") }
+    public func takePhoto() -> Outcome { fatalError("Subclasses must override") }
 }
 
 /// Communicates with capture manager to kick off capture of a photo, saving the resulting AVCapturePhoto object to device.
@@ -46,9 +47,16 @@ class DevicePhotoTaker: ConcretePhotoTaker, AVCapturePhotoCaptureDelegate, Obser
         self.photoLibrary = photoLibrary
     }
         
-    public override func takePhoto() {
-        self.captureManager?.capturePhoto(delegate: self)
-        self.state = .capturePending
+    public override func takePhoto() -> Outcome {
+        if let manager = self.captureManager {
+            let settings = manager.currentPhotoSettings()
+            manager.capturePhoto(settings: settings, delegate: self)
+            self.state = .capturePending
+            return .success
+        } else {
+            self.state = .captureError
+            return .failure
+        }
     }
     
     // MARK: AVCapturePhotoCaptureDelegate
@@ -69,8 +77,9 @@ class DevicePhotoTaker: ConcretePhotoTaker, AVCapturePhotoCaptureDelegate, Obser
 
 class MockPhotoTaker: ConcretePhotoTaker, ObservableObject {
     private(set) var takePhotoCalled = false
-    override public func takePhoto() {
+    override public func takePhoto() -> Outcome {
         self.takePhotoCalled = true
         self.state = .capturePending
+        return .success
     }
 }

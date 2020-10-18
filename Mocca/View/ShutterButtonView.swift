@@ -31,6 +31,6 @@ struct ShutterButtonView<Model>: View where Model: ShutterButtonViewModelProtoco
             self.viewModel.tapped()
         }).disabled(viewModel.state != .ready)
         .accessibility(label: Text("shutterButton"))
-        .accessibility(value: Text(viewModel.state == .ready ? "ready" : "busy"))
+        .accessibility(value: Text(viewModel.state == .ready ? "ready" : viewModel.state == .capturePending ? "busy" : viewModel.state == .saving ? "busy" : "error"))
     }
 }

@@ -35,7 +35,8 @@ class ShutterButtonViewModel: ShutterButtonViewModelProtocol {
     }
     
     public func tapped () {
-        self.photoTaker.takePhoto()
+        // MARK: TODO: Do something with the outcome
+        _ = self.photoTaker.takePhoto()
     }
     
     deinit {

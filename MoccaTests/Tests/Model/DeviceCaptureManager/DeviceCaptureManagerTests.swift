@@ -108,4 +108,33 @@ class DeviceCaptureManagerTests: XCTestCase {
         sut.stopCaptureSession()
         XCTAssertTrue(session.stopRunningCalled)
     }
+    
+    func testConfiguredPhotoOutput() {
+        let photoOutput = DeviceCaptureManager.configuredPhotoOutput()
+        XCTAssert(photoOutput.isHighResolutionCaptureEnabled == true)
+        XCTAssert(photoOutput.maxPhotoQualityPrioritization == .quality)
+        XCTAssert(photoOutput.isLivePhotoCaptureEnabled == false)
+        XCTAssert(photoOutput.isDepthDataDeliveryEnabled == false)
+        XCTAssert(photoOutput.isPortraitEffectsMatteDeliveryEnabled == false)
+        XCTAssert(photoOutput.isVirtualDeviceConstituentPhotoDeliveryEnabled == false)
+    }
+    
+    func testConfiguredPhotoSettings() {
+        let photoOutput = DeviceCaptureManager.configuredPhotoOutput()
+        let photoSettings = DeviceCaptureManager.configuredPhotoSettings(for: photoOutput)
+        XCTAssert(photoSettings.photoQualityPrioritization == .quality)
+        XCTAssert(photoSettings.flashMode == .off)
+    }
+    
+    // AVCapturePhotoSettings documentation states:
+    // "It is illegal to reuse a AVCapturePhotoSettings instance for multiple captures."
+    func testCurrentPhotoSettingsReturnsUniqueSettingsObject() throws {
+        let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
+        let sut = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
+
+        let settingsA = sut.currentPhotoSettings()
+        let settingsB = sut.currentPhotoSettings()
+        
+        XCTAssert(settingsA !== settingsB)
+    }
 }
