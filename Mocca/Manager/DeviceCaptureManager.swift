@@ -37,6 +37,7 @@ class DeviceCaptureManager: CaptureManager {
     convenience init() throws {
         
         let startupCamera = CameraDevice(type: .builtInWideAngleCamera, position: .back)
+        
         guard let initialCaptureDevice =
                 Self.anyAvailableCamera(preferredDevice: startupCamera,
                                         supportedCameraDevices: Self.supportedCameraDevices)
@@ -49,7 +50,7 @@ class DeviceCaptureManager: CaptureManager {
         let captureSession = AVCaptureSession()
         captureSession.sessionPreset = .photo
         
-        let photoOutput = AVCapturePhotoOutput()
+        let photoOutput = Self.configuredPhotoOutput()
         
         try self.init(captureSession: captureSession, output: photoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput)
     }
@@ -70,10 +71,7 @@ class DeviceCaptureManager: CaptureManager {
             throw CaptureManagerError.addVideoInputFailed
         }
         
-        // MARK: Capture-session outputs
-        photoOutput.isHighResolutionCaptureEnabled = true
-        photoOutput.isLivePhotoCaptureEnabled = false
-        
+        // MARK: Capture-sessions outputs
         if captureSession.canAddOutput(photoOutput) {
             captureSession.addOutput(photoOutput)
         } else {
@@ -81,7 +79,7 @@ class DeviceCaptureManager: CaptureManager {
         }
         
         // MARK: Photo settings
-        self.photoSettings = DeviceCaptureManager.photoSettings(for: photoOutput)
+        self.photoSettings = DeviceCaptureManager.configuredPhotoSettings(for: photoOutput)
         
         captureSession.commitConfiguration()
     }
@@ -103,8 +101,8 @@ class DeviceCaptureManager: CaptureManager {
     
     /// Instructs the capture manager to capture a photo from the active physical camera.
     /// - Parameter delegate: An object conforming to AVCapturePhotoCaptureDelegate to receive the resulting AVCapturePhoto.
-    public func capturePhoto (delegate: AVCapturePhotoCaptureDelegate) {
-        let settings = AVCapturePhotoSettings(from: self.photoSettings)
+    public func capturePhoto(settings:AVCapturePhotoSettings, delegate: AVCapturePhotoCaptureDelegate) {
+        
         if let photoOutputConnection = self.photoOutput.connection(with: .video) {
             photoOutputConnection.videoOrientation = Orientation.AVOrientation(for: Orientation.currentInterfaceOrientation())
         }
@@ -219,12 +217,19 @@ class DeviceCaptureManager: CaptureManager {
         return CaptureUtils.aspectRatio(for: activeCaptureDevice.activeFormat)
     }
     
-    private class func photoSettings(for photoOutput:AVCapturePhotoOutput) -> AVCapturePhotoSettings {
+    internal class func configuredPhotoOutput() -> AVCapturePhotoOutput {
+        let photoOutput = AVCapturePhotoOutput()
+        photoOutput.isHighResolutionCaptureEnabled = true
+        photoOutput.isLivePhotoCaptureEnabled = false
+        photoOutput.maxPhotoQualityPrioritization = .quality // MARK: TODO: Tests to make sure this has been set before setting settings.photoQualityPrioritization
+        return photoOutput
+    }
+    
+    internal class func configuredPhotoSettings(for photoOutput:AVCapturePhotoOutput) -> AVCapturePhotoSettings {
         let settings: AVCapturePhotoSettings = photoOutput.availablePhotoCodecTypes.contains(.hevc) ?
             AVCapturePhotoSettings(format:[AVVideoCodecKey: AVVideoCodecType.hevc]) :
             AVCapturePhotoSettings()
         
-        photoOutput.maxPhotoQualityPrioritization = .quality // MARK: TODO: Tests to make sure this has been set before setting settings.photoQualityPrioritization
         settings.photoQualityPrioritization = .quality
         settings.flashMode = .off
         

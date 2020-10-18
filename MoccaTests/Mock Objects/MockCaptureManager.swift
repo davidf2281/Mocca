@@ -8,6 +8,7 @@
 import Foundation
 @testable import Mocca
 class MockCaptureManager: CaptureManager {
+
     // Test vars
     var capturePhotoCalled = false;
     var captureDelegate: AVCapturePhotoCaptureDelegate?
@@ -17,7 +18,7 @@ class MockCaptureManager: CaptureManager {
     var exposureSetPoint = CGPoint.zero
     var dragEndedFrameSize = CGSize.zero
     
-    func capturePhoto(delegate: AVCapturePhotoCaptureDelegate) {
+    func capturePhoto(settings: AVCapturePhotoSettings, delegate: AVCapturePhotoCaptureDelegate) {
         self.capturePhotoCalled = true
         self.captureDelegate = delegate
     }

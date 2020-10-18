@@ -27,20 +27,20 @@ class DevicePhotoTakerTests: XCTestCase {
     
     func testPhotoTakerAsksCaptureManagerToTakePhoto() throws {
         XCTAssertFalse(manager.capturePhotoCalled)
-        taker.takePhoto()
+        _ = taker.takePhoto()
         XCTAssertTrue(manager.capturePhotoCalled)
     }
     
     func testPhotoTakerSetsItselfAsCaptureDelegate() {
         XCTAssertNil(manager.captureDelegate)
-        taker.takePhoto()
+        _ = taker.takePhoto()
         XCTAssertNotNil(manager.captureDelegate)
         XCTAssert(taker === manager.captureDelegate)
     }
     
     func testPhotoTakerCallsPerformChangesOnPhotoLibrary() {
         XCTAssertFalse(photoLibrary.performChangesCalled)
-        taker.takePhoto()
+        _ = taker.takePhoto()
         taker.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: nil)
         XCTAssertTrue(photoLibrary.performChangesCalled)
     }
@@ -52,7 +52,7 @@ class DevicePhotoTakerTests: XCTestCase {
         XCTAssert(taker.state == .ready)
         XCTAssertTrue(photoLibrary.shouldSucceedOnPerformChanges)
         
-        taker.takePhoto()
+        _ = taker.takePhoto()
         XCTAssert(taker.state == .capturePending)
         
         taker.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: nil)
@@ -70,7 +70,7 @@ class DevicePhotoTakerTests: XCTestCase {
         XCTAssert(taker.state == .ready)
         XCTAssertTrue(photoLibrary.shouldSucceedOnPerformChanges)
         
-        taker.takePhoto()
+        _ = taker.takePhoto()
         XCTAssert(taker.state == .capturePending)
         
         taker.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: NSError())
@@ -87,7 +87,7 @@ class DevicePhotoTakerTests: XCTestCase {
         XCTAssert(taker.state == .ready)
         XCTAssertFalse(photoLibrary.shouldSucceedOnPerformChanges)
         
-        taker.takePhoto()
+        _ = taker.takePhoto()
         XCTAssert(taker.state == .capturePending)
         
         taker.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: NSError())

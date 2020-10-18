@@ -27,6 +27,11 @@ class ShutterButtonUITests: XCTestCase {
         XCTAssert(shutterButton.exists)
         XCTAssertEqual(shutterButton.value as! String, "ready")
         shutterButton.tap()
+        #if !targetEnvironment(simulator)
         XCTAssertEqual(shutterButton.value as! String, "busy")
+        #else
+        // On the simulator, the photo taker will error out because there's no valid capture manager
+        XCTAssertEqual(shutterButton.value as! String, "error")
+        #endif
     }
 }

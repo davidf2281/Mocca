@@ -44,7 +44,7 @@ class CameraPermissionUITests: XCTestCase {
         }
         
         app.tap() // We need to attempt a blocked interaction in order for UIInterruptionMonitor to fire
-        waitForExpectations(timeout: 5, handler: nil)
+        waitForExpectations(timeout: 30, handler: nil)
     }
     
     #endif

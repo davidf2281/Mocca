@@ -22,12 +22,11 @@ protocol CaptureManager {
     
     var captureSession : TestableAVCaptureSession { get }
     var videoPreviewLayer: AVCaptureVideoPreviewLayer? { get set }
-    var activeCaptureDevice : TestableAVCaptureDevice { get set }
     var isExposurePointOfInterestSupported: Bool { get }
-    func currentPhotoSettings() -> AVCapturePhotoSettings
     func startCaptureSession ()
     func stopCaptureSession ()
-    func capturePhoto (delegate: AVCapturePhotoCaptureDelegate)
+    func currentPhotoSettings() -> AVCapturePhotoSettings
+    func capturePhoto(settings:AVCapturePhotoSettings, delegate: AVCapturePhotoCaptureDelegate)
     func minIsoForActiveDevice() -> Float
     func maxIsoForActiveDevice() -> Float
     func setIsoForActiveDevice(iso : Float, completion: @escaping (CMTime) -> Void) throws
