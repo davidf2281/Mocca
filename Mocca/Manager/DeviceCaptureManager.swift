@@ -37,6 +37,7 @@ class DeviceCaptureManager: CaptureManager {
     convenience init() throws {
         
         let startupCamera = CameraDevice(type: .builtInWideAngleCamera, position: .back)
+        
         guard let initialCaptureDevice =
                 Self.anyAvailableCamera(preferredDevice: startupCamera,
                                         supportedCameraDevices: Self.supportedCameraDevices)

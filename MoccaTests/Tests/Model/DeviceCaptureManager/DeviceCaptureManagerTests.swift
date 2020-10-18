@@ -77,6 +77,25 @@ class DeviceCaptureManagerTests: XCTestCase {
         }
     }
 
+    func testManagerConvenienceInitializesCaptureSession() {
+
+        #if targetEnvironment(simulator)
+        do {
+            _ = try DeviceCaptureManager()
+        } catch CaptureManagerError.captureDeviceNotFound {
+            // Expected error
+        } catch {
+            XCTFail("Unexpected error type")
+        }
+        #else
+        do {
+            _ = try DeviceCaptureManager()
+        } catch {
+            XCTFail("Convenience init should not fail on physical device")
+        }
+        #endif
+    }
+    
     func testManagerInitializesCaptureSessionWithAddOutputFailure() {
         let input = UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
 
