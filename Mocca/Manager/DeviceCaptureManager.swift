@@ -24,7 +24,7 @@ class DeviceCaptureManager: CaptureManager {
     
     private(set) var captureSession : TestableAVCaptureSession
     
-    private let photoOutput : AVCapturePhotoOutput
+    private let photoOutput : TestableAVCapturePhotoOutput
     
     private let photoSettings: AVCapturePhotoSettings
     
@@ -55,7 +55,7 @@ class DeviceCaptureManager: CaptureManager {
         try self.init(captureSession: captureSession, output: photoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput)
     }
     
-    public init(captureSession: TestableAVCaptureSession, output: AVCapturePhotoOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: TestableAVCaptureDeviceInput) throws {
+    public init(captureSession: TestableAVCaptureSession, output: TestableAVCapturePhotoOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: TestableAVCaptureDeviceInput) throws {
         
         self.photoOutput =          output
         self.captureSession =       captureSession
@@ -72,14 +72,14 @@ class DeviceCaptureManager: CaptureManager {
         }
         
         // MARK: Capture-sessions outputs
-        if captureSession.canAddOutput(photoOutput) {
-            captureSession.addOutput(photoOutput)
+        if captureSession.canAddOutput(photoOutput as! AVCapturePhotoOutput) {
+            captureSession.addOutput(photoOutput as! AVCapturePhotoOutput)
         } else {
             throw CaptureManagerError.addVideoOutputFailed
         }
         
         // MARK: Photo settings
-        self.photoSettings = DeviceCaptureManager.configuredPhotoSettings(for: photoOutput)
+        self.photoSettings = DeviceCaptureManager.configuredPhotoSettings(for: photoOutput as! AVCapturePhotoOutput)
         
         captureSession.commitConfiguration()
     }

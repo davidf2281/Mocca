@@ -13,14 +13,14 @@ import AVFoundation
 class DeviceCaptureManagerTests: XCTestCase {
 
     var session: MockAVCaptureSession!
-    var output:  AVCapturePhotoOutput!
+    var output:  MockAVCapturePhotoOutput!
     var device:  MockAVCaptureDevice!
 
     // MARK: TODO Investigate why using UnavailableInitFactory.instanceOfAVCaptureDeviceInput() works when used in function scope but not at property level.
     
     override func setUp() {
          session = MockAVCaptureSession()
-         output =  AVCapturePhotoOutput()
+         output =  MockAVCapturePhotoOutput()
          device =  MockAVCaptureDevice()
     }
 
@@ -155,5 +155,21 @@ class DeviceCaptureManagerTests: XCTestCase {
         let settingsB = sut.currentPhotoSettings()
         
         XCTAssert(settingsA !== settingsB)
+    }
+    
+    func testCapturePhoto () throws {
+        let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
+
+        let sut = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
+        
+        let settings = AVCapturePhotoSettings()
+        let taker = DevicePhotoTaker(captureManager: sut, photoLibrary: MockPHPhotoLibrary())
+        
+        XCTAssert(output.capturePhotoCalled == false)
+        XCTAssertNil(output.lastphotoCaptureSettings)
+        
+        sut.capturePhoto(settings: settings, delegate: taker)
+        XCTAssert(output.capturePhotoCalled == true)
+        XCTAssert(output.lastphotoCaptureSettings === settings)
     }
 }
