@@ -15,18 +15,18 @@ class DeviceCaptureManagerTests: XCTestCase {
     var session: MockAVCaptureSession!
     var output:  AVCapturePhotoOutput!
     var device:  MockAVCaptureDevice!
-//    var input:   AVCaptureDeviceInput!
+
+    // MARK: TODO Investigate why using UnavailableInitFactory.instanceOfAVCaptureDeviceInput() works when used in function scope but not at property level.
     
     override func setUp() {
          session = MockAVCaptureSession()
          output =  AVCapturePhotoOutput()
          device =  MockAVCaptureDevice()
-//         input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
     }
 
     func testInitialTestConditions() {
         // Initial conditions
-        let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
+        let input = UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
 
         XCTAssertTrue(session.canAddInput(input))
         XCTAssertTrue(session.canAddOutputResponse)
@@ -45,7 +45,7 @@ class DeviceCaptureManagerTests: XCTestCase {
     }
     
     func testManagerInitializesCaptureSession() throws {
-        let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
+        let input = UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
 
         _ = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
         
@@ -63,8 +63,36 @@ class DeviceCaptureManagerTests: XCTestCase {
         XCTAssertFalse(session.commitConfigurationCalledPrematurely)
     }
     
+    func testManagerInitializesCaptureSessionWithAddInputFailure() {
+        let input = UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
+
+        session.canAddInputResponse = false
+        
+        do {
+            _ = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
+        } catch CaptureManagerError.addVideoInputFailed {
+            // Expected error
+        } catch {
+            XCTFail("Unexpected error type")
+        }
+    }
+
+    func testManagerInitializesCaptureSessionWithAddOutputFailure() {
+        let input = UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
+
+        session.canAddOutputResponse = false
+        
+        do {
+            _ = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
+        } catch CaptureManagerError.addVideoOutputFailed {
+            // Expected error
+        } catch {
+            XCTFail("Unexpected error type")
+        }
+    }
+    
     func testStartSession() throws {
-        let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
+        let input = UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
 
         let sut = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
         
