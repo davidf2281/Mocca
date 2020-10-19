@@ -13,7 +13,6 @@ import Photos
 extension AVCaptureDevice:      TestableAVCaptureDevice      { /* Empty extension: required. */ }
 extension AVCaptureDeviceInput: TestableAVCaptureDeviceInput { /* Empty extension: required. */ }
 extension AVCaptureSession:     TestableAVCaptureSession     { /* Empty extension: required. */ }
-extension AVCapturePhotoOutput: TestableAVCapturePhotoOutput { /* Empty extension: required. */ }
 extension PHPhotoLibrary:       TestablePHPhotoLibrary       { /* Empty extension: required. */ }
 
 protocol TestableAVCaptureDevice {
@@ -44,13 +43,6 @@ protocol TestableAVCaptureSession {
     func commitConfiguration()
     func startRunning()
     func stopRunning()
-}
-
-protocol TestableAVCapturePhotoOutput {
-    var isHighResolutionCaptureEnabled: Bool { get set }
-    var isLivePhotoCaptureEnabled: Bool { get set }
-    func capturePhoto(with settings: AVCapturePhotoSettings, delegate: AVCapturePhotoCaptureDelegate)
-    func connection(with: AVMediaType) -> AVCaptureConnection?
 }
 
 protocol TestablePHPhotoLibrary {
