@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/davidf2281/Mocca.svg?branch=main)](https://travis-ci.org/davidf2281/Mocca) 
-[![codecov](https://codecov.io/gh/davidf2281/Mocca/branch/main/graph/badge.svg?token=svyGm6gMC0)](undefined)
+[![codecov](https://codecov.io/gh/davidf2281/Mocca/branch/main/graph/badge.svg?token=svyGm6gMC0)](https://codecov.io/gh/davidf2281/Mocca)
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 # Mocca - a More Controllable Camera App for iOS
 
