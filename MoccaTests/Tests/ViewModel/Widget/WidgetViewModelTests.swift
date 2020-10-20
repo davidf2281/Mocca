@@ -10,36 +10,42 @@ import XCTest
 
 class WidgetViewModelTests: XCTestCase {
 
+    private var sut: WidgetViewModel!
+
     private var manager: MockCaptureManager = MockCaptureManager()
-    private var viewModel: WidgetViewModel!
+    private var device: MockAVCaptureDevice!
+    private var layer: MockAVCaptureVideoPreviewLayer!
     
     override func setUp() {
-        manager = MockCaptureManager()
-        viewModel = WidgetViewModel(captureManager:manager, dockedPosition:CGPoint(x: 110,y: 210), displayCharacter:"f")
+        device = MockAVCaptureDevice()
+        layer = MockAVCaptureVideoPreviewLayer()
+        manager = MockCaptureManager(captureDevice: device, layer: layer)
+        sut = WidgetViewModel(captureManager:manager, dockedPosition:CGPoint(x: 110,y: 210), displayCharacter:"f")
     }
 
     func testInitialization() {
-        XCTAssert(viewModel.dockedPosition == CGPoint(x: 110,y: 210))
-        XCTAssertEqual(viewModel.displayCharacter, "f")
+        XCTAssert(sut.dockedPosition == CGPoint(x: 110,y: 210))
+        XCTAssertEqual(sut.displayCharacter, "f")
     }
     
-    func testDragEndedSetsCaptureManagerExposurePointOfInterest() {
-        XCTAssertFalse(manager.exposurePointOfInterestCalled)
-        XCTAssertEqual(manager.exposureSetPoint, CGPoint.zero)
+    func testDragEndedSetsDeviceFocusPointOfInterest() {
+        XCTAssertFalse(device.focusPointOfInterestCalled)
+        XCTAssertEqual(device.focusPointOfInterest, CGPoint.zero)
         let setPosition = CGPoint(x: 100,y: 100)
         
-        viewModel.dragEnded(position: setPosition, frameSize: .zero)
-        XCTAssertTrue(manager.exposurePointOfInterestCalled)
-        XCTAssertEqual(manager.exposureSetPoint, setPosition)
+        sut.dragEnded(position: setPosition, frameSize: .zero)
+        XCTAssertTrue(device.focusPointOfInterestCalled)
+        XCTAssertEqual(device.focusPointOfInterest, setPosition)
     }
-    
-    func testDragEndedSetsCaptureManagerFocusPointOfInterest() {
-        XCTAssertFalse(manager.focusPointOfInterestCalled)
-        XCTAssertEqual(manager.focusSetPoint, CGPoint.zero)
+
+    func testDragEndedSetsDeviceExposurePointOfInterest() {
+        XCTAssertFalse(device.exposurePointOfInterestCalled)
+        XCTAssertEqual(device.exposurePointOfInterest, CGPoint.zero)
         let setPosition = CGPoint(x: 100,y: 100)
         
-        viewModel.dragEnded(position: setPosition, frameSize: .zero)
-        XCTAssertTrue(manager.focusPointOfInterestCalled)
-        XCTAssertEqual(manager.focusSetPoint, setPosition)
+        sut.dragEnded(position: setPosition, frameSize: .zero)
+        
+        XCTAssertTrue(device.exposurePointOfInterestCalled)
+        XCTAssertEqual(device.exposurePointOfInterest, setPosition)
     }
 }

@@ -9,35 +9,38 @@ import XCTest
 @testable import Mocca
 class PreviewViewModelTests: XCTestCase {
 
-    private var viewModel: PreviewViewModel!
-    private var manager: MockCaptureManager = MockCaptureManager()
-    
+    private var sut: PreviewViewModel!
+    private var manager: MockCaptureManager!
+    private var device: MockAVCaptureDevice!
+    private var layer: MockAVCaptureVideoPreviewLayer!
     override func setUp() {
-        manager = MockCaptureManager()
-        viewModel = PreviewViewModel(captureManager: manager)
+        device = MockAVCaptureDevice()
+        layer = MockAVCaptureVideoPreviewLayer()
+        manager = MockCaptureManager(captureDevice: device, layer: layer)
+        sut = PreviewViewModel(captureManager: manager)
     }
 
     func testCorrectAspectRatioReturned()  {
-        XCTAssertEqual(viewModel.aspectRatio, 3/4)
+        XCTAssertEqual(sut.aspectRatio, 3/4)
     }
     
-    func testTapSetsCaptureManagerExposurePointOfInterest() {
-        XCTAssertFalse(manager.exposurePointOfInterestCalled)
-        XCTAssertEqual(manager.exposureSetPoint, CGPoint.zero)
+    func testTapSetsDeviceFocusPointOfInterest() {
+        XCTAssertFalse(device.focusPointOfInterestCalled)
+        XCTAssertEqual(device.focusPointOfInterest, CGPoint.zero)
         let tapPosition = CGPoint(x: 100,y: 100)
         
-        viewModel.tapped(position: tapPosition, frameSize: .zero)
-        XCTAssertTrue(manager.exposurePointOfInterestCalled)
-        XCTAssertEqual(manager.exposureSetPoint, tapPosition)
+        sut.tapped(position: tapPosition, frameSize: .zero)
+        XCTAssertTrue(device.focusPointOfInterestCalled)
+        XCTAssertEqual(device.focusPointOfInterest, tapPosition)
     }
     
-    func testTapSetsCaptureManagerFocusPointOfInterest() {
-        XCTAssertFalse(manager.focusPointOfInterestCalled)
-        XCTAssertEqual(manager.focusSetPoint, CGPoint.zero)
+    func testTapSetsDeviceExposurePointOfInterest() {
+        XCTAssertFalse(device.exposurePointOfInterestCalled)
+        XCTAssertEqual(device.exposurePointOfInterest, CGPoint.zero)
         let tapPosition = CGPoint(x: 100,y: 100)
         
-        viewModel.tapped(position: tapPosition, frameSize: .zero)
-        XCTAssertTrue(manager.focusPointOfInterestCalled)
-        XCTAssertEqual(manager.focusSetPoint, tapPosition)
+        sut.tapped(position: tapPosition, frameSize: .zero)
+        XCTAssertTrue(device.exposurePointOfInterestCalled)
+        XCTAssertEqual(device.exposurePointOfInterest, tapPosition)
     }
 }

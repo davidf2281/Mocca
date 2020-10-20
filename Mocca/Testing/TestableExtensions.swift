@@ -10,10 +10,11 @@ import Foundation
 import AVFoundation
 import Photos
 
-extension AVCaptureDevice:      TestableAVCaptureDevice      { /* Empty extension: required. */ }
-extension AVCaptureDeviceInput: TestableAVCaptureDeviceInput { /* Empty extension: required. */ }
-extension AVCaptureSession:     TestableAVCaptureSession     { /* Empty extension: required. */ }
-extension PHPhotoLibrary:       TestablePHPhotoLibrary       { /* Empty extension: required. */ }
+extension AVCaptureDevice:      TestableAVCaptureDevice                  { /* Empty extension: required. */ }
+extension AVCaptureDeviceInput: TestableAVCaptureDeviceInput             { /* Empty extension: required. */ }
+extension AVCaptureSession:     TestableAVCaptureSession                 { /* Empty extension: required. */ }
+extension AVCaptureVideoPreviewLayer: TestableAVCaptureVideoPreviewLayer { /* Empty extension: required. */ }
+extension PHPhotoLibrary:       TestablePHPhotoLibrary                   { /* Empty extension: required. */ }
 
 protocol TestableAVCaptureDevice {
     var activeFormat: AVCaptureDevice.Format { get set }
@@ -33,6 +34,10 @@ protocol TestableAVCaptureDevice {
 
 protocol TestableAVCaptureDeviceInput {}
 
+protocol TestableAVCaptureVideoPreviewLayer {
+    func captureDevicePointConverted(fromLayerPoint pointInLayer: CGPoint) -> CGPoint
+}
+
 protocol TestableAVCaptureSession {
     var sessionPreset: AVCaptureSession.Preset { get set }
     func beginConfiguration()
@@ -48,4 +53,3 @@ protocol TestableAVCaptureSession {
 protocol TestablePHPhotoLibrary {
     func performChanges(_ changeBlock: @escaping () -> Void, completionHandler: ((Bool, Error?) -> Void)?)
 }
-

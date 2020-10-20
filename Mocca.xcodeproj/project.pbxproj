@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C1180C9253EFE2A004ED0B0 /* CameraOperationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1180C8253EFE2A004ED0B0 /* CameraOperationProtocol.swift */; };
+		8C1180CE253EFE7F004ED0B0 /* CameraOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1180CD253EFE7F004ED0B0 /* CameraOperation.swift */; };
+		8C1180D3253F17C9004ED0B0 /* MockAVCaptureVideoPreviewLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1180D2253F17C9004ED0B0 /* MockAVCaptureVideoPreviewLayer.swift */; };
 		8C1A5C86252203D800D92F3C /* CameraErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1A5C85252203D800D92F3C /* CameraErrorView.swift */; };
 		8C1C872B252F300700001B14 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C872A252F300700001B14 /* Enums.swift */; };
 		8C1C8766252F50DE00001B14 /* WidgetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */; };
@@ -73,6 +76,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8C1180C8253EFE2A004ED0B0 /* CameraOperationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOperationProtocol.swift; sourceTree = "<group>"; };
+		8C1180CD253EFE7F004ED0B0 /* CameraOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOperation.swift; sourceTree = "<group>"; };
+		8C1180D2253F17C9004ED0B0 /* MockAVCaptureVideoPreviewLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAVCaptureVideoPreviewLayer.swift; sourceTree = "<group>"; };
 		8C1A5C85252203D800D92F3C /* CameraErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraErrorView.swift; sourceTree = "<group>"; };
 		8C1C872A252F300700001B14 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetViewModelTests.swift; sourceTree = "<group>"; };
@@ -169,6 +175,15 @@
 				8CC3C44A251DFD2F00CC4698 /* TestableExtensions.swift */,
 			);
 			path = Testing;
+			sourceTree = "<group>";
+		};
+		8C1180C7253EFDFC004ED0B0 /* Device Operation */ = {
+			isa = PBXGroup;
+			children = (
+				8C1180C8253EFE2A004ED0B0 /* CameraOperationProtocol.swift */,
+				8C1180CD253EFE7F004ED0B0 /* CameraOperation.swift */,
+			);
+			path = "Device Operation";
 			sourceTree = "<group>";
 		};
 		8C1C8761252F4FEA00001B14 /* ViewModel */ = {
@@ -280,6 +295,7 @@
 				8CDE03D925262BCD0083F736 /* ViewModel */,
 				8CDEB01B251FDFA20010DCCB /* Model */,
 				8C0E39F22525F6B1004BFFCA /* Manager */,
+				8C1180C7253EFDFC004ED0B0 /* Device Operation */,
 				8CCE88B825248F160086AF83 /* Utility */,
 				8C0E39F32525F6C4004BFFCA /* Testing */,
 				8CADB30C253044A50061447C /* Supporting files */,
@@ -409,6 +425,7 @@
 				8CE07E42252B457100702E14 /* MockCaptureManager.swift */,
 				8CBEB526252B2F9800D6525F /* MockPHPhotoLibrary.swift */,
 				8C4E6940253B328400ED1B29 /* MockAVCaptureDeviceInput.swift */,
+				8C1180D2253F17C9004ED0B0 /* MockAVCaptureVideoPreviewLayer.swift */,
 			);
 			path = "Mock Objects";
 			sourceTree = "<group>";
@@ -554,6 +571,7 @@
 				8CC3C44D251DFD2F00CC4698 /* TestableExtensions.swift in Sources */,
 				8C7EF032251CEAB500CF9CFE /* ContentView.swift in Sources */,
 				8C3E35C02529E6C400D5E971 /* PhotoTaker.swift in Sources */,
+				8C1180CE253EFE7F004ED0B0 /* CameraOperation.swift in Sources */,
 				8CC3C44B251DFD2F00CC4698 /* DeviceCaptureManager.swift in Sources */,
 				8CA9F413252DDB7200730F4C /* System.swift in Sources */,
 				8CDEB04A2520C9E00010DCCB /* FocusSetting.swift in Sources */,
@@ -569,6 +587,7 @@
 				8CCE88A925247D450086AF83 /* PreviewViewController.swift in Sources */,
 				8C7EF030251CEAB500CF9CFE /* MoccaApp.swift in Sources */,
 				8C6728C0251E14180066A836 /* PreviewUIView.swift in Sources */,
+				8C1180C9253EFE2A004ED0B0 /* CameraOperationProtocol.swift in Sources */,
 				8CDEB0452520C9C90010DCCB /* ExposureSetting.swift in Sources */,
 				8C1A5C86252203D800D92F3C /* CameraErrorView.swift in Sources */,
 				8CDEB03D2520BE180010DCCB /* WidgetView.swift in Sources */,
@@ -586,6 +605,7 @@
 				8C46436E25320C1F00889AC3 /* BundlePlistValues.swift in Sources */,
 				8C1C876E252F58A100001B14 /* PreviewViewModelTests.swift in Sources */,
 				8C68B18025301AF80040AC9A /* OrientationTests.swift in Sources */,
+				8C1180D3253F17C9004ED0B0 /* MockAVCaptureVideoPreviewLayer.swift in Sources */,
 				8C1C8766252F50DE00001B14 /* WidgetViewModelTests.swift in Sources */,
 				8CBEB527252B2F9800D6525F /* MockPHPhotoLibrary.swift in Sources */,
 				8C6728AB251E10610066A836 /* MockAVCaptureSession.swift in Sources */,
