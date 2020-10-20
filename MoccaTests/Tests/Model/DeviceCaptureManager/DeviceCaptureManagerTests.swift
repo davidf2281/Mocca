@@ -12,64 +12,66 @@ import AVFoundation
 
 class DeviceCaptureManagerTests: XCTestCase {
 
-    var session: MockAVCaptureSession!
+    var mockCaptureSession: MockAVCaptureSession!
     var output:  AVCapturePhotoOutput!
-    var device:  MockAVCaptureDevice!
+    var mockDevice:  MockAVCaptureDevice!
+    var mockResources: MockResources!
 
     // MARK: TODO Investigate why using UnavailableInitFactory.instanceOfAVCaptureDeviceInput() works when used in function scope but not at property level.
     
     override func setUp() {
-         session = MockAVCaptureSession()
+         mockCaptureSession = MockAVCaptureSession()
          output =  AVCapturePhotoOutput()
-         device =  MockAVCaptureDevice()
+         mockDevice =  MockAVCaptureDevice()
+         mockResources = MockResources()
     }
 
     func testInitialTestConditions() {
         // Initial conditions
         let input = UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
 
-        XCTAssertTrue(session.canAddInput(input))
-        XCTAssertTrue(session.canAddOutputResponse)
+        XCTAssertTrue(mockCaptureSession.canAddInput(input))
+        XCTAssertTrue(mockCaptureSession.canAddOutputResponse)
         
-        XCTAssertNil(session.lastAddedInput)
-        XCTAssertNil(session.lastAddedOutout)
+        XCTAssertNil(mockCaptureSession.lastAddedInput)
+        XCTAssertNil(mockCaptureSession.lastAddedOutout)
         
-        XCTAssertFalse(session.beginConfigirationCalled)
-        XCTAssertFalse(session.addInputCalled)
-        XCTAssertFalse(session.addOuputCalled)
-        XCTAssertFalse(session.commitConfigurationCalled)
-        XCTAssertFalse(session.startRunningCalled)
-        XCTAssertFalse(session.stopRunningCalled)
-        XCTAssertFalse(session.beginConfigurationNotCalledWhenRequired)
-        XCTAssertFalse(session.commitConfigurationCalledPrematurely)
+        XCTAssertFalse(mockCaptureSession.beginConfigirationCalled)
+        XCTAssertFalse(mockCaptureSession.addInputCalled)
+        XCTAssertFalse(mockCaptureSession.addOuputCalled)
+        XCTAssertFalse(mockCaptureSession.commitConfigurationCalled)
+        XCTAssertFalse(mockCaptureSession.startRunningCalled)
+        XCTAssertFalse(mockCaptureSession.stopRunningCalled)
+        XCTAssertFalse(mockCaptureSession.beginConfigurationNotCalledWhenRequired)
+        XCTAssertFalse(mockCaptureSession.commitConfigurationCalledPrematurely)
     }
     
     func testManagerInitializesCaptureSession() throws {
         let input = UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
 
-        _ = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
+        _ = try DeviceCaptureManager(captureSession: mockCaptureSession, output: output, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
         
-        XCTAssertTrue(session.beginConfigirationCalled)
+        XCTAssertTrue(mockCaptureSession.beginConfigirationCalled)
         
-        XCTAssertTrue(session.addInputCalled)
-        XCTAssertTrue(session.lastAddedInput === input)
+        XCTAssertTrue(mockCaptureSession.addInputCalled)
+        XCTAssertTrue(mockCaptureSession.lastAddedInput === input)
 
-        XCTAssertTrue(session.addOuputCalled)
-        XCTAssertTrue(session.lastAddedOutout === output)
+        XCTAssertTrue(mockCaptureSession.addOuputCalled)
+        XCTAssertTrue(mockCaptureSession.lastAddedOutout === output)
 
-        XCTAssertTrue(session.commitConfigurationCalled)
+        XCTAssertTrue(mockCaptureSession.commitConfigurationCalled)
         
-        XCTAssertFalse(session.beginConfigurationNotCalledWhenRequired)
-        XCTAssertFalse(session.commitConfigurationCalledPrematurely)
+        XCTAssertFalse(mockCaptureSession.beginConfigurationNotCalledWhenRequired)
+        XCTAssertFalse(mockCaptureSession.commitConfigurationCalledPrematurely)
     }
     
     func testManagerInitializesCaptureSessionWithAddInputFailure() {
         let input = UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
 
-        session.canAddInputResponse = false
+        mockCaptureSession.canAddInputResponse = false
         
         do {
-            _ = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
+            _ = try DeviceCaptureManager(captureSession: mockCaptureSession, output: output, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
         } catch CaptureManagerError.addVideoInputFailed {
             // Expected error
         } catch {
@@ -99,10 +101,10 @@ class DeviceCaptureManagerTests: XCTestCase {
     func testManagerInitializesCaptureSessionWithAddOutputFailure() {
         let input = UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
 
-        session.canAddOutputResponse = false
+        mockCaptureSession.canAddOutputResponse = false
         
         do {
-            _ = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
+            _ = try DeviceCaptureManager(captureSession: mockCaptureSession, output: output, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
         } catch CaptureManagerError.addVideoOutputFailed {
             // Expected error
         } catch {
@@ -113,19 +115,19 @@ class DeviceCaptureManagerTests: XCTestCase {
     func testStartSession() throws {
         let input = UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
 
-        let sut = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
+        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, output: output, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
         
         sut.startCaptureSession()
-        XCTAssertTrue(session.startRunningCalled)
+        XCTAssertTrue(mockCaptureSession.startRunningCalled)
     }
     
     func testStopSession() throws {
         let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
 
-        let sut = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
+        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, output: output, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
         
         sut.stopCaptureSession()
-        XCTAssertTrue(session.stopRunningCalled)
+        XCTAssertTrue(mockCaptureSession.stopRunningCalled)
     }
     
     func testConfiguredPhotoOutput() {
@@ -149,12 +151,49 @@ class DeviceCaptureManagerTests: XCTestCase {
     // "It is illegal to reuse a AVCapturePhotoSettings instance for multiple captures."
     func testCurrentPhotoSettingsReturnsUniqueSettingsObject() throws {
         let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
-        let sut = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
+        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, output: output, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
 
         let settingsA = sut.currentPhotoSettings()
         let settingsB = sut.currentPhotoSettings()
         
         XCTAssert(settingsA !== settingsB)
+    }
+    
+    func testSuccessfulSelectionOfDeviceCamera() throws {
+        let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
+        
+        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, output: output, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
+        let logicalDevice = LogicalCameraDevice(type: .builtInTelephotoCamera, position: .back)
+        let newMockDevice = MockAVCaptureDevice()
+        
+        mockResources.deviceToReturn = newMockDevice
+        
+        XCTAssert(sut.activeCaptureDevice as! MockAVCaptureDevice === mockDevice)
+        
+        let result = sut.selectCamera(type: logicalDevice)
+        XCTAssertEqual(result, .success)
+        
+        XCTAssert(sut.activeCaptureDevice as! MockAVCaptureDevice === newMockDevice)
+    }
+    
+    func testUnsuccessfulSelectionOfDeviceCamera() throws {
+        let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
+        
+        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, output: output, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
+        
+        let logicalDevice = LogicalCameraDevice(type: .builtInTelephotoCamera, position: .back)
+        let newMockDevice = MockAVCaptureDevice()
+        
+        mockResources.deviceToReturn = newMockDevice
+        mockResources.physicalDeviceCallShouldSucceed = false
+        
+        XCTAssert(sut.activeCaptureDevice as! MockAVCaptureDevice === mockDevice)
+        
+        let result = sut.selectCamera(type: logicalDevice)
+        XCTAssertEqual(result, .failure)
+        
+        // Check originally selected camera is still selected
+        XCTAssert(sut.activeCaptureDevice as! MockAVCaptureDevice === mockDevice)
     }
     
 //    func testCapturePhoto () throws {
