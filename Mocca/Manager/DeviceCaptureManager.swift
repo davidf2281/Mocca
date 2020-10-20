@@ -15,25 +15,23 @@ struct CameraDevice: Equatable {
 
 /// A class to handle creation and management of fully configured video and photo capture sessions and related functions.
 class DeviceCaptureManager: CaptureManager {
-    
-    public var videoPreviewLayer: AVCaptureVideoPreviewLayer?
+
+    public var videoPreviewLayer: TestableAVCaptureVideoPreviewLayer? {
+        willSet {
+            assert(self.videoPreviewLayer == nil, "Video preview layer may be set only once")
+        }
+    }
     
     public static let supportedCameraDevices = [CameraDevice(type: .builtInTelephotoCamera, position: .back),
                                                 CameraDevice(type: .builtInWideAngleCamera, position: .back),
                                                 CameraDevice(type: .builtInUltraWideCamera, position: .back)]
     
-    private(set) var captureSession : TestableAVCaptureSession
-    
+    public private(set) var captureSession : TestableAVCaptureSession
+    public private(set) var activeCaptureDevice : TestableAVCaptureDevice
+
     private let photoOutput : AVCapturePhotoOutput
-    
     private let photoSettings: AVCapturePhotoSettings
-    
-    internal var activeCaptureDevice : TestableAVCaptureDevice
-    
-    public var isExposurePointOfInterestSupported: Bool {
-        return self.activeCaptureDevice.isExposurePointOfInterestSupported;
-    }
-    
+        
     convenience init() throws {
         
         let startupCamera = CameraDevice(type: .builtInWideAngleCamera, position: .back)
@@ -114,107 +112,12 @@ class DeviceCaptureManager: CaptureManager {
     /// - Parameter type: The type of camera to select
     /// - Returns: true if the operation succeeded; false otherwise
     public func selectCamera(type: CameraDevice) -> Outcome {
-        if let device = DeviceCaptureManager.physicalCameraDevice(type) {
+        if let device = DeviceCaptureManager.physicalDevice(from: type) {
             self.activeCaptureDevice = device
             return .success
         }
         
         return .failure
-    }
-    
-    public func minIsoForActiveDevice() -> Float {
-        let minIso = self.activeCaptureDevice.activeFormat.minISO
-        return minIso
-    }
-    
-    public func maxIsoForActiveDevice() -> Float {
-        let maxIso = self.activeCaptureDevice.activeFormat.maxISO
-        return maxIso
-    }
-    
-    public func maxExposureSecondsForActiveDevice() -> Float64 {
-        let maxDuration = self.activeCaptureDevice.activeFormat.maxExposureDuration
-        return CMTimeGetSeconds(maxDuration)
-    }
-    
-    public func minExposureSecondsForActiveDevice() -> Float64 {
-        let minDuration = self.activeCaptureDevice.activeFormat.minExposureDuration
-        return CMTimeGetSeconds(minDuration)
-    }
-    
-    public func setIsoForActiveDevice(iso : Float, completion: @escaping (CMTime) -> Void) throws {
-        
-        let minIso = self.minIsoForActiveDevice()
-        let maxIso = self.maxIsoForActiveDevice()
-        
-        let inBounds = (iso >= minIso && iso <= maxIso)
-        
-        if (!inBounds) {
-            throw CaptureManagerError.setIsoFailed
-        }
-        
-        try self.activeCaptureDevice.lockForConfiguration()
-        self.activeCaptureDevice.setExposureModeCustom(duration: AVCaptureDevice.currentExposureDuration, iso: iso, completionHandler: completion)
-        self.activeCaptureDevice.unlockForConfiguration()
-    }
-    
-    public func setExposurePointOfInterest(_ point:CGPoint) -> Outcome {
-        do {
-            try self.activeCaptureDevice.lockForConfiguration()
-        }
-        catch {
-            return .failure
-        }
-        if let layer = self.videoPreviewLayer {
-            let cPoint = layer.captureDevicePointConverted(fromLayerPoint: point)
-            self.activeCaptureDevice.exposurePointOfInterest = cPoint
-            self.activeCaptureDevice.exposureMode = .continuousAutoExposure
-            self.activeCaptureDevice.unlockForConfiguration()
-            return .success
-        } else {
-            return .failure
-        }
-    }
-    
-    public func setFocusPointOfInterest(_ point:CGPoint) -> Outcome {
-        do {
-            try self.activeCaptureDevice.lockForConfiguration()
-        }
-        catch {
-            return .failure
-        }
-        if let layer = self.videoPreviewLayer {
-            let cPoint = layer.captureDevicePointConverted(fromLayerPoint: point)
-            self.activeCaptureDevice.focusPointOfInterest = cPoint
-            self.activeCaptureDevice.focusMode = .continuousAutoFocus
-            self.activeCaptureDevice.unlockForConfiguration()
-            return .success
-        } else {
-            return .failure
-        }
-    }
-    
-    public func setExposure(seconds : Float64, completion: @escaping (CMTime) -> Void) throws {
-        
-        let minExposure = self.minExposureSecondsForActiveDevice()
-        let maxExposure = self.maxExposureSecondsForActiveDevice()
-        
-        let currentTimescale = self.activeCaptureDevice.exposureDuration.timescale
-        let inBounds = (seconds >= minExposure && seconds <= maxExposure)
-        
-        if (!inBounds) {
-            throw CaptureManagerError.setExposureFailed
-        }
-        
-        try self.activeCaptureDevice.lockForConfiguration()
-        
-        self.activeCaptureDevice.setExposureModeCustom(duration: CMTimeMakeWithSeconds(seconds, preferredTimescale: currentTimescale), iso: AVCaptureDevice.currentISO, completionHandler: completion)
-        self.activeCaptureDevice.unlockForConfiguration()
-    }
-    
-    // MARK: TODO: Watch for changes to device format and publish this value
-    public func currentOutputAspectRatio() -> CGFloat? {
-        return CaptureUtils.aspectRatio(for: activeCaptureDevice.activeFormat)
     }
     
     internal class func configuredPhotoOutput() -> AVCapturePhotoOutput {
@@ -244,13 +147,13 @@ class DeviceCaptureManager: CaptureManager {
                                           supportedCameraDevices: [CameraDevice]) -> AVCaptureDevice? {
         
         if supportedCameraDevices.contains(preferredDevice) {
-            if let device = physicalCameraDevice(preferredDevice) {
+            if let device = physicalDevice(from: preferredDevice) {
                 return device
             }
         }
         
         for supportedDevice in supportedCameraDevices {
-            if let device = DeviceCaptureManager.physicalCameraDevice(supportedDevice) {
+            if let device = DeviceCaptureManager.physicalDevice(from: supportedDevice) {
                 return device
             }
         }
@@ -258,8 +161,8 @@ class DeviceCaptureManager: CaptureManager {
         return nil
     }
     
-    private class func physicalCameraDevice(_ device: CameraDevice) -> AVCaptureDevice? {
-        let session = AVCaptureDevice.DiscoverySession(deviceTypes: [device.type], mediaType: .video, position: device.position)
+    private class func physicalDevice(from logicalDevice: CameraDevice) -> AVCaptureDevice? {
+        let session = AVCaptureDevice.DiscoverySession(deviceTypes: [logicalDevice.type], mediaType: .video, position: logicalDevice.position)
         if let device = session.devices.first {
             return device
         }

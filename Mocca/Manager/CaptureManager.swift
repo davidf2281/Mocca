@@ -19,21 +19,10 @@ enum CaptureManagerError: Error {
 }
 
 protocol CaptureManager {
-    
-    var captureSession : TestableAVCaptureSession { get }
-    var videoPreviewLayer: AVCaptureVideoPreviewLayer? { get set }
-    var isExposurePointOfInterestSupported: Bool { get }
+    var activeCaptureDevice: TestableAVCaptureDevice { get }
+    var videoPreviewLayer: TestableAVCaptureVideoPreviewLayer? { get set }
     func startCaptureSession ()
     func stopCaptureSession ()
     func currentPhotoSettings() -> AVCapturePhotoSettings
     func capturePhoto(settings:AVCapturePhotoSettings, delegate: AVCapturePhotoCaptureDelegate)
-    func minIsoForActiveDevice() -> Float
-    func maxIsoForActiveDevice() -> Float
-    func setIsoForActiveDevice(iso : Float, completion: @escaping (CMTime) -> Void) throws
-    func maxExposureSecondsForActiveDevice() -> Float64
-    func minExposureSecondsForActiveDevice() -> Float64
-    func setExposure(seconds : Float64, completion: @escaping (CMTime) -> Void) throws
-    func setExposurePointOfInterest(_ point:CGPoint) -> Outcome
-    func setFocusPointOfInterest(_ point:CGPoint) -> Outcome
-    func currentOutputAspectRatio() -> CGFloat?
 }

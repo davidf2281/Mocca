@@ -10,11 +10,9 @@ import Foundation
 import AVFoundation
 @testable import Mocca
 
-class MockAVCaptureDevice: TestableAVCaptureDevice {
-    var focusPointOfInterest: CGPoint               = .zero
-    var focusMode: AVCaptureDevice.FocusMode        = .locked
-    var isExposurePointOfInterestSupported          = false// MARK: TODO
-    var exposurePointOfInterest                     = CGPoint.zero // MARK: TODO
+class MockAVCaptureDevice: TestableAVCaptureDevice {    
+    
+    // Test vars
     var exposureMode                                = AVCaptureDevice.ExposureMode.autoExpose// MARK: TODO
     var configurationLocked : Bool                  = false
     var configurationWasLocked : Bool               = false
@@ -22,15 +20,30 @@ class MockAVCaptureDevice: TestableAVCaptureDevice {
     var configurationWasUnlockedAfterLocking : Bool = false
     var configurationChangedWithoutLock             = false
     var focusModeSetLocked                          = false
+    var exposurePointOfInterestCalled = false
+    var focusPointOfInterestCalled = false
+    
+    // Protocol conformance
+    var iso: Float = 0
+    var focusMode: AVCaptureDevice.FocusMode = .locked
+    var isExposurePointOfInterestSupported = false// MARK: TODO
+    
+    var focusPointOfInterest = CGPoint.zero {
+        willSet {
+            focusPointOfInterestCalled = true
+        }
+    }
+    
+    var exposurePointOfInterest = CGPoint.zero {
+        willSet {
+            exposurePointOfInterestCalled = true
+        }
+    }
     
     var setLensPosition : Float?
-    
     var activeFormat: AVCaptureDevice.Format = UnavailableInitFactory.instanceOfAVCaptureDeviceFormat()
-    
     var formats: [AVCaptureDevice.Format] = []
-    
     var activeVideoMinFrameDuration: CMTime = .zero
-    
     var exposureDuration: CMTime = .zero
     
     func setFocusModeLocked(lensPosition: Float, completionHandler handler: ((CMTime) -> Void)?) {
@@ -48,6 +61,8 @@ class MockAVCaptureDevice: TestableAVCaptureDevice {
             self.configurationChangedWithoutLock = true
             return
         }
+        self.exposureDuration = duration
+        self.iso = ISO
     }
     
     func lockForConfiguration() throws {

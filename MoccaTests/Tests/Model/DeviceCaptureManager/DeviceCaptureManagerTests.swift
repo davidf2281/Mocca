@@ -156,4 +156,20 @@ class DeviceCaptureManagerTests: XCTestCase {
         
         XCTAssert(settingsA !== settingsB)
     }
+    
+//    func testCapturePhoto () throws {
+//        let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
+//
+//        let _ = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
+//
+//        let settings = AVCapturePhotoSettings()
+//        let taker = DevicePhotoTaker(captureManager: sut, photoLibrary: MockPHPhotoLibrary())
+//
+//        XCTAssert(output.capturePhotoCalled == false)
+//        XCTAssertNil(output.lastphotoCaptureSettings)
+//
+//        sut.capturePhoto(settings: settings, delegate: taker)
+//        XCTAssert(output.capturePhotoCalled == true)
+//        XCTAssert(output.lastphotoCaptureSettings === settings)
+//    }
 }

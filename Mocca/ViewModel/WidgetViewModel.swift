@@ -20,9 +20,10 @@ class WidgetViewModel: ObservableObject {
     }
     
     func dragEnded(position:CGPoint, frameSize:CGSize) {
-        if let manager = self.captureManager {
-            _ = manager.setExposurePointOfInterest(position)
-            _ = manager.setFocusPointOfInterest(position)
+        if var device = self.captureManager?.activeCaptureDevice,
+           let layer = self.captureManager?.videoPreviewLayer {
+            _ = CameraOperation.setFocusPointOfInterest(position, on: layer, for: &device)
+            _ = CameraOperation.setExposurePointOfInterest(position, on: layer, for: &device)
         }
     }
     
