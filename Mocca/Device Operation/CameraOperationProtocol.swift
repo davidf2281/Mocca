@@ -10,12 +10,9 @@ import AVFoundation
 
 protocol CameraOperationProtocol {
     
-    static func setIso(_ iso : Float, for device: AVCaptureDevice,
-                completion: @escaping (CMTime) -> Void) throws
+    static func setIso(_ iso : Float, for device: TestableAVCaptureDevice, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws
 
-    static func setExposure(seconds : Float64,
-                     for device: AVCaptureDevice,
-                     completion: @escaping (CMTime) -> Void) throws
+    static func setExposure(seconds : Float64, for device: TestableAVCaptureDevice, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws
     
     static func setExposurePointOfInterest(_ point:CGPoint,
                                     on layer: TestableAVCaptureVideoPreviewLayer,

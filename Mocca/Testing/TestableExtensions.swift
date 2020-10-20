@@ -10,13 +10,15 @@ import Foundation
 import AVFoundation
 import Photos
 
-extension AVCaptureDevice:      TestableAVCaptureDevice                  { /* Empty extension: required. */ }
-extension AVCaptureDeviceInput: TestableAVCaptureDeviceInput             { /* Empty extension: required. */ }
-extension AVCaptureSession:     TestableAVCaptureSession                 { /* Empty extension: required. */ }
-extension AVCaptureVideoPreviewLayer: TestableAVCaptureVideoPreviewLayer { /* Empty extension: required. */ }
-extension PHPhotoLibrary:       TestablePHPhotoLibrary                   { /* Empty extension: required. */ }
+/* Empty extensions are required. */
+extension AVCaptureDevice:            TestableAVCaptureDevice {}
+extension AVCaptureDeviceInput:       TestableAVCaptureDeviceInput {}
+extension AVCaptureSession:           TestableAVCaptureSession {}
+extension AVCaptureVideoPreviewLayer: TestableAVCaptureVideoPreviewLayer {}
+extension PHPhotoLibrary:             TestablePHPhotoLibrary {}
 
 protocol TestableAVCaptureDevice {
+    var iso: Float { get }
     var activeFormat: AVCaptureDevice.Format { get set }
     var formats: [AVCaptureDevice.Format] { get }
     var activeVideoMinFrameDuration: CMTime { get set }

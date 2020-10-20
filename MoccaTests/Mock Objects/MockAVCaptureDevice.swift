@@ -10,8 +10,8 @@ import Foundation
 import AVFoundation
 @testable import Mocca
 
-class MockAVCaptureDevice: TestableAVCaptureDevice {
-        
+class MockAVCaptureDevice: TestableAVCaptureDevice {    
+    
     // Test vars
     var exposureMode                                = AVCaptureDevice.ExposureMode.autoExpose// MARK: TODO
     var configurationLocked : Bool                  = false
@@ -24,6 +24,7 @@ class MockAVCaptureDevice: TestableAVCaptureDevice {
     var focusPointOfInterestCalled = false
     
     // Protocol conformance
+    var iso: Float = 0
     var focusMode: AVCaptureDevice.FocusMode = .locked
     var isExposurePointOfInterestSupported = false// MARK: TODO
     
@@ -38,6 +39,7 @@ class MockAVCaptureDevice: TestableAVCaptureDevice {
             exposurePointOfInterestCalled = true
         }
     }
+    
     var setLensPosition : Float?
     var activeFormat: AVCaptureDevice.Format = UnavailableInitFactory.instanceOfAVCaptureDeviceFormat()
     var formats: [AVCaptureDevice.Format] = []
@@ -59,6 +61,8 @@ class MockAVCaptureDevice: TestableAVCaptureDevice {
             self.configurationChangedWithoutLock = true
             return
         }
+        self.exposureDuration = duration
+        self.iso = ISO
     }
     
     func lockForConfiguration() throws {

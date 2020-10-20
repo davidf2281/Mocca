@@ -8,12 +8,12 @@
 import Foundation
 import AVFoundation
 
-class CameraOperation: CameraOperationProtocol {    
+class CameraOperation: CameraOperationProtocol {
     
-    public static func setIso(_ iso : Float, for device: AVCaptureDevice, completion: @escaping (CMTime) -> Void) throws {
+    public static func setIso(_ iso : Float, for device: TestableAVCaptureDevice, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws {
         
-        let minIso = CaptureUtils.minIso(for: device)
-        let maxIso = CaptureUtils.maxIso(for: device)
+        let minIso = utils.minIso(for: device)
+        let maxIso = utils.maxIso(for: device)
         
         let inBounds = (iso >= minIso && iso <= maxIso)
         
@@ -23,6 +23,24 @@ class CameraOperation: CameraOperationProtocol {
         
         try device.lockForConfiguration()
         device.setExposureModeCustom(duration: AVCaptureDevice.currentExposureDuration, iso: iso, completionHandler: completion)
+        device.unlockForConfiguration()
+    }
+    
+    public static func setExposure(seconds : Float64, for device: TestableAVCaptureDevice, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws {
+        
+        let minExposure = utils.minExposureSeconds(for: device)
+        let maxExposure = utils.maxExposureSeconds(for: device)
+        
+        let currentTimescale = device.exposureDuration.timescale
+        let inBounds = (seconds >= minExposure && seconds <= maxExposure)
+        
+        if (!inBounds) {
+            throw CaptureManagerError.setExposureFailed
+        }
+        
+        try device.lockForConfiguration()
+        
+        device.setExposureModeCustom(duration: CMTimeMakeWithSeconds(seconds, preferredTimescale: currentTimescale), iso: AVCaptureDevice.currentISO, completionHandler: completion)
         device.unlockForConfiguration()
     }
     
@@ -56,24 +74,6 @@ class CameraOperation: CameraOperationProtocol {
         device.focusMode = .continuousAutoFocus
         device.unlockForConfiguration()
         return .success
-    }
-    
-    public static func setExposure(seconds : Float64, for device: AVCaptureDevice, completion: @escaping (CMTime) -> Void) throws {
-        
-        let minExposure = CaptureUtils.minExposureSeconds(for: device)
-        let maxExposure = CaptureUtils.maxExposureSeconds(for: device)
-        
-        let currentTimescale = device.exposureDuration.timescale
-        let inBounds = (seconds >= minExposure && seconds <= maxExposure)
-        
-        if (!inBounds) {
-            throw CaptureManagerError.setExposureFailed
-        }
-        
-        try device.lockForConfiguration()
-        
-        device.setExposureModeCustom(duration: CMTimeMakeWithSeconds(seconds, preferredTimescale: currentTimescale), iso: AVCaptureDevice.currentISO, completionHandler: completion)
-        device.unlockForConfiguration()
     }
     
 }
