@@ -8,7 +8,7 @@
 import UIKit
 import AVFoundation
 
-struct CameraDevice: Equatable {
+struct LogicalCameraDevice: Equatable {
     let type: AVCaptureDevice.DeviceType
     let position: AVCaptureDevice.Position
 }
@@ -22,42 +22,45 @@ class DeviceCaptureManager: CaptureManager {
         }
     }
     
-    public static let supportedCameraDevices = [CameraDevice(type: .builtInTelephotoCamera, position: .back),
-                                                CameraDevice(type: .builtInWideAngleCamera, position: .back),
-                                                CameraDevice(type: .builtInUltraWideCamera, position: .back)]
+    public static let supportedCameraDevices = [LogicalCameraDevice(type: .builtInTelephotoCamera, position: .back),
+                                                LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back),
+                                                LogicalCameraDevice(type: .builtInUltraWideCamera, position: .back)]
     
     public private(set) var captureSession : TestableAVCaptureSession
     public private(set) var activeCaptureDevice : TestableAVCaptureDevice
 
     private let photoOutput : AVCapturePhotoOutput
     private let photoSettings: AVCapturePhotoSettings
-        
+    private let resources: Resources
+    
     convenience init() throws {
         
-        let startupCamera = CameraDevice(type: .builtInWideAngleCamera, position: .back)
+        let startupCamera = LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back)
+        let resources = DeviceResources()
         
         guard let initialCaptureDevice =
-                Self.anyAvailableCamera(preferredDevice: startupCamera,
+                resources.anyAvailableCamera(preferredDevice: startupCamera,
                                         supportedCameraDevices: Self.supportedCameraDevices)
         else {
             throw CaptureManagerError.captureDeviceNotFound
         }
         
-        let videoInput = try AVCaptureDeviceInput(device: initialCaptureDevice)
+        let videoInput = try AVCaptureDeviceInput(device: initialCaptureDevice as! AVCaptureDevice)
         
         let captureSession = AVCaptureSession()
         captureSession.sessionPreset = .photo
         
         let photoOutput = Self.configuredPhotoOutput()
         
-        try self.init(captureSession: captureSession, output: photoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput)
+        try self.init(captureSession: captureSession, output: photoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput, resources:resources)
     }
     
-    public init(captureSession: TestableAVCaptureSession, output: AVCapturePhotoOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: TestableAVCaptureDeviceInput) throws {
+    public init(captureSession: TestableAVCaptureSession, output: AVCapturePhotoOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: TestableAVCaptureDeviceInput, resources: Resources) throws {
         
         self.photoOutput =          output
         self.captureSession =       captureSession
         self.activeCaptureDevice =  initialCaptureDevice
+        self.resources = resources
         
         // MARK: Capture-session configuration
         self.captureSession.beginConfiguration()
@@ -111,8 +114,8 @@ class DeviceCaptureManager: CaptureManager {
     /// Sets the active session's capture device to the physical camera matching the supplied type
     /// - Parameter type: The type of camera to select
     /// - Returns: true if the operation succeeded; false otherwise
-    public func selectCamera(type: CameraDevice) -> Outcome {
-        if let device = DeviceCaptureManager.physicalDevice(from: type) {
+    public func selectCamera(type: LogicalCameraDevice) -> Outcome {
+        if let device = self.resources.physicalDevice(from: type) {
             self.activeCaptureDevice = device
             return .success
         }
@@ -137,36 +140,5 @@ class DeviceCaptureManager: CaptureManager {
         settings.flashMode = .off
         
         return settings
-    }
-    
-    /// Searches for an available physical camera within the supplied array of supported logical camera device types.
-    /// - Parameter preferredDevice: The preferred type to return.
-    /// - Parameter supportedCameraDevices: An array of CameraDevice
-    /// - Returns: A physical camera of the preferred type, the first available if the preferred choice is not found, or nil if none are found.
-    private class func anyAvailableCamera(preferredDevice:CameraDevice,
-                                          supportedCameraDevices: [CameraDevice]) -> AVCaptureDevice? {
-        
-        if supportedCameraDevices.contains(preferredDevice) {
-            if let device = physicalDevice(from: preferredDevice) {
-                return device
-            }
-        }
-        
-        for supportedDevice in supportedCameraDevices {
-            if let device = DeviceCaptureManager.physicalDevice(from: supportedDevice) {
-                return device
-            }
-        }
-        
-        return nil
-    }
-    
-    private class func physicalDevice(from logicalDevice: CameraDevice) -> AVCaptureDevice? {
-        let session = AVCaptureDevice.DiscoverySession(deviceTypes: [logicalDevice.type], mediaType: .video, position: logicalDevice.position)
-        if let device = session.devices.first {
-            return device
-        }
-        
-        return nil
     }
 }

@@ -34,7 +34,13 @@ class MockCaptureManager: CaptureManager {
         return AVCapturePhotoSettings()
     }
     
+    func selectCamera(type: LogicalCameraDevice) -> Outcome {
+        lastSelectedCameraDevice = type
+        return .success
+    }
+    
     // Test vars
     var capturePhotoCalled = false;
     var captureDelegate: AVCapturePhotoCaptureDelegate?
+    var lastSelectedCameraDevice: LogicalCameraDevice?
 }
