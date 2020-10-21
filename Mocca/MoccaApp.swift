@@ -29,11 +29,13 @@ final class MoccaApp: App, ObservableObject {
     
     /// Backs the shutter button, sending taps to photoTaker dependency
     private let shutterButtonViewModel: ShutterButtonViewModel
-
+    
+    private let histogramGenerator: HistogramGenerator
+    
     /// Capture manager is the intermediary class dealing with all communication with the device's physical camera hardware.
     private let captureManager: DeviceCaptureManager? = {
         var manager : DeviceCaptureManager?
-        do { try manager = DeviceCaptureManager() } catch { manager = nil }
+        do { try manager = DeviceCaptureManager(resources: DeviceResources.shared) } catch { manager = nil }
         return manager
     }()
     
@@ -60,11 +62,14 @@ final class MoccaApp: App, ObservableObject {
         captureManager?.videoPreviewLayer = previewUIView.videoPreviewLayer
         
         photoTaker =             DevicePhotoTaker(captureManager: captureManager ?? nil, photoLibrary: PHPhotoLibrary.shared())
+        histogramGenerator =     HistogramGenerator(mtlDevice: DeviceResources.shared.metalDevice)
         widgetViewModel =        WidgetViewModel(captureManager: captureManager, dockedPosition:CGPoint(x: 55, y: 55), displayCharacter:"f")
         previewViewModel =       PreviewViewModel(captureManager: captureManager)
         previewViewController =  PreviewViewController(previewView: previewUIView, orientationPublisher: orientationPublisher)
         shutterButtonViewModel = ShutterButtonViewModel(photoTaker: photoTaker)
 
+        captureManager?.setSampleBufferDelegate(histogramGenerator, queue: histogramGenerator.sampleBufferQueue)
+        
         sessionQueue.async {
             self.captureManager?.startCaptureSession()
             DispatchQueue.main.async {
@@ -84,6 +89,7 @@ final class MoccaApp: App, ObservableObject {
             widgetViewModel:        widgetViewModel,
             shutterButtonViewModel: shutterButtonViewModel,
             previewViewModel:       previewViewModel,
+            histogramViewModel:     histogramGenerator,
             cameraErrorView:        CameraErrorView())
             .environmentObject(orientationPublisher)
             .background(Color.black)

@@ -9,10 +9,27 @@ import Foundation
 import MetalPerformanceShaders
 import AVFoundation
 
-public class HistogramGenerator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
+public struct HistogramBin {
+    let value: UInt8
+    let indexForID: Int
+    init(value: UInt8, index: Int) {
+        self.value = value
+        self.indexForID = index
+    }
+}
+
+public struct Histogram {
+    let redBins: [HistogramBin]
+    let greenBins: [HistogramBin]
+    let blueBins: [HistogramBin]
+}
+
+public class HistogramGenerator: NSObject, HistogramViewModel, ObservableObject, AVCaptureVideoDataOutputSampleBufferDelegate {
+    
+    @Published private(set) var histogram: Histogram?
     
     let sampleBufferQueue = DispatchQueue(label: "com.mocca-app.videoSampleBufferQueue")
-    let processingBufferQueue = DispatchQueue(label: "com.mocca-app.histogramProcessingQueue")
+    private let processingBufferQueue = DispatchQueue(label: "com.mocca-app.histogramProcessingQueue")
     private let mtlDevice: MTLDevice
     private let commandQueue: MTLCommandQueue
     private let commandBuffer: MTLCommandBuffer
@@ -29,6 +46,8 @@ public class HistogramGenerator: NSObject, AVCaptureVideoDataOutputSampleBufferD
     }
     
     public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        
+        let binCount = 128
         
         self.processingBufferQueue.async { [self] in
             let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)!
@@ -57,7 +76,7 @@ public class HistogramGenerator: NSObject, AVCaptureVideoDataOutputSampleBufferD
             }
             
             var histogramInfo = MPSImageHistogramInfo(
-                numberOfHistogramEntries: 128,
+                numberOfHistogramEntries: binCount,
                 histogramForAlpha: false,
                 minPixelValue: vector_float4(0,0,0,0),
                 maxPixelValue: vector_float4(1,1,1,1))
@@ -84,13 +103,25 @@ public class HistogramGenerator: NSObject, AVCaptureVideoDataOutputSampleBufferD
             buffer.commit()
             buffer.waitUntilCompleted()
             let dataPtr = histogramResults.contents().assumingMemoryBound(to: Int32.self)
-//            for i in 0..<128 {
-                //                     if dataPtr[i] != 0 {
-            let value = dataPtr[20]
-                print("\(value & 0xFF) \((value >> 8) & 0xFF) \((value >> 16) & 0xFF) \((value >> 24) & 0xFF)")
-                //                     }
-//            }
-            print("FINISHED")
+            
+            var redBins = [HistogramBin]()
+            var greenBins = [HistogramBin]()
+            var blueBins = [HistogramBin]()
+
+            for index in 0..<binCount {
+                let value = dataPtr[index]
+                let red = UInt8(value & 0xFF)
+                let green = UInt8((value >> 8) & 0xFF)
+                let blue = UInt8((value >> 16) & 0xFF)
+                
+                redBins.append(HistogramBin(value: red, index: index))
+                greenBins.append(HistogramBin(value: green, index: index))
+                blueBins.append(HistogramBin(value: blue, index: index))
+//                print("\(value & 0xFF) \((value >> 8) & 0xFF) \((value >> 16) & 0xFF) \((value >> 24) & 0xFF)")
+            }
+            DispatchQueue.main.async {
+                self.histogram = Histogram(redBins: redBins, greenBins: greenBins, blueBins: blueBins)
+            }
         }
     }
     

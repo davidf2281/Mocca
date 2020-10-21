@@ -33,12 +33,10 @@ class DeviceCaptureManager: CaptureManager {
     private let videoDataOutput: AVCaptureVideoDataOutput
     private let photoSettings: AVCapturePhotoSettings
     private let resources: Resources
-    private let histogramGenerator: HistogramGenerator
     
-    convenience init() throws {
+    convenience init(resources: Resources) throws {
         
         let startupCamera = LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back)
-        let resources = DeviceResources()
         
         guard let initialCaptureDevice =
                 resources.anyAvailableCamera(preferredDevice: startupCamera,
@@ -55,23 +53,18 @@ class DeviceCaptureManager: CaptureManager {
         let photoOutput = Self.configuredPhotoOutput()
         
         let videoOutput = Self.configuredVideoDataOutput()
-        
-        let histogramGenerator = HistogramGenerator(mtlDevice: resources.metalDevice)
-        
-        try self.init(captureSession: captureSession, photoOutput: photoOutput, videoOutput: videoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput, resources:resources, histogramGenerator: histogramGenerator)
+                
+        try self.init(captureSession: captureSession, photoOutput: photoOutput, videoOutput: videoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput, resources:resources)
     }
     
-    public init(captureSession: TestableAVCaptureSession, photoOutput: AVCapturePhotoOutput, videoOutput: AVCaptureVideoDataOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: TestableAVCaptureDeviceInput, resources: Resources, histogramGenerator: HistogramGenerator) throws {
+    public init(captureSession: TestableAVCaptureSession, photoOutput: AVCapturePhotoOutput, videoOutput: AVCaptureVideoDataOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: TestableAVCaptureDeviceInput, resources: Resources) throws {
         
         self.photoOutput =          photoOutput
         self.videoDataOutput =      videoOutput
         self.captureSession =       captureSession
         self.activeCaptureDevice =  initialCaptureDevice
         self.resources = resources
-        self.histogramGenerator = histogramGenerator
-        
-        videoDataOutput.setSampleBufferDelegate(histogramGenerator, queue: histogramGenerator.sampleBufferQueue)
-        
+                
         // MARK: Capture-session configuration
         self.captureSession.beginConfiguration()
         
@@ -137,6 +130,11 @@ class DeviceCaptureManager: CaptureManager {
         }
         
         return .failure
+    }
+    
+    public func setSampleBufferDelegate(_ delegate: AVCaptureVideoDataOutputSampleBufferDelegate,
+                                 queue callbackQueue: DispatchQueue) {
+        self.videoDataOutput.setSampleBufferDelegate(delegate, queue: callbackQueue)
     }
     
     internal class func configuredPhotoOutput() -> AVCapturePhotoOutput {

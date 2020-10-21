@@ -70,5 +70,6 @@ struct PreviewModifier: ViewModifier {
                                     self.previewViewModel.tapped(position: gesture.location, frameSize:frameSize)
                                 })
             }.aspectRatio(aspectRatio, contentMode: .fit)
+            .background(Color.black)
     }
 }

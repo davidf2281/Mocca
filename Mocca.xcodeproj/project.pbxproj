@@ -17,6 +17,8 @@
 		8C11810A253F3B2A004ED0B0 /* DeviceResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C118109253F3B2A004ED0B0 /* DeviceResources.swift */; };
 		8C11810F253F6CE3004ED0B0 /* MockResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C11810E253F6CE3004ED0B0 /* MockResources.swift */; };
 		8C118120254021E8004ED0B0 /* HistogramGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C11811F254021E8004ED0B0 /* HistogramGenerator.swift */; };
+		8C11812525405162004ED0B0 /* HistogramViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C11812425405162004ED0B0 /* HistogramViewModel.swift */; };
+		8C11812A254052AD004ED0B0 /* HistogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C118129254052AD004ED0B0 /* HistogramView.swift */; };
 		8C1A5C86252203D800D92F3C /* CameraErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1A5C85252203D800D92F3C /* CameraErrorView.swift */; };
 		8C1C872B252F300700001B14 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C872A252F300700001B14 /* Enums.swift */; };
 		8C1C8766252F50DE00001B14 /* WidgetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */; };
@@ -93,6 +95,8 @@
 		8C118109253F3B2A004ED0B0 /* DeviceResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceResources.swift; sourceTree = "<group>"; };
 		8C11810E253F6CE3004ED0B0 /* MockResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockResources.swift; sourceTree = "<group>"; };
 		8C11811F254021E8004ED0B0 /* HistogramGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistogramGenerator.swift; sourceTree = "<group>"; };
+		8C11812425405162004ED0B0 /* HistogramViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistogramViewModel.swift; sourceTree = "<group>"; };
+		8C118129254052AD004ED0B0 /* HistogramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistogramView.swift; sourceTree = "<group>"; };
 		8C1A5C85252203D800D92F3C /* CameraErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraErrorView.swift; sourceTree = "<group>"; };
 		8C1C872A252F300700001B14 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetViewModelTests.swift; sourceTree = "<group>"; };
@@ -421,6 +425,7 @@
 				8CDE03DA25262BDF0083F736 /* WidgetViewModel.swift */,
 				8CDE0403252756560083F736 /* PreviewViewModel.swift */,
 				8C3E35BA2529DB7900D5E971 /* ShutterButtonViewModel.swift */,
+				8C11812425405162004ED0B0 /* HistogramViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -448,6 +453,7 @@
 				8CDEB03C2520BE180010DCCB /* WidgetView.swift */,
 				8C3E35B52529D4AD00D5E971 /* ShutterButtonView.swift */,
 				8C1A5C85252203D800D92F3C /* CameraErrorView.swift */,
+				8C118129254052AD004ED0B0 /* HistogramView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -614,8 +620,10 @@
 				8CDEB04A2520C9E00010DCCB /* FocusSetting.swift in Sources */,
 				8CC3C44C251DFD2F00CC4698 /* DeviceCaptureUtils.swift in Sources */,
 				8C1180F4253F2962004ED0B0 /* CaptureUtils.swift in Sources */,
+				8C11812A254052AD004ED0B0 /* HistogramView.swift in Sources */,
 				8C3E35BB2529DB7900D5E971 /* ShutterButtonViewModel.swift in Sources */,
 				8CE07E3B252B3D5A00702E14 /* CaptureManager.swift in Sources */,
+				8C11812525405162004ED0B0 /* HistogramViewModel.swift in Sources */,
 				8C6A92742528AACB0069ADE0 /* PreviewView.swift in Sources */,
 				8C1C8777252F5C3B00001B14 /* ViewConversion.swift in Sources */,
 				8C3E35B62529D4AD00D5E971 /* ShutterButtonView.swift in Sources */,
