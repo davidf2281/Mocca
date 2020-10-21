@@ -16,6 +16,7 @@
 		8C118105253F3AA4004ED0B0 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C118104253F3AA4004ED0B0 /* Resources.swift */; };
 		8C11810A253F3B2A004ED0B0 /* DeviceResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C118109253F3B2A004ED0B0 /* DeviceResources.swift */; };
 		8C11810F253F6CE3004ED0B0 /* MockResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C11810E253F6CE3004ED0B0 /* MockResources.swift */; };
+		8C118120254021E8004ED0B0 /* HistogramGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C11811F254021E8004ED0B0 /* HistogramGenerator.swift */; };
 		8C1A5C86252203D800D92F3C /* CameraErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1A5C85252203D800D92F3C /* CameraErrorView.swift */; };
 		8C1C872B252F300700001B14 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C872A252F300700001B14 /* Enums.swift */; };
 		8C1C8766252F50DE00001B14 /* WidgetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */; };
@@ -91,6 +92,7 @@
 		8C118104253F3AA4004ED0B0 /* Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
 		8C118109253F3B2A004ED0B0 /* DeviceResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceResources.swift; sourceTree = "<group>"; };
 		8C11810E253F6CE3004ED0B0 /* MockResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockResources.swift; sourceTree = "<group>"; };
+		8C11811F254021E8004ED0B0 /* HistogramGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistogramGenerator.swift; sourceTree = "<group>"; };
 		8C1A5C85252203D800D92F3C /* CameraErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraErrorView.swift; sourceTree = "<group>"; };
 		8C1C872A252F300700001B14 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetViewModelTests.swift; sourceTree = "<group>"; };
@@ -320,12 +322,12 @@
 		8C7EF02E251CEAB500CF9CFE /* Mocca */ = {
 			isa = PBXGroup;
 			children = (
-				8C118103253F3A89004ED0B0 /* Hardware resources */,
 				8C7EF02F251CEAB500CF9CFE /* MoccaApp.swift */,
 				8CDEB01C251FDFB10010DCCB /* View */,
 				8CDE03D925262BCD0083F736 /* ViewModel */,
 				8CDEB01B251FDFA20010DCCB /* Model */,
 				8C0E39F22525F6B1004BFFCA /* Manager */,
+				8C118103253F3A89004ED0B0 /* Hardware resources */,
 				8C1180C7253EFDFC004ED0B0 /* Device Operation */,
 				8CCE88B825248F160086AF83 /* Utility */,
 				8C0E39F32525F6C4004BFFCA /* Testing */,
@@ -430,6 +432,7 @@
 				8CDEB0202520A5110010DCCB /* CameraSetting.swift */,
 				8CDEB0492520C9E00010DCCB /* FocusSetting.swift */,
 				8CDEB0442520C9C90010DCCB /* ExposureSetting.swift */,
+				8C11811F254021E8004ED0B0 /* HistogramGenerator.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -622,6 +625,7 @@
 				8CCE88A925247D450086AF83 /* PreviewViewController.swift in Sources */,
 				8C7EF030251CEAB500CF9CFE /* MoccaApp.swift in Sources */,
 				8C6728C0251E14180066A836 /* PreviewUIView.swift in Sources */,
+				8C118120254021E8004ED0B0 /* HistogramGenerator.swift in Sources */,
 				8C1180C9253EFE2A004ED0B0 /* CameraOperationProtocol.swift in Sources */,
 				8CDEB0452520C9C90010DCCB /* ExposureSetting.swift in Sources */,
 				8C1A5C86252203D800D92F3C /* CameraErrorView.swift in Sources */,

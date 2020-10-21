@@ -9,6 +9,8 @@ import Foundation
 import AVFoundation
 
 class DeviceResources: Resources {
+    public private(set) var metalDevice: MTLDevice = MTLCreateSystemDefaultDevice()! // MARK: TODO: Something safer here than force-unwrapping
+    
    
     /// Searches for an available physical camera within the supplied array of supported logical camera device types.
     /// - Parameter preferredDevice: The preferred type to return.

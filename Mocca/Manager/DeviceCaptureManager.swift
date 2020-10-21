@@ -29,9 +29,11 @@ class DeviceCaptureManager: CaptureManager {
     public private(set) var captureSession : TestableAVCaptureSession
     public private(set) var activeCaptureDevice : TestableAVCaptureDevice
 
-    private let photoOutput : AVCapturePhotoOutput
+    private let photoOutput: AVCapturePhotoOutput
+    private let videoDataOutput: AVCaptureVideoDataOutput
     private let photoSettings: AVCapturePhotoSettings
     private let resources: Resources
+    private let histogramGenerator: HistogramGenerator
     
     convenience init() throws {
         
@@ -52,15 +54,23 @@ class DeviceCaptureManager: CaptureManager {
         
         let photoOutput = Self.configuredPhotoOutput()
         
-        try self.init(captureSession: captureSession, output: photoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput, resources:resources)
+        let videoOutput = Self.configuredVideoDataOutput()
+        
+        let histogramGenerator = HistogramGenerator(mtlDevice: resources.metalDevice)
+        
+        try self.init(captureSession: captureSession, photoOutput: photoOutput, videoOutput: videoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput, resources:resources, histogramGenerator: histogramGenerator)
     }
     
-    public init(captureSession: TestableAVCaptureSession, output: AVCapturePhotoOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: TestableAVCaptureDeviceInput, resources: Resources) throws {
+    public init(captureSession: TestableAVCaptureSession, photoOutput: AVCapturePhotoOutput, videoOutput: AVCaptureVideoDataOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: TestableAVCaptureDeviceInput, resources: Resources, histogramGenerator: HistogramGenerator) throws {
         
-        self.photoOutput =          output
+        self.photoOutput =          photoOutput
+        self.videoDataOutput =      videoOutput
         self.captureSession =       captureSession
         self.activeCaptureDevice =  initialCaptureDevice
         self.resources = resources
+        self.histogramGenerator = histogramGenerator
+        
+        videoDataOutput.setSampleBufferDelegate(histogramGenerator, queue: histogramGenerator.sampleBufferQueue)
         
         // MARK: Capture-session configuration
         self.captureSession.beginConfiguration()
@@ -76,7 +86,13 @@ class DeviceCaptureManager: CaptureManager {
         if captureSession.canAddOutput(photoOutput) {
             captureSession.addOutput(photoOutput)
         } else {
-            throw CaptureManagerError.addVideoOutputFailed
+            throw CaptureManagerError.addPhotoOutputFailed
+        }
+        
+        if captureSession.canAddOutput(videoDataOutput) {
+            captureSession.addOutput(videoDataOutput)
+        } else {
+            throw CaptureManagerError.addVideoDataOutputFailed
         }
         
         // MARK: Photo settings
@@ -129,6 +145,12 @@ class DeviceCaptureManager: CaptureManager {
         photoOutput.isLivePhotoCaptureEnabled = false
         photoOutput.maxPhotoQualityPrioritization = .quality // MARK: TODO: Tests to make sure this has been set before setting settings.photoQualityPrioritization
         return photoOutput
+    }
+    
+    internal class func configuredVideoDataOutput() -> AVCaptureVideoDataOutput {
+        let videoDataOutput = AVCaptureVideoDataOutput()
+        videoDataOutput.videoSettings = [:] // Set the output to receive in device-native format
+        return videoDataOutput
     }
     
     internal class func configuredPhotoSettings(for photoOutput:AVCapturePhotoOutput) -> AVCapturePhotoSettings {

@@ -11,7 +11,8 @@ import AVFoundation
 enum CaptureManagerError: Error {
     case captureDeviceNotFound
     case addVideoInputFailed
-    case addVideoOutputFailed
+    case addVideoDataOutputFailed
+    case addPhotoOutputFailed
     case findFullRangeVideoFormatFailed
     case setIsoFailed
     case setExposureFailed
