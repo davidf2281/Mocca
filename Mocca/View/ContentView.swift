@@ -20,11 +20,10 @@ struct ContentView: View {
     private let previewController: PreviewViewController
     private let widgetViewModel:    WidgetViewModel
     private let shutterButtonViewModel: ShutterButtonViewModel
-    private let histogramViewModel: HistogramGenerator?
+    private let histogramViewModel: HistogramViewModel
     private let cameraErrorView:   CameraErrorView
-    private var histogramView: HistogramView<HistogramGenerator>?
     
-    init(app: MoccaApp, previewViewController: PreviewViewController, widgetViewModel:WidgetViewModel, shutterButtonViewModel: ShutterButtonViewModel, previewViewModel:PreviewViewModel, histogramViewModel: HistogramGenerator?, cameraErrorView:CameraErrorView) {
+    init(app: MoccaApp, previewViewController: PreviewViewController, widgetViewModel:WidgetViewModel, shutterButtonViewModel: ShutterButtonViewModel, previewViewModel:PreviewViewModel, histogramViewModel: HistogramViewModel, cameraErrorView:CameraErrorView) {
         self.app = app
         self.previewController = previewViewController
         self.widgetViewModel = widgetViewModel
@@ -32,10 +31,6 @@ struct ContentView: View {
         self.previewViewModel = previewViewModel
         self.histogramViewModel = histogramViewModel
         self.cameraErrorView = cameraErrorView
-        
-        if let histogramViewModel = histogramViewModel {
-            histogramView = HistogramView(viewModel: histogramViewModel)
-        }
     }
     
     var body: some View {
@@ -44,6 +39,8 @@ struct ContentView: View {
         
         let shutterButtonView = ShutterButtonView<ShutterButtonViewModel>(viewModel: shutterButtonViewModel)
             .padding(20)
+        
+        let histogramView = HistogramView(viewModel: histogramViewModel)
         
         if self.app.appState == .nominal {
             if verticalSizeClass == .regular {
@@ -56,10 +53,7 @@ struct ContentView: View {
                     ZStack {
 
                         shutterButtonView
-                        if (histogramView != nil) {
-                            histogramView?.offset(x: 105, y: 0)
-                        }
-
+                        histogramView.offset(x: 105, y: 0)
                     }
                     Spacer()
                 }.background(Color.black)
@@ -69,11 +63,9 @@ struct ContentView: View {
                     Spacer()
                     VStack {
                         previewView
-                        if (histogramView != nil) {
                             Spacer()
                             histogramView
                             Spacer()
-                        }
                     }
                     Spacer()
                     shutterButtonView

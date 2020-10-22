@@ -10,30 +10,30 @@ import MetalPerformanceShaders
 import AVFoundation
 
 public struct HistogramBin {
-    let value: UInt8
-    let indexForID: Int
-    init(value: UInt8, index: Int) {
+    let value: UInt32
+    let index: Int
+    let ID: Int
+    init(value: UInt32, index: Int, ID: Int) {
         self.value = value
-        self.indexForID = index
+        self.index = index
+        self.ID = ID
     }
 }
 
 public struct Histogram {
+    let maxValue: UInt32
     let redBins: [HistogramBin]
     let greenBins: [HistogramBin]
     let blueBins: [HistogramBin]
 }
 
-public class HistogramGenerator: NSObject, HistogramViewModel, ObservableObject, AVCaptureVideoDataOutputSampleBufferDelegate {
+public class HistogramGenerator {
     
-    @Published private(set) var histogram: Histogram?
-    
-    let sampleBufferQueue = DispatchQueue(label: "com.mocca-app.videoSampleBufferQueue")
-    private let processingBufferQueue = DispatchQueue(label: "com.mocca-app.histogramProcessingQueue")
     private let mtlDevice: MTLDevice
     private let commandQueue: MTLCommandQueue
     private let commandBuffer: MTLCommandBuffer
-    
+    private var overallMaxValue: UInt32 = 0
+
     required public init?(mtlDevice: MTLDevice) {
         self.mtlDevice = mtlDevice
         
@@ -52,11 +52,10 @@ public class HistogramGenerator: NSObject, HistogramViewModel, ObservableObject,
         }
     }
     
-    public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+    public func generate(sampleBuffer: CMSampleBuffer) -> Histogram? {
         
         let binCount = 128
         
-        self.processingBufferQueue.async { [self] in
             
             let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)!
             let width = CVPixelBufferGetWidth(imageBuffer)
@@ -66,25 +65,24 @@ public class HistogramGenerator: NSObject, HistogramViewModel, ObservableObject,
             CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, mtlDevice, nil, &mtlTextureCache)
             
             if (mtlTextureCache == nil) {
-                return
+                return nil
             }
             
             var textureRef : CVMetalTexture?
             CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, mtlTextureCache!, imageBuffer, nil, MTLPixelFormat.bgra8Unorm, width, height, 0, &textureRef)
             
             if (textureRef == nil) {
-                return
+                return nil
             }
             
             guard let imageTexture = CVMetalTextureGetTexture(textureRef!) else {
-                return
+                return nil
             }
             
-            var histogramInfo = MPSImageHistogramInfo(
-                numberOfHistogramEntries: binCount,
-                histogramForAlpha: false,
-                minPixelValue: vector_float4(0,0,0,0),
-                maxPixelValue: vector_float4(1,1,1,1))
+            var histogramInfo = MPSImageHistogramInfo(numberOfHistogramEntries: binCount,
+                                                      histogramForAlpha: false,
+                                                      minPixelValue: vector_float4(0,0,0,0),
+                                                      maxPixelValue: vector_float4(1,1,1,1))
             
             let histogram = MPSImageHistogram(device: mtlDevice,
                                               histogramInfo: &histogramInfo)
@@ -94,12 +92,12 @@ public class HistogramGenerator: NSObject, HistogramViewModel, ObservableObject,
             guard let histogramResults = mtlDevice.makeBuffer(length: bufferLength,
                                                               options: [.storageModeShared]) else {
                 print("nil histogramResults")
-                return
+                return nil
             }
             
             guard let buffer = self.commandQueue.makeCommandBuffer() else {
                 print("makeCommandBuffer() failed")
-                return
+                return nil
             }
             
             histogram.encode(to: buffer,
@@ -111,28 +109,37 @@ public class HistogramGenerator: NSObject, HistogramViewModel, ObservableObject,
             buffer.waitUntilCompleted()
             let dataPtr = histogramResults.contents().assumingMemoryBound(to: UInt32.self)
             
-            var redBins = [HistogramBin]()
+            var redBins =   [HistogramBin]()
             var greenBins = [HistogramBin]()
-            var blueBins = [HistogramBin]()
-
-            for index in stride(from: 0, to: binCount * 3, by: 3) { // binCount * 3 because R, G, B
-                let red = dataPtr[index]
-                let green = dataPtr[index + 1]
-                let blue = dataPtr[index + 2]
-                
-                redBins.append(HistogramBin(value: UInt8(red & 0xFF), index: index / 3))
-                greenBins.append(HistogramBin(value: UInt8(green & 0xFF), index: index / 3))
-                blueBins.append(HistogramBin(value: UInt8(blue & 0xFF), index: index / 3))
-//                print("\(value & 0xFF) \((value >> 8) & 0xFF) \((value >> 16) & 0xFF) \((value >> 24) & 0xFF)")
+            var blueBins =  [HistogramBin]()
+            
+            var maxValue: UInt32 = 0
+            
+            for index in stride(from: 0, to: binCount, by: 1) {
+                let blue = dataPtr[index]
+                if blue > maxValue { maxValue = blue }
+                blueBins.append(HistogramBin(value: blue, index: index, ID: index))
             }
             
-            DispatchQueue.main.async {
-                self.histogram = Histogram(redBins: redBins, greenBins: greenBins, blueBins: blueBins)
+            for index in stride(from: binCount, to: binCount * 2, by: 1) {
+                let green = dataPtr[index]
+                if green > maxValue { maxValue = green }
+                greenBins.append(HistogramBin(value: green, index: index - binCount, ID: index))
             }
-        }
+            
+            for index in stride(from: binCount * 2, to: binCount * 3, by: 1) {
+                let red = dataPtr[index]
+                if red > maxValue { maxValue = red }
+                redBins.append(HistogramBin(value:red, index: index - binCount * 2, ID: index))
+            }
+                
+            if maxValue > overallMaxValue {
+                overallMaxValue = maxValue
+                print("New maxValue: \(maxValue)")
+            }
+            
+        return Histogram(maxValue: maxValue, redBins: redBins, greenBins: greenBins, blueBins: blueBins)
     }
     
-    public func captureOutput(_ output: AVCaptureOutput, didDrop sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        print("Dropped frame")
-    }
+
 }

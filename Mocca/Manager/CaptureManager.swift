@@ -27,4 +27,6 @@ protocol CaptureManager {
     func selectCamera(type: LogicalCameraDevice) -> Outcome
     func currentPhotoSettings() -> AVCapturePhotoSettings
     func capturePhoto(settings:AVCapturePhotoSettings, delegate: AVCapturePhotoCaptureDelegate)
+    func setSampleBufferDelegate(_ delegate: AVCaptureVideoDataOutputSampleBufferDelegate,
+                                 queue callbackQueue: DispatchQueue)
 }
