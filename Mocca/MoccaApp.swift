@@ -30,7 +30,7 @@ final class MoccaApp: App, ObservableObject {
     /// Backs the shutter button, sending taps to photoTaker dependency
     private let shutterButtonViewModel: ShutterButtonViewModel
     
-    private let histogramGenerator: HistogramGenerator
+    private let histogramGenerator: HistogramGenerator?
     
     /// Capture manager is the intermediary class dealing with all communication with the device's physical camera hardware.
     private let captureManager: DeviceCaptureManager? = {
@@ -68,7 +68,9 @@ final class MoccaApp: App, ObservableObject {
         previewViewController =  PreviewViewController(previewView: previewUIView, orientationPublisher: orientationPublisher)
         shutterButtonViewModel = ShutterButtonViewModel(photoTaker: photoTaker)
 
-        captureManager?.setSampleBufferDelegate(histogramGenerator, queue: histogramGenerator.sampleBufferQueue)
+        if let histogramGenerator = histogramGenerator {
+            captureManager?.setSampleBufferDelegate(histogramGenerator, queue: histogramGenerator.sampleBufferQueue)
+        }
         
         sessionQueue.async {
             self.captureManager?.startCaptureSession()

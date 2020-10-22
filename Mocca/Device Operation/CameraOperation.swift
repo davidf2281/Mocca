@@ -71,7 +71,7 @@ class CameraOperation: CameraOperationProtocol {
         
         let convertedPoint = layer.captureDevicePointConverted(fromLayerPoint: point)
         device.focusPointOfInterest = convertedPoint
-        device.focusMode = .continuousAutoFocus
+        device.focusMode = .autoFocus
         device.unlockForConfiguration()
         return .success
     }

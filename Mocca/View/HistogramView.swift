@@ -29,7 +29,7 @@ struct HistogramView<Model>: View where Model: HistogramViewModel {
             }
         }
         .frame(width: width, height: height, alignment: .bottom)
-        .border(Color(white: 0.75), width: 2)
+        .border(Color(white: 0.5), width: 1)
     }
 }
 

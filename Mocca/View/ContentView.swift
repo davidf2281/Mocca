@@ -17,13 +17,14 @@ struct ContentView: View {
     
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
-    let previewController: PreviewViewController
-    let widgetViewModel:    WidgetViewModel
-    let shutterButtonViewModel: ShutterButtonViewModel
-    let histogramViewModel: HistogramGenerator
-    let cameraErrorView:   CameraErrorView
+    private let previewController: PreviewViewController
+    private let widgetViewModel:    WidgetViewModel
+    private let shutterButtonViewModel: ShutterButtonViewModel
+    private let histogramViewModel: HistogramGenerator?
+    private let cameraErrorView:   CameraErrorView
+    private var histogramView: HistogramView<HistogramGenerator>?
     
-    init(app: MoccaApp, previewViewController: PreviewViewController, widgetViewModel:WidgetViewModel, shutterButtonViewModel: ShutterButtonViewModel, previewViewModel:PreviewViewModel, histogramViewModel: HistogramGenerator, cameraErrorView:CameraErrorView) {
+    init(app: MoccaApp, previewViewController: PreviewViewController, widgetViewModel:WidgetViewModel, shutterButtonViewModel: ShutterButtonViewModel, previewViewModel:PreviewViewModel, histogramViewModel: HistogramGenerator?, cameraErrorView:CameraErrorView) {
         self.app = app
         self.previewController = previewViewController
         self.widgetViewModel = widgetViewModel
@@ -31,47 +32,59 @@ struct ContentView: View {
         self.previewViewModel = previewViewModel
         self.histogramViewModel = histogramViewModel
         self.cameraErrorView = cameraErrorView
+        
+        if let histogramViewModel = histogramViewModel {
+            histogramView = HistogramView(viewModel: histogramViewModel)
+        }
     }
     
     var body: some View {
         
         let previewView = PreviewView(widgetViewModel: widgetViewModel, previewViewModel: self.previewViewModel, previewViewController: self.previewController)
         
-        let histogramView = HistogramView(viewModel: self.histogramViewModel)
-        
         let shutterButtonView = ShutterButtonView<ShutterButtonViewModel>(viewModel: shutterButtonViewModel)
             .padding(20)
-                    
-            if self.app.appState == .nominal {
-                if verticalSizeClass == .regular {
-                    VStack {
-                        Spacer()
-                        histogramView
-                        Spacer()
-                        previewView
-                        Spacer()
-                        // MARK: TODO: Select-camera control
+        
+        if self.app.appState == .nominal {
+            if verticalSizeClass == .regular {
+                VStack(alignment:.center) {
+           
+                    Spacer()
+                    previewView
+                    Spacer()
+                    // MARK: TODO: Select-camera control
+                    ZStack {
+
                         shutterButtonView
-                        Spacer()
-                    }.background(Color.black)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    //                    .overlay((histogramView).position(x: 110, y: 100))
-                } else {
-                    HStack {
-//                        Spacer()
-                        histogramView
-                        Spacer()
-                        previewView
-                        Spacer()
-                        shutterButtonView
-                        Spacer()
-                    }.background(Color.black)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
+                        if (histogramView != nil) {
+                            histogramView?.offset(x: 105, y: 0)
+                        }
+
+                    }
+                    Spacer()
+                }.background(Color.black)
+//                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                cameraErrorView
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color(red: 1, green: 1, blue: 0.95))
+                HStack {
+                    Spacer()
+                    VStack {
+                        previewView
+                        if (histogramView != nil) {
+                            Spacer()
+                            histogramView
+                            Spacer()
+                        }
+                    }
+                    Spacer()
+                    shutterButtonView
+                    Spacer()
+                }.background(Color.black)
+//                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
+        } else {
+            cameraErrorView
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color(red: 1, green: 1, blue: 0.95))
+        }
     }
 }

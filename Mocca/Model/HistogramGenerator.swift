@@ -34,14 +34,21 @@ public class HistogramGenerator: NSObject, HistogramViewModel, ObservableObject,
     private let commandQueue: MTLCommandQueue
     private let commandBuffer: MTLCommandBuffer
     
-    required public init(mtlDevice: MTLDevice) {
+    required public init?(mtlDevice: MTLDevice) {
         self.mtlDevice = mtlDevice
-        let commandQueue = mtlDevice.makeCommandQueue()! // MARK: TODO: Something safer here than force-unwrapping
+        
+        guard let commandQueue = mtlDevice.makeCommandQueue() else {
+            return nil
+        }
         self.commandQueue = commandQueue
-        let buffer = commandQueue.makeCommandBuffer()! // MARK: TODO: Something safer here than force-unwrapping
+        
+        guard let buffer = commandQueue.makeCommandBuffer() else {
+            return nil
+        }
         self.commandBuffer = buffer
+        
         if buffer.retainedReferences == false {
-            print("Buffer is not retaining references")
+            print("Warning: Buffer is not retaining references")
         }
     }
     
@@ -50,6 +57,7 @@ public class HistogramGenerator: NSObject, HistogramViewModel, ObservableObject,
         let binCount = 128
         
         self.processingBufferQueue.async { [self] in
+            
             let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)!
             let width = CVPixelBufferGetWidth(imageBuffer)
             let height = CVPixelBufferGetHeight(imageBuffer)
@@ -58,7 +66,6 @@ public class HistogramGenerator: NSObject, HistogramViewModel, ObservableObject,
             CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, mtlDevice, nil, &mtlTextureCache)
             
             if (mtlTextureCache == nil) {
-                print("nil mtlTextureCache")
                 return
             }
             
@@ -66,12 +73,10 @@ public class HistogramGenerator: NSObject, HistogramViewModel, ObservableObject,
             CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, mtlTextureCache!, imageBuffer, nil, MTLPixelFormat.bgra8Unorm, width, height, 0, &textureRef)
             
             if (textureRef == nil) {
-                print("nil textureRef")
                 return
             }
             
             guard let imageTexture = CVMetalTextureGetTexture(textureRef!) else {
-                print("nil imageTexture")
                 return
             }
             
@@ -91,10 +96,12 @@ public class HistogramGenerator: NSObject, HistogramViewModel, ObservableObject,
                 print("nil histogramResults")
                 return
             }
+            
             guard let buffer = self.commandQueue.makeCommandBuffer() else {
                 print("makeCommandBuffer() failed")
                 return
             }
+            
             histogram.encode(to: buffer,
                              sourceTexture: imageTexture,
                              histogram: histogramResults,
@@ -102,23 +109,23 @@ public class HistogramGenerator: NSObject, HistogramViewModel, ObservableObject,
             
             buffer.commit()
             buffer.waitUntilCompleted()
-            let dataPtr = histogramResults.contents().assumingMemoryBound(to: Int32.self)
+            let dataPtr = histogramResults.contents().assumingMemoryBound(to: UInt32.self)
             
             var redBins = [HistogramBin]()
             var greenBins = [HistogramBin]()
             var blueBins = [HistogramBin]()
 
-            for index in 0..<binCount {
-                let value = dataPtr[index]
-                let red = UInt8(value & 0xFF)
-                let green = UInt8((value >> 8) & 0xFF)
-                let blue = UInt8((value >> 16) & 0xFF)
+            for index in stride(from: 0, to: binCount * 3, by: 3) { // binCount * 3 because R, G, B
+                let red = dataPtr[index]
+                let green = dataPtr[index + 1]
+                let blue = dataPtr[index + 2]
                 
-                redBins.append(HistogramBin(value: red, index: index))
-                greenBins.append(HistogramBin(value: green, index: index))
-                blueBins.append(HistogramBin(value: blue, index: index))
+                redBins.append(HistogramBin(value: UInt8(red & 0xFF), index: index / 3))
+                greenBins.append(HistogramBin(value: UInt8(green & 0xFF), index: index / 3))
+                blueBins.append(HistogramBin(value: UInt8(blue & 0xFF), index: index / 3))
 //                print("\(value & 0xFF) \((value >> 8) & 0xFF) \((value >> 16) & 0xFF) \((value >> 24) & 0xFF)")
             }
+            
             DispatchQueue.main.async {
                 self.histogram = Histogram(redBins: redBins, greenBins: greenBins, blueBins: blueBins)
             }
