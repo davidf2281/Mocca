@@ -40,40 +40,34 @@ struct ContentView: View {
         let shutterButtonView = ShutterButtonView<ShutterButtonViewModel>(viewModel: shutterButtonViewModel)
             .padding(20)
         
-        let redHistogramView = HistogramView(viewModel: histogramViewModel, mode: .red)
-        let greenHistogramView = HistogramView(viewModel: histogramViewModel, mode: .green)
-        let blueHistogramView = HistogramView(viewModel: histogramViewModel, mode: .blue)
-
+        let histogramView = HistogramView(viewModel: histogramViewModel, mode: .all)
+        
         if self.app.appState == .nominal {
             if verticalSizeClass == .regular {
                 VStack(alignment:.center) {
-           Spacer()
-                    HStack {
-                        redHistogramView
-                        greenHistogramView
-                        blueHistogramView
-                    }
+                    Spacer()
+                    histogramView
                     Spacer()
                     previewView
                     Spacer()
-                        shutterButtonView
+                    shutterButtonView
                     Spacer()
                 }.background(Color.black)
-//                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 HStack {
                     Spacer()
                     VStack {
                         previewView
-                            Spacer()
-                            redHistogramView
-                            Spacer()
+                        Spacer()
+                        histogramView
+                        Spacer()
                     }
                     Spacer()
                     shutterButtonView
                     Spacer()
                 }.background(Color.black)
-//                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         } else {
             cameraErrorView

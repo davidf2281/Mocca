@@ -67,7 +67,7 @@ public class HistogramGenerator {
         }
         
         var textureRef : CVMetalTexture?
-        CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, mtlTextureCache!, imageBuffer, nil, MTLPixelFormat.rg8Unorm, width / 2, height / 2, 1, &textureRef)
+        CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, mtlTextureCache!, imageBuffer, nil, MTLPixelFormat.bgra8Unorm, width, height, 0, &textureRef)
         
         if (textureRef == nil) {
             return nil
@@ -109,24 +109,20 @@ public class HistogramGenerator {
         var redBins =   [HistogramBin]()
         var greenBins = [HistogramBin]()
         var blueBins =  [HistogramBin]()
-//        var redTotal:UInt32 = 0, greenTotal:UInt32 = 0, blueTotal:UInt32 = 0
         
         for index in stride(from: 0, to: binCount, by: 1) {
-            let blue = dataPointer[index]
-//            if index > 5 { blueTotal += blue }
-            blueBins.append(HistogramBin(value: blue, index: index, ID: index))
+            let red = dataPointer[index]
+            redBins.append(HistogramBin(value: red, index: index, ID: index))
         }
         
         for index in stride(from: binCount, to: binCount * 2, by: 1) {
-            let red = dataPointer[index]
-//            if index > binCount + 5 {greenTotal += green}
-            redBins.append(HistogramBin(value: red, index: index - binCount, ID: index))
+            let green = dataPointer[index]
+            greenBins.append(HistogramBin(value: green, index: index - binCount, ID: index))
         }
         
         for index in stride(from: binCount * 2, to: binCount * 3, by: 1) {
-            let green = dataPointer[index]
-//            if index > binCount * 2 + 5 {redTotal += red}
-            greenBins.append(HistogramBin(value:green, index: index - binCount * 2, ID: index))
+            let blue = dataPointer[index]
+            blueBins.append(HistogramBin(value:blue, index: index - binCount * 2, ID: index))
         }
         
         return Histogram(maxValue: UInt32(width * height), redBins: redBins, greenBins: greenBins, blueBins: blueBins)

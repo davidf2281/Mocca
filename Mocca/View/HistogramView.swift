@@ -20,7 +20,7 @@ struct HistogramView: View {
     
     private let width = CGFloat(128)
     private let height = CGFloat(64)
-    private let luminanceCorrection: CGFloat = 0.4
+    private let luminanceCorrection: CGFloat = 0.25
     private let mode: HistogramViewMode
     
     init(viewModel: HistogramViewModel, mode:HistogramViewMode) {

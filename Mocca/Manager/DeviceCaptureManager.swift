@@ -147,7 +147,8 @@ class DeviceCaptureManager: CaptureManager {
     
     internal class func configuredVideoDataOutput() -> AVCaptureVideoDataOutput {
         let videoDataOutput = AVCaptureVideoDataOutput()
-        videoDataOutput.videoSettings = [:] // Set the output to receive in device-native format
+        // MARK: TODO: We must't assume 32BGRA pixel format is always available
+        videoDataOutput.videoSettings = [ String(kCVPixelBufferPixelFormatTypeKey) : kCVPixelFormatType_32BGRA] 
         return videoDataOutput
     }
     
