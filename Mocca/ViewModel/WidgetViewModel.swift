@@ -11,6 +11,7 @@ import CoreGraphics
 class WidgetViewModel: ObservableObject {
     private let captureManager: CaptureManager?
     @Published public var position: CGPoint
+    
     private(set) var dockedPosition: CGPoint
     
     var displayCharacter : String {

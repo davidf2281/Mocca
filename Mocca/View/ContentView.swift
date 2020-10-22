@@ -40,21 +40,23 @@ struct ContentView: View {
         let shutterButtonView = ShutterButtonView<ShutterButtonViewModel>(viewModel: shutterButtonViewModel)
             .padding(20)
         
-        let histogramView = HistogramView(viewModel: histogramViewModel)
-        
+        let redHistogramView = HistogramView(viewModel: histogramViewModel, mode: .red)
+        let greenHistogramView = HistogramView(viewModel: histogramViewModel, mode: .green)
+        let blueHistogramView = HistogramView(viewModel: histogramViewModel, mode: .blue)
+
         if self.app.appState == .nominal {
             if verticalSizeClass == .regular {
                 VStack(alignment:.center) {
-           
+           Spacer()
+                    HStack {
+                        redHistogramView
+                        greenHistogramView
+                        blueHistogramView
+                    }
                     Spacer()
                     previewView
                     Spacer()
-                    // MARK: TODO: Select-camera control
-                    ZStack {
-
                         shutterButtonView
-                        histogramView.offset(x: 105, y: 0)
-                    }
                     Spacer()
                 }.background(Color.black)
 //                .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -64,7 +66,7 @@ struct ContentView: View {
                     VStack {
                         previewView
                             Spacer()
-                            histogramView
+                            redHistogramView
                             Spacer()
                     }
                     Spacer()
