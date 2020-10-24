@@ -13,6 +13,8 @@ class MockResources: Resources {
     
     var deviceToReturn: TestableAVCaptureDevice?
     
+    var metalDevice: MTLDevice = MTLCreateSystemDefaultDevice()!
+    
     // Test vars
     var physicalDeviceCallShouldSucceed = true
     // Protocol conformance
