@@ -37,14 +37,17 @@ class ExposureBiasViewModel: ExposureBiasViewModelProtocol {
         }
         
         let newComp = self.compensationAtDragStart + EV(extent / 100)
-        print("comp: \(self.compensation)")
+        
         if let device = self.captureManager?.activeCaptureDevice {
-            if (CameraOperation.canSetExposureTargetBias(ev: newComp, for: device)) {                
-                do {
-                    _ = try CameraOperation.setExposureTargetBias(ev: self.compensation, for: device, completion: { time in })
-                    self.compensation = newComp
-                } catch {
-                    // MARK: TODO: UI error feedback
+            
+            if (CameraOperation.canSetExposureTargetBias(ev: newComp, for: device)) {
+                if CameraOperation.willTargetBiasHaveEffect(ev: newComp, for: device){
+                    do {
+                        _ = try CameraOperation.setExposureTargetBias(ev: self.compensation, for: device, completion: { time in })
+                        self.compensation = newComp
+                    } catch {
+                        // MARK: TODO: UI error feedback
+                    }
                 }
             }
         }

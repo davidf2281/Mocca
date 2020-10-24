@@ -47,7 +47,23 @@ class CameraOperation: CameraOperationProtocol {
         let minBias = device.minExposureTargetBias
         let maxBias = device.maxExposureTargetBias
         
-        return (ev >= minBias && ev <= maxBias)
+        return ev >= minBias && ev <= maxBias
+    }
+    
+    static func willTargetBiasHaveEffect(ev: EV, for device: TestableAVCaptureDevice) -> Bool {
+        let isoIsOnUpperLimit = device.iso >= device.activeFormat.maxISO
+
+        let isoIsOnLowerLimit = device.iso <= device.activeFormat.minISO
+        
+        if isoIsOnUpperLimit && ev >= device.exposureTargetBias {
+            return false
+        }
+        
+        if isoIsOnLowerLimit && ev <= device.exposureTargetBias {
+            return false
+        }
+        
+        return true
     }
     
     static func setExposureTargetBias(ev: EV, for device: TestableAVCaptureDevice, completion: @escaping (CMTime) -> Void) throws {
