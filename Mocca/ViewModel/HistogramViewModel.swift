@@ -25,11 +25,11 @@ class HistogramViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSa
     public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         
         // Reduce system load a little bit by generating a new histogram only every three frames
-        sampleCount += 1
-        if sampleCount < 3 {
-            return
-        }
-        sampleCount = 0
+//        sampleCount += 1
+//        if sampleCount < 3 {
+//            return
+//        }
+//        sampleCount = 0
 
         histogramProcessingQueue.async {
             let histogram = self.histogramGenerator?.generate(sampleBuffer: sampleBuffer)
