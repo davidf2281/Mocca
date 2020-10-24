@@ -70,7 +70,7 @@ class CameraOperation: CameraOperationProtocol {
         
         let convertedPoint = layer.captureDevicePointConverted(fromLayerPoint: point)
         device.exposurePointOfInterest = convertedPoint
-        device.exposureMode = .continuousAutoExposure
+        device.exposureMode = .autoExpose
         device.unlockForConfiguration()
         return .success
     }
@@ -86,7 +86,7 @@ class CameraOperation: CameraOperationProtocol {
         
         let convertedPoint = layer.captureDevicePointConverted(fromLayerPoint: point)
         device.focusPointOfInterest = convertedPoint
-        device.focusMode = .continuousAutoFocus
+        device.focusMode = .autoFocus
         device.unlockForConfiguration()
         return .success
     }

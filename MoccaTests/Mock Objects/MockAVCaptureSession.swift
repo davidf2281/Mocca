@@ -28,7 +28,7 @@ class MockAVCaptureSession: TestableAVCaptureSession {
     internal var commitConfigurationCalledPrematurely =    false
     
     internal private(set) var lastAddedInput: AVCaptureDeviceInput?
-    internal private(set) var lastAddedOutout: AVCaptureOutput?
+    internal private(set) var lastAddedOutput: AVCaptureOutput?
     
     // MARK: Protocol implementation
     
@@ -54,7 +54,7 @@ class MockAVCaptureSession: TestableAVCaptureSession {
         beginConfigurationNotCalledWhenRequired = !beginConfigirationCalled
         commitConfigurationCalledPrematurely = commitConfigurationCalled
         addOuputCalled = true
-        lastAddedOutout = output
+        lastAddedOutput = output
     }
     
     func commitConfiguration() {

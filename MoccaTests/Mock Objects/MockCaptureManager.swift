@@ -39,6 +39,8 @@ class MockCaptureManager: CaptureManager {
         return .success
     }
     
+    func setSampleBufferDelegate(_ delegate: AVCaptureVideoDataOutputSampleBufferDelegate, queue callbackQueue: DispatchQueue) {}
+    
     // Test vars
     var capturePhotoCalled = false;
     var captureDelegate: AVCapturePhotoCaptureDelegate?

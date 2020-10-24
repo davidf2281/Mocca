@@ -17,17 +17,19 @@ struct ContentView: View {
     
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
-    let previewController: PreviewViewController
-    let widgetViewModel:    WidgetViewModel
-    let shutterButtonViewModel: ShutterButtonViewModel
-    let cameraErrorView:   CameraErrorView
+    private let previewController: PreviewViewController
+    private let widgetViewModel:    WidgetViewModel
+    private let shutterButtonViewModel: ShutterButtonViewModel
+    private let histogramViewModel: HistogramViewModel
+    private let cameraErrorView:   CameraErrorView
     
-    init(app: MoccaApp, previewViewController: PreviewViewController, widgetViewModel:WidgetViewModel, shutterButtonViewModel: ShutterButtonViewModel, previewViewModel:PreviewViewModel, cameraErrorView:CameraErrorView) {
+    init(app: MoccaApp, previewViewController: PreviewViewController, widgetViewModel:WidgetViewModel, shutterButtonViewModel: ShutterButtonViewModel, previewViewModel:PreviewViewModel, histogramViewModel: HistogramViewModel, cameraErrorView:CameraErrorView) {
         self.app = app
         self.previewController = previewViewController
         self.widgetViewModel = widgetViewModel
         self.shutterButtonViewModel = shutterButtonViewModel
         self.previewViewModel = previewViewModel
+        self.histogramViewModel = histogramViewModel
         self.cameraErrorView = cameraErrorView
     }
     
@@ -38,25 +40,35 @@ struct ContentView: View {
         let shutterButtonView = ShutterButtonView<ShutterButtonViewModel>(viewModel: shutterButtonViewModel)
             .padding(20)
         
+        let histogramView = HistogramView(viewModel: histogramViewModel, mode: .all)
+        
         if self.app.appState == .nominal {
-                if verticalSizeClass == .regular {
+            if verticalSizeClass == .regular {
+                VStack(alignment:.center) {
+                    Spacer()
+                    histogramView
+                    Spacer()
+                    previewView
+                    Spacer()
+                    shutterButtonView
+                    Spacer()
+                }.background(Color.black)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                HStack {
+                    Spacer()
                     VStack {
-                        Spacer()
                         previewView
                         Spacer()
-                        // MARK: TODO: Select-camera control
-                        shutterButtonView
+                        histogramView
                         Spacer()
-                    }.background(Color.black)
-                } else {
-                    HStack {
-                        Spacer()
-                        previewView
-                        Spacer()
-                        shutterButtonView
-                        Spacer()
-                    }.background(Color.black)
-                }
+                    }
+                    Spacer()
+                    shutterButtonView
+                    Spacer()
+                }.background(Color.black)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
         } else {
             cameraErrorView
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

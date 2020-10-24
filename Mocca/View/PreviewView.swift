@@ -72,6 +72,7 @@ struct PreviewModifier: ViewModifier {
                                     }))
             }.aspectRatio(aspectRatio, contentMode: .fit)
             .padding(edgeInsets)
-
+            .background(Color.black)
     }
 }
+
