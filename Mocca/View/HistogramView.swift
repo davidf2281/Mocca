@@ -19,7 +19,7 @@ struct HistogramView: View {
     @ObservedObject private(set)var viewModel: HistogramViewModel
     
     private let width = CGFloat(128)
-    private let height = CGFloat(64)
+    private let height = CGFloat(100)
     private let mode: HistogramViewMode
     
     init(viewModel: HistogramViewModel, mode:HistogramViewMode) {
@@ -56,8 +56,8 @@ struct HistogramView: View {
                 }
             }
         }
-        
         .frame(width: width, height: height, alignment: .bottom)
+        .padding(EdgeInsets(top: 0, leading: 1, bottom: 0, trailing: 0))
         .border(Color(white: 0.5), width: 1)
     }
     
@@ -65,7 +65,7 @@ struct HistogramView: View {
         return  Path { path in
             path.move(to: CGPoint(x: CGFloat(bin.index), y: height))
             let normalizedValue = CGFloat(bin.value) / CGFloat(maxValue)
-            let amplifiedValue = clip(value: normalizedValue * height * 20, max: height)
+            let amplifiedValue = clip(value: normalizedValue * height * 25, max: height)
             path.addLine(to: CGPoint(x: CGFloat(bin.index), y: height - amplifiedValue))
         }
     }

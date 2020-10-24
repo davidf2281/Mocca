@@ -27,6 +27,7 @@ class MockAVCaptureDevice: TestableAVCaptureDevice {
     var iso: Float = 0
     var focusMode: AVCaptureDevice.FocusMode = .locked
     var isExposurePointOfInterestSupported = false// MARK: TODO
+    var exposureTargetBias: Float = 0
     var maxExposureTargetBias: Float = 3
     var minExposureTargetBias: Float = 3
     

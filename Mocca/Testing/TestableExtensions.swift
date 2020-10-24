@@ -23,6 +23,7 @@ protocol TestableAVCaptureDevice {
     var formats: [AVCaptureDevice.Format] { get }
     var activeVideoMinFrameDuration: CMTime { get set }
     var exposureDuration: CMTime { get }
+    var exposureTargetBias: Float { get }
     var maxExposureTargetBias: Float { get }
     var minExposureTargetBias: Float { get }
     var isExposurePointOfInterestSupported: Bool { get }

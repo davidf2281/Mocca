@@ -55,21 +55,21 @@ struct ContentView: View {
                     shutterButtonView
                     Spacer()
                 }.background(Color.black)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 HStack {
                     Spacer()
+                    previewView
+                    Spacer()
                     VStack {
-                        previewView
+                        Spacer()
+                        shutterButtonView
                         Spacer()
                         histogramView
                         Spacer()
                     }
-                    Spacer()
-                    shutterButtonView
-                    Spacer()
                 }.background(Color.black)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         } else {
             cameraErrorView
