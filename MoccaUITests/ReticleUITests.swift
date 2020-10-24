@@ -62,7 +62,7 @@ class ReticleUITests: XCTestCase {
         tapPoint = CGPoint(x: 1,y: 1)
         
         // We expect reticle position to be clamped to within the camera preview
-        let expectedReticlePosition = CGPoint(x: 25, y: 12)
+        let expectedReticlePosition = CGPoint(x: 25, y: 25)
         
         destinationPoint = tapPreviewView(at: tapPoint)
         XCTAssert(point(destinationPoint, equalTo: expectedReticlePosition, tolerance: self.tolerance))
