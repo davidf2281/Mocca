@@ -62,7 +62,6 @@ struct PreviewModifier: ViewModifier {
                     .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
                                 .onEnded { gesture in
                                     let frameSize = CGSize(width: parent.size.width - (edgeInsets.leading + edgeInsets.trailing), height: parent.size.height - (edgeInsets.top + edgeInsets.bottom))
-//                                    let adjustedPosition = verticalSizeClass == .regular ? CGPoint(x: gesture.location.x /*- margin*/, y: gesture.location.y) : CGPoint(x: gesture.location.x, y: gesture.location.y /*- margin*/)
                                     let position = ViewConversion.tapPosition(position: gesture.location,
                                                                               orientation: orientationPublisher.interfaceOrientation, parentFrame: frameSize)
                                     self.widgetViewModel.position = position
@@ -71,3 +70,6 @@ struct PreviewModifier: ViewModifier {
             }.aspectRatio(aspectRatio, contentMode: .fit)
             .padding(edgeInsets)
             .background(Color.black)
+    }
+}
+
