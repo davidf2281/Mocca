@@ -47,7 +47,7 @@ struct PreviewModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         
-        let margin = CGFloat(10)
+        let margin = CGFloat(5)
         
         let edgeInsets = verticalSizeClass == .regular ?
             EdgeInsets(top: 0, leading: margin, bottom: 0, trailing: margin) :
@@ -56,9 +56,8 @@ struct PreviewModifier: ViewModifier {
         return
             GeometryReader { parent in
                 content
-                    .border(Color(white: 0.75), width: 5)
+                    .border(Color(white: 1), width: 5)
                     .overlay(WidgetView( viewModel: widgetViewModel).accessibility(label: Text("reticle")))
-                    .padding(edgeInsets)
                     // Drag gesture is simulating a tap gesture because SwiftUI won't tell us the location of actual tap gestures:
                     .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
                                 .onEnded { gesture in
@@ -70,5 +69,7 @@ struct PreviewModifier: ViewModifier {
                                     self.previewViewModel.tapped(position: gesture.location, frameSize:frameSize)
                                 })
             }.aspectRatio(aspectRatio, contentMode: .fit)
+            .padding(edgeInsets)
+
     }
 }
