@@ -47,7 +47,7 @@ struct PreviewModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         
-        let margin = CGFloat(10)
+        let margin = CGFloat(5)
         
         let edgeInsets = verticalSizeClass == .regular ?
             EdgeInsets(top: 0, leading: margin, bottom: 0, trailing: margin) :
@@ -56,20 +56,18 @@ struct PreviewModifier: ViewModifier {
         return
             GeometryReader { parent in
                 content
-                    .border(Color(white: 0.75), width: 5)
+                    .border(Color(white: 1), width: 5)
                     .overlay(WidgetView( viewModel: widgetViewModel).accessibility(label: Text("reticle")))
-                    .padding(edgeInsets)
                     // Drag gesture is simulating a tap gesture because SwiftUI won't tell us the location of actual tap gestures:
                     .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
                                 .onEnded { gesture in
                                     let frameSize = CGSize(width: parent.size.width - (edgeInsets.leading + edgeInsets.trailing), height: parent.size.height - (edgeInsets.top + edgeInsets.bottom))
-                                    let adjustedPosition = verticalSizeClass == .regular ? CGPoint(x: gesture.location.x - margin, y: gesture.location.y) : CGPoint(x: gesture.location.x, y: gesture.location.y - margin)
-                                    let position = ViewConversion.tapPosition(position: adjustedPosition,
+//                                    let adjustedPosition = verticalSizeClass == .regular ? CGPoint(x: gesture.location.x /*- margin*/, y: gesture.location.y) : CGPoint(x: gesture.location.x, y: gesture.location.y /*- margin*/)
+                                    let position = ViewConversion.tapPosition(position: gesture.location,
                                                                               orientation: orientationPublisher.interfaceOrientation, parentFrame: frameSize)
                                     self.widgetViewModel.position = position
                                     self.previewViewModel.tapped(position: gesture.location, frameSize:frameSize)
                                 })
             }.aspectRatio(aspectRatio, contentMode: .fit)
+            .padding(edgeInsets)
             .background(Color.black)
-    }
-}
