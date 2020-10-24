@@ -43,6 +43,13 @@ class CameraOperation: CameraOperationProtocol {
         device.unlockForConfiguration()
     }
     
+    static func canSetExposureTargetBias(ev: EV, for device: TestableAVCaptureDevice) -> Bool {
+        let minBias = device.minExposureTargetBias
+        let maxBias = device.maxExposureTargetBias
+        
+        return (ev >= minBias && ev <= maxBias)
+    }
+    
     static func setExposureTargetBias(ev: EV, for device: TestableAVCaptureDevice, completion: @escaping (CMTime) -> Void) throws {
 
         let minBias = device.minExposureTargetBias
