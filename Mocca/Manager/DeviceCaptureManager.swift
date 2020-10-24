@@ -1,5 +1,5 @@
 //
-//  CaptureManager.swift
+//  DeviceCaptureManager.swift
 //
 //  Created by David Fearon on 15/07/2019.
 //  Copyright © 2019 n/a. All rights reserved.
