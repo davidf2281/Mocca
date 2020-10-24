@@ -30,8 +30,11 @@ final class MoccaApp: App, ObservableObject {
     /// Backs the shutter button, sending taps to photoTaker dependency
     private let shutterButtonViewModel: ShutterButtonViewModel
     
-    /// Back the histogram view and controls histogram generator
+    /// Backs the histogram view and controls histogram generator
     private let histogramViewModel: HistogramViewModel
+    
+    /// Backs exposure bias indicator and receives exposure-bias UI events from preview view controller
+    private let exposureBiasViewModel: ExposureBiasViewModel
     
     /// Capture manager is the intermediary class dealing with all communication with the device's physical camera hardware.
     private let captureManager: DeviceCaptureManager? = {
@@ -70,6 +73,7 @@ final class MoccaApp: App, ObservableObject {
         previewViewModel =       PreviewViewModel(captureManager: captureManager)
         previewViewController =  PreviewViewController(previewView: previewUIView, orientationPublisher: orientationPublisher)
         shutterButtonViewModel = ShutterButtonViewModel(photoTaker: photoTaker)
+        exposureBiasViewModel =  ExposureBiasViewModel(captureManager: captureManager)
         
         sessionQueue.async {
             self.captureManager?.startCaptureSession()
@@ -90,6 +94,7 @@ final class MoccaApp: App, ObservableObject {
             widgetViewModel:        widgetViewModel,
             shutterButtonViewModel: shutterButtonViewModel,
             previewViewModel:       previewViewModel,
+            exposureBiasViewModel:  exposureBiasViewModel,
             histogramViewModel:     histogramViewModel,
             cameraErrorView:        CameraErrorView())
             .environmentObject(orientationPublisher)

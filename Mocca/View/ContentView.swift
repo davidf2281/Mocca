@@ -18,24 +18,26 @@ struct ContentView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
     private let previewController: PreviewViewController
+    private let exposureBiasViewModel: ExposureBiasViewModel
     private let widgetViewModel:    WidgetViewModel
     private let shutterButtonViewModel: ShutterButtonViewModel
     private let histogramViewModel: HistogramViewModel
     private let cameraErrorView:   CameraErrorView
     
-    init(app: MoccaApp, previewViewController: PreviewViewController, widgetViewModel:WidgetViewModel, shutterButtonViewModel: ShutterButtonViewModel, previewViewModel:PreviewViewModel, histogramViewModel: HistogramViewModel, cameraErrorView:CameraErrorView) {
+    init(app: MoccaApp, previewViewController: PreviewViewController, widgetViewModel:WidgetViewModel, shutterButtonViewModel: ShutterButtonViewModel, previewViewModel:PreviewViewModel, exposureBiasViewModel: ExposureBiasViewModel, histogramViewModel: HistogramViewModel, cameraErrorView:CameraErrorView) {
         self.app = app
         self.previewController = previewViewController
         self.widgetViewModel = widgetViewModel
         self.shutterButtonViewModel = shutterButtonViewModel
         self.previewViewModel = previewViewModel
+        self.exposureBiasViewModel = exposureBiasViewModel
         self.histogramViewModel = histogramViewModel
         self.cameraErrorView = cameraErrorView
     }
     
     var body: some View {
         
-        let previewView = PreviewView(widgetViewModel: widgetViewModel, previewViewModel: self.previewViewModel, previewViewController: self.previewController)
+        let previewView = PreviewView(widgetViewModel: widgetViewModel, previewViewModel: self.previewViewModel, exposureBiasViewModel: self.exposureBiasViewModel, previewViewController: self.previewController)
         
         let shutterButtonView = ShutterButtonView<ShutterButtonViewModel>(viewModel: shutterButtonViewModel)
             .padding(20)

@@ -13,6 +13,7 @@ typealias EV = Float
 protocol ExposureBiasViewModelProtocol: ObservableObject {
     var compensation: EV { get }
     func dragged(extent:CGFloat)
+    func dragEnded()
 }
 
 class ExposureBiasViewModel: ExposureBiasViewModelProtocol {
@@ -21,12 +22,21 @@ class ExposureBiasViewModel: ExposureBiasViewModelProtocol {
     
     private let captureManager: CaptureManager?
     
+    private var compensationAtDragStart:EV = 0
+    private var dragStarted = false
+    
     required init(captureManager: CaptureManager?) {
         self.captureManager = captureManager
     }
     
     func dragged(extent:CGFloat) {
-        self.compensation = EV(extent / 100)
+        
+        if !self.dragStarted {
+            self.compensationAtDragStart = self.compensation
+            self.dragStarted = true
+        }
+        
+        self.compensation = self.compensationAtDragStart + EV(extent / 100)
         print("comp: \(self.compensation)")
         if let device = self.captureManager?.activeCaptureDevice {
             do {
@@ -35,5 +45,9 @@ class ExposureBiasViewModel: ExposureBiasViewModelProtocol {
                 // MARK: TODO: UI error feedback
             }
         }
+    }
+    
+    func dragEnded() {
+        self.dragStarted = false
     }
 }
