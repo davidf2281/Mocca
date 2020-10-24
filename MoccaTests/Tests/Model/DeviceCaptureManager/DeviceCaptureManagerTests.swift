@@ -85,7 +85,7 @@ class DeviceCaptureManagerTests: XCTestCase {
 
         #if targetEnvironment(simulator)
         do {
-            _ = try DeviceCaptureManager()
+            _ = try DeviceCaptureManager(resources: MockResources())
         } catch CaptureManagerError.captureDeviceNotFound {
             // Expected error
         } catch {
