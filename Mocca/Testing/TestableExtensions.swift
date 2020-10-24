@@ -23,6 +23,8 @@ protocol TestableAVCaptureDevice {
     var formats: [AVCaptureDevice.Format] { get }
     var activeVideoMinFrameDuration: CMTime { get set }
     var exposureDuration: CMTime { get }
+    var maxExposureTargetBias: Float { get }
+    var minExposureTargetBias: Float { get }
     var isExposurePointOfInterestSupported: Bool { get }
     var exposurePointOfInterest: CGPoint { get set }
     var exposureMode: AVCaptureDevice.ExposureMode { get set }
@@ -30,6 +32,7 @@ protocol TestableAVCaptureDevice {
     var focusMode: AVCaptureDevice.FocusMode { get set }
     func setFocusModeLocked(lensPosition: Float, completionHandler handler: ((CMTime) -> Void)?)
     func setExposureModeCustom(duration: CMTime, iso ISO: Float, completionHandler handler: ((CMTime) -> Void)?)
+    func setExposureTargetBias(_ bias: Float, completionHandler handler: ((CMTime) -> Void)?)
     func lockForConfiguration() throws
     func unlockForConfiguration()
 }

@@ -39,8 +39,23 @@ class CameraOperation: CameraOperationProtocol {
         }
         
         try device.lockForConfiguration()
-        
         device.setExposureModeCustom(duration: CMTimeMakeWithSeconds(seconds, preferredTimescale: currentTimescale), iso: AVCaptureDevice.currentISO, completionHandler: completion)
+        device.unlockForConfiguration()
+    }
+    
+    static func setExposureTargetBias(ev: EV, for device: TestableAVCaptureDevice, completion: @escaping (CMTime) -> Void) throws {
+
+        let minBias = device.minExposureTargetBias
+        let maxBias = device.maxExposureTargetBias
+        
+        let inBounds = (ev >= minBias && ev <= maxBias)
+        
+        if (!inBounds) {
+            throw CaptureManagerError.setExposureTargetBiasFailed
+        }
+        
+        try device.lockForConfiguration()
+        device.setExposureTargetBias(ev, completionHandler: completion)
         device.unlockForConfiguration()
     }
     

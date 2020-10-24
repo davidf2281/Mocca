@@ -15,6 +15,7 @@ enum CaptureManagerError: Error {
     case findFullRangeVideoFormatFailed
     case setIsoFailed
     case setExposureFailed
+    case setExposureTargetBiasFailed
     case unknown
 }
 
