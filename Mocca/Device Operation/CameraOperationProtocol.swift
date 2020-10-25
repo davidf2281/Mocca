@@ -14,6 +14,10 @@ protocol CameraOperationProtocol {
 
     static func setExposure(seconds : Float64, for device: TestableAVCaptureDevice, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws
     
+    static func canSetExposureTargetBias(ev: EV, for device: TestableAVCaptureDevice) -> Bool
+    
+    static func setExposureTargetBias(ev: EV, for device: TestableAVCaptureDevice, completion: @escaping (CMTime) -> Void) throws
+    
     static func setExposurePointOfInterest(_ point:CGPoint,
                                     on layer: TestableAVCaptureVideoPreviewLayer,
                                     for device: inout TestableAVCaptureDevice) -> Outcome

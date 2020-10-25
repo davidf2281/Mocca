@@ -16,7 +16,6 @@ class PreviewViewModel: ObservableObject {
     // Update aspect ratio dynamically from CaptureManager's currentOutputAspectRatio() function
     // to account for the possibility that future devices could have non-4:3 cameras or multiple cameras with
     // varying aspect ratios
-    
     /// The aspect ratio of the preview's video capture layer
     @Published private(set) var aspectRatio: CGFloat = 0.75
     

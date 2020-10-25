@@ -10,8 +10,8 @@ import Foundation
 import AVFoundation
 @testable import Mocca
 
-class MockAVCaptureDevice: TestableAVCaptureDevice {    
-    
+class MockAVCaptureDevice: TestableAVCaptureDevice {
+
     // Test vars
     var exposureMode                                = AVCaptureDevice.ExposureMode.autoExpose// MARK: TODO
     var configurationLocked : Bool                  = false
@@ -27,6 +27,9 @@ class MockAVCaptureDevice: TestableAVCaptureDevice {
     var iso: Float = 0
     var focusMode: AVCaptureDevice.FocusMode = .locked
     var isExposurePointOfInterestSupported = false// MARK: TODO
+    var exposureTargetBias: Float = 0
+    var maxExposureTargetBias: Float = 3
+    var minExposureTargetBias: Float = 3
     
     var focusPointOfInterest = CGPoint.zero {
         willSet {
@@ -39,7 +42,8 @@ class MockAVCaptureDevice: TestableAVCaptureDevice {
             exposurePointOfInterestCalled = true
         }
     }
-    
+    func setExposureTargetBias(_ bias: Float, completionHandler handler: ((CMTime) -> Void)?) {}
+
     var setLensPosition : Float?
     var activeFormat: AVCaptureDevice.Format = UnavailableInitFactory.instanceOfAVCaptureDeviceFormat()
     var formats: [AVCaptureDevice.Format] = []

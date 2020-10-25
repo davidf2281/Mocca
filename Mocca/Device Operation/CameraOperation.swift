@@ -39,8 +39,46 @@ class CameraOperation: CameraOperationProtocol {
         }
         
         try device.lockForConfiguration()
-        
         device.setExposureModeCustom(duration: CMTimeMakeWithSeconds(seconds, preferredTimescale: currentTimescale), iso: AVCaptureDevice.currentISO, completionHandler: completion)
+        device.unlockForConfiguration()
+    }
+    
+    static func canSetExposureTargetBias(ev: EV, for device: TestableAVCaptureDevice) -> Bool {
+        let minBias = device.minExposureTargetBias
+        let maxBias = device.maxExposureTargetBias
+        
+        return ev >= minBias && ev <= maxBias
+    }
+    
+    static func willTargetBiasHaveEffect(ev: EV, for device: TestableAVCaptureDevice) -> Bool {
+        let isoIsOnUpperLimit = device.iso >= device.activeFormat.maxISO
+
+        let isoIsOnLowerLimit = device.iso <= device.activeFormat.minISO
+        
+        if isoIsOnUpperLimit && ev >= device.exposureTargetBias {
+            return false
+        }
+        
+        if isoIsOnLowerLimit && ev <= device.exposureTargetBias {
+            return false
+        }
+        
+        return true
+    }
+    
+    static func setExposureTargetBias(ev: EV, for device: TestableAVCaptureDevice, completion: @escaping (CMTime) -> Void) throws {
+
+        let minBias = device.minExposureTargetBias
+        let maxBias = device.maxExposureTargetBias
+        
+        let inBounds = (ev >= minBias && ev <= maxBias)
+        
+        if (!inBounds) {
+            throw CaptureManagerError.setExposureTargetBiasFailed
+        }
+        
+        try device.lockForConfiguration()
+        device.setExposureTargetBias(ev, completionHandler: completion)
         device.unlockForConfiguration()
     }
     
@@ -55,7 +93,7 @@ class CameraOperation: CameraOperationProtocol {
         
         let convertedPoint = layer.captureDevicePointConverted(fromLayerPoint: point)
         device.exposurePointOfInterest = convertedPoint
-        device.exposureMode = .continuousAutoExposure
+        device.exposureMode = .autoExpose
         device.unlockForConfiguration()
         return .success
     }
@@ -71,7 +109,7 @@ class CameraOperation: CameraOperationProtocol {
         
         let convertedPoint = layer.captureDevicePointConverted(fromLayerPoint: point)
         device.focusPointOfInterest = convertedPoint
-        device.focusMode = .continuousAutoFocus
+        device.focusMode = .autoFocus
         device.unlockForConfiguration()
         return .success
     }

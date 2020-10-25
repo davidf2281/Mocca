@@ -9,7 +9,13 @@ import Foundation
 import AVFoundation
 
 class DeviceResources: Resources {
-   
+    
+    static let shared = DeviceResources()
+    
+    private init() {}
+    
+    public private(set) var metalDevice: MTLDevice? = MTLCreateSystemDefaultDevice()
+    
     /// Searches for an available physical camera within the supplied array of supported logical camera device types.
     /// - Parameter preferredDevice: The preferred type to return.
     /// - Parameter supportedCameraDevices: An array of CameraDevice

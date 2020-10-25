@@ -11,19 +11,15 @@ import AVFoundation
 
 class MockResources: Resources {
     
-    var deviceToReturn: TestableAVCaptureDevice?
-    
     // Test vars
     var physicalDeviceCallShouldSucceed = true
+    
     // Protocol conformance
+
+    var deviceToReturn: TestableAVCaptureDevice?
+    var metalDevice: MTLDevice? = MTLCreateSystemDefaultDevice()
+    
     func anyAvailableCamera(preferredDevice: LogicalCameraDevice, supportedCameraDevices: [LogicalCameraDevice]) -> TestableAVCaptureDevice? {
-        
-        if let device = self.deviceToReturn {
-            return device
-        } else {
-            assert(false, "deviceToReturn not set")
-        }
-        
         return nil
     }
     

@@ -1,5 +1,5 @@
 //
-//  CaptureManager.swift
+//  DeviceCaptureManager.swift
 //
 //  Created by David Fearon on 15/07/2019.
 //  Copyright © 2019 n/a. All rights reserved.
@@ -29,14 +29,14 @@ class DeviceCaptureManager: CaptureManager {
     public private(set) var captureSession : TestableAVCaptureSession
     public private(set) var activeCaptureDevice : TestableAVCaptureDevice
 
-    private let photoOutput : AVCapturePhotoOutput
+    private let photoOutput: AVCapturePhotoOutput
+    private let videoDataOutput: AVCaptureVideoDataOutput
     private let photoSettings: AVCapturePhotoSettings
     private let resources: Resources
     
-    convenience init() throws {
+    convenience init(resources: Resources) throws {
         
         let startupCamera = LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back)
-        let resources = DeviceResources()
         
         guard let initialCaptureDevice =
                 resources.anyAvailableCamera(preferredDevice: startupCamera,
@@ -52,16 +52,19 @@ class DeviceCaptureManager: CaptureManager {
         
         let photoOutput = Self.configuredPhotoOutput()
         
-        try self.init(captureSession: captureSession, output: photoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput, resources:resources)
+        let videoOutput = Self.configuredVideoDataOutput()
+                
+        try self.init(captureSession: captureSession, photoOutput: photoOutput, videoOutput: videoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput, resources:resources)
     }
     
-    public init(captureSession: TestableAVCaptureSession, output: AVCapturePhotoOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: TestableAVCaptureDeviceInput, resources: Resources) throws {
+    public init(captureSession: TestableAVCaptureSession, photoOutput: AVCapturePhotoOutput, videoOutput: AVCaptureVideoDataOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: TestableAVCaptureDeviceInput, resources: Resources) throws {
         
-        self.photoOutput =          output
+        self.photoOutput =          photoOutput
+        self.videoDataOutput =      videoOutput
         self.captureSession =       captureSession
         self.activeCaptureDevice =  initialCaptureDevice
         self.resources = resources
-        
+                
         // MARK: Capture-session configuration
         self.captureSession.beginConfiguration()
         
@@ -76,7 +79,13 @@ class DeviceCaptureManager: CaptureManager {
         if captureSession.canAddOutput(photoOutput) {
             captureSession.addOutput(photoOutput)
         } else {
-            throw CaptureManagerError.addVideoOutputFailed
+            throw CaptureManagerError.addPhotoOutputFailed
+        }
+        
+        if captureSession.canAddOutput(videoDataOutput) {
+            captureSession.addOutput(videoDataOutput)
+        } else {
+            throw CaptureManagerError.addVideoDataOutputFailed
         }
         
         // MARK: Photo settings
@@ -123,12 +132,24 @@ class DeviceCaptureManager: CaptureManager {
         return .failure
     }
     
+    public func setSampleBufferDelegate(_ delegate: AVCaptureVideoDataOutputSampleBufferDelegate,
+                                 queue callbackQueue: DispatchQueue) {
+        self.videoDataOutput.setSampleBufferDelegate(delegate, queue: callbackQueue)
+    }
+    
     internal class func configuredPhotoOutput() -> AVCapturePhotoOutput {
         let photoOutput = AVCapturePhotoOutput()
         photoOutput.isHighResolutionCaptureEnabled = true
         photoOutput.isLivePhotoCaptureEnabled = false
         photoOutput.maxPhotoQualityPrioritization = .quality // MARK: TODO: Tests to make sure this has been set before setting settings.photoQualityPrioritization
         return photoOutput
+    }
+    
+    internal class func configuredVideoDataOutput() -> AVCaptureVideoDataOutput {
+        let videoDataOutput = AVCaptureVideoDataOutput()
+        // MARK: TODO: We must't assume 32BGRA pixel format is always available
+        videoDataOutput.videoSettings = [ String(kCVPixelBufferPixelFormatTypeKey) : kCVPixelFormatType_32BGRA] 
+        return videoDataOutput
     }
     
     internal class func configuredPhotoSettings(for photoOutput:AVCapturePhotoOutput) -> AVCapturePhotoSettings {

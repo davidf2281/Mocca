@@ -11,10 +11,12 @@ import AVFoundation
 enum CaptureManagerError: Error {
     case captureDeviceNotFound
     case addVideoInputFailed
-    case addVideoOutputFailed
+    case addVideoDataOutputFailed
+    case addPhotoOutputFailed
     case findFullRangeVideoFormatFailed
     case setIsoFailed
     case setExposureFailed
+    case setExposureTargetBiasFailed
     case unknown
 }
 
@@ -26,4 +28,6 @@ protocol CaptureManager {
     func selectCamera(type: LogicalCameraDevice) -> Outcome
     func currentPhotoSettings() -> AVCapturePhotoSettings
     func capturePhoto(settings:AVCapturePhotoSettings, delegate: AVCapturePhotoCaptureDelegate)
+    func setSampleBufferDelegate(_ delegate: AVCaptureVideoDataOutputSampleBufferDelegate,
+                                 queue callbackQueue: DispatchQueue)
 }

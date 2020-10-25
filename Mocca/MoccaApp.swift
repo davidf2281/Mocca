@@ -29,13 +29,21 @@ final class MoccaApp: App, ObservableObject {
     
     /// Backs the shutter button, sending taps to photoTaker dependency
     private let shutterButtonViewModel: ShutterButtonViewModel
-
+    
+    /// Backs the histogram view and controls histogram generator
+    private let histogramViewModel: HistogramViewModel
+    
+    /// Backs exposure bias indicator and receives exposure-bias UI events from preview view controller
+    private let exposureBiasViewModel: ExposureBiasViewModel
+    
     /// Capture manager is the intermediary class dealing with all communication with the device's physical camera hardware.
     private let captureManager: DeviceCaptureManager? = {
         var manager : DeviceCaptureManager?
-        do { try manager = DeviceCaptureManager() } catch { manager = nil }
+        do { try manager = DeviceCaptureManager(resources: DeviceResources.shared) } catch { manager = nil }
         return manager
     }()
+    
+    private let histogramGenerator = HistogramGenerator(mtlDevice: DeviceResources.shared.metalDevice)
     
     /// Camera apps cannot conform to the Apple ideal of disregarding orientation and considering only frame bounds & size classes,
     /// thus current device orientation needs to be consumed by various views and the capture manager.
@@ -60,11 +68,13 @@ final class MoccaApp: App, ObservableObject {
         captureManager?.videoPreviewLayer = previewUIView.videoPreviewLayer
         
         photoTaker =             DevicePhotoTaker(captureManager: captureManager ?? nil, photoLibrary: PHPhotoLibrary.shared())
+        histogramViewModel =     HistogramViewModel(histogramGenerator: histogramGenerator, captureManager: captureManager)
         widgetViewModel =        WidgetViewModel(captureManager: captureManager, dockedPosition:CGPoint(x: 55, y: 55), displayCharacter:"f")
         previewViewModel =       PreviewViewModel(captureManager: captureManager)
         previewViewController =  PreviewViewController(previewView: previewUIView, orientationPublisher: orientationPublisher)
         shutterButtonViewModel = ShutterButtonViewModel(photoTaker: photoTaker)
-
+        exposureBiasViewModel =  ExposureBiasViewModel(captureManager: captureManager)
+        
         sessionQueue.async {
             self.captureManager?.startCaptureSession()
             DispatchQueue.main.async {
@@ -84,6 +94,8 @@ final class MoccaApp: App, ObservableObject {
             widgetViewModel:        widgetViewModel,
             shutterButtonViewModel: shutterButtonViewModel,
             previewViewModel:       previewViewModel,
+            exposureBiasViewModel:  exposureBiasViewModel,
+            histogramViewModel:     histogramViewModel,
             cameraErrorView:        CameraErrorView())
             .environmentObject(orientationPublisher)
             .background(Color.black)
