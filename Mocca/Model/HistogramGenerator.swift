@@ -29,14 +29,14 @@ public struct Histogram {
 
 public class HistogramGenerator {
     
-    private let mtlDevice: MTLDevice
+    private let mtlDevice: MTLDevice?
     private let commandQueue: MTLCommandQueue
     private let commandBuffer: MTLCommandBuffer
     
-    required public init?(mtlDevice: MTLDevice) {
+    required public init?(mtlDevice: MTLDevice?) {
         self.mtlDevice = mtlDevice
         
-        guard let commandQueue = mtlDevice.makeCommandQueue() else {
+        guard let commandQueue = mtlDevice?.makeCommandQueue() else {
             return nil
         }
         self.commandQueue = commandQueue
@@ -52,6 +52,10 @@ public class HistogramGenerator {
     }
     
     public func generate(sampleBuffer: CMSampleBuffer) -> Histogram? {
+        
+        guard let mtlDevice = self.mtlDevice else {
+            return nil
+        }
         
         let binCount = 128
         

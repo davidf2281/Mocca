@@ -10,13 +10,14 @@ import AVFoundation
 @testable import Mocca
 
 class MockResources: Resources {
+    
     // Test vars
     var physicalDeviceCallShouldSucceed = true
     
     // Protocol conformance
 
     var deviceToReturn: TestableAVCaptureDevice?
-    var metalDevice: MTLDevice = MTLCreateSystemDefaultDevice()!
+    var metalDevice: MTLDevice? = MTLCreateSystemDefaultDevice()
     
     func anyAvailableCamera(preferredDevice: LogicalCameraDevice, supportedCameraDevices: [LogicalCameraDevice]) -> TestableAVCaptureDevice? {
         return nil

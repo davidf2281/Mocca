@@ -14,7 +14,7 @@ class DeviceResources: Resources {
     
     private init() {}
     
-    public private(set) var metalDevice: MTLDevice = MTLCreateSystemDefaultDevice()! // MARK: TODO: Something safer here than force-unwrapping
+    public private(set) var metalDevice: MTLDevice? = MTLCreateSystemDefaultDevice()
     
     /// Searches for an available physical camera within the supplied array of supported logical camera device types.
     /// - Parameter preferredDevice: The preferred type to return.

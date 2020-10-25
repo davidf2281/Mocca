@@ -10,7 +10,7 @@ import AVFoundation
 
 protocol Resources {
     
-    var metalDevice: MTLDevice { get }
+    var metalDevice: MTLDevice? { get }
     
     func anyAvailableCamera(preferredDevice:LogicalCameraDevice,
                             supportedCameraDevices: [LogicalCameraDevice]) -> TestableAVCaptureDevice?
