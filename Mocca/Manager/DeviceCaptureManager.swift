@@ -48,7 +48,7 @@ class DeviceCaptureManager: CaptureManager {
         let videoInput = try AVCaptureDeviceInput(device: initialCaptureDevice as! AVCaptureDevice)
         
         let captureSession = AVCaptureSession()
-        captureSession.sessionPreset = .photo
+        captureSession.sessionPreset = .photo // MARK: TODO: Should call canSetSessionPreset(_:) before setting the preset
         
         let photoOutput = Self.configuredPhotoOutput()
         
@@ -137,6 +137,21 @@ class DeviceCaptureManager: CaptureManager {
         self.videoDataOutput.setSampleBufferDelegate(delegate, queue: callbackQueue)
     }
     
+    func setActiveCaptureDevice(_ device: TestableAVCaptureDevice) throws {
+        self.activeCaptureDevice = device
+        self.captureSession.beginConfiguration()
+        guard let currentInput = self.captureSession.inputs.first else { return } // MARK: TODO: Throw here instead of silent return
+        self.captureSession.removeInput(currentInput)
+        let videoInput = try AVCaptureDeviceInput(device: device as! AVCaptureDevice)
+        
+        if self.captureSession.canAddInput(videoInput ) {
+            self.captureSession.addInput(videoInput )
+        } else {
+            throw CaptureManagerError.addVideoInputFailed
+        }
+        self.captureSession.commitConfiguration()
+    }
+
     internal class func configuredPhotoOutput() -> AVCapturePhotoOutput {
         let photoOutput = AVCapturePhotoOutput()
         photoOutput.isHighResolutionCaptureEnabled = true

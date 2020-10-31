@@ -38,6 +38,20 @@ class DeviceResources: Resources {
         return nil
     }
     
+    func allAvailableCameras(in logicalDevices:[LogicalCameraDevice]) -> [TestableAVCaptureDevice] {
+        
+        var availableCameras:[TestableAVCaptureDevice] = []
+        
+        for logicalDevice in logicalDevices {
+            if let device = physicalDevice(from: logicalDevice) {
+                availableCameras.append(device)
+                print("fov: \(device.activeFormat.videoFieldOfView)")
+            }
+        }
+        
+        return availableCameras
+    }
+    
     func physicalDevice(from logicalDevice: LogicalCameraDevice) -> TestableAVCaptureDevice? {
         let session = AVCaptureDevice.DiscoverySession(deviceTypes: [logicalDevice.type], mediaType: .video, position: logicalDevice.position)
         if let device = session.devices.first {

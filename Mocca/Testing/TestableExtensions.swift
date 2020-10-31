@@ -46,11 +46,13 @@ protocol TestableAVCaptureVideoPreviewLayer {
 
 protocol TestableAVCaptureSession {
     var sessionPreset: AVCaptureSession.Preset { get set }
+    var inputs: [AVCaptureInput] { get }
     func beginConfiguration()
     func canAddInput(_: AVCaptureInput) -> Bool
     func addInput(_ input: AVCaptureInput)
     func canAddOutput(_ output: AVCaptureOutput) -> Bool
     func addOutput(_ output: AVCaptureOutput)
+    func removeInput(_ input: AVCaptureInput)
     func commitConfiguration()
     func startRunning()
     func stopRunning()

@@ -23,8 +23,9 @@ struct ContentView: View {
     private let shutterButtonViewModel: ShutterButtonViewModel
     private let histogramViewModel: HistogramViewModel
     private let cameraErrorView:   CameraErrorView
+    private let availableCameraViewModels: [AvailableCameraButtonViewModel]
     
-    init(app: MoccaApp, previewViewController: PreviewViewController, widgetViewModel:WidgetViewModel, shutterButtonViewModel: ShutterButtonViewModel, previewViewModel:PreviewViewModel, exposureBiasViewModel: ExposureBiasViewModel, histogramViewModel: HistogramViewModel, cameraErrorView:CameraErrorView) {
+    init(app: MoccaApp, previewViewController: PreviewViewController, widgetViewModel:WidgetViewModel, shutterButtonViewModel: ShutterButtonViewModel, previewViewModel:PreviewViewModel, exposureBiasViewModel: ExposureBiasViewModel, histogramViewModel: HistogramViewModel, availableCameraViewModels: [AvailableCameraButtonViewModel], cameraErrorView:CameraErrorView) {
         self.app = app
         self.previewController = previewViewController
         self.widgetViewModel = widgetViewModel
@@ -32,6 +33,7 @@ struct ContentView: View {
         self.previewViewModel = previewViewModel
         self.exposureBiasViewModel = exposureBiasViewModel
         self.histogramViewModel = histogramViewModel
+        self.availableCameraViewModels = availableCameraViewModels
         self.cameraErrorView = cameraErrorView
     }
     
@@ -47,10 +49,20 @@ struct ContentView: View {
         if self.app.appState == .nominal {
             if verticalSizeClass == .regular {
                 VStack(alignment:.center) {
+                    
                     Spacer()
                     histogramView
                     Spacer()
                     previewView
+                    
+                    if (availableCameraViewModels.count > 1) {
+                        Spacer()
+                        HStack{
+                            ForEach(availableCameraViewModels, id: \.ID) { cameraViewModel in
+                                AvailableCameraButtonView(viewModel: cameraViewModel)
+                            }
+                        }
+                    }
                     Spacer()
                     shutterButtonView
                     Spacer()

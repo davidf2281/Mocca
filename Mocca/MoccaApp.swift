@@ -36,6 +36,9 @@ final class MoccaApp: App, ObservableObject {
     /// Backs exposure bias indicator and receives exposure-bias UI events from preview view controller
     private let exposureBiasViewModel: ExposureBiasViewModel
     
+    /// Backs available cameras
+    private var availableCameraViewModels: [AvailableCameraButtonViewModel]  = []
+    
     /// Capture manager is the intermediary class dealing with all communication with the device's physical camera hardware.
     private let captureManager: DeviceCaptureManager? = {
         var manager : DeviceCaptureManager?
@@ -56,6 +59,9 @@ final class MoccaApp: App, ObservableObject {
     /// Capture-session video preview (ie, camera viewfinder).
     private let previewUIView = PreviewUIView()
     
+    /// Array of available physical video capture devices
+    private var availableCameras: [TestableAVCaptureDevice]
+    
     init() {
         
         // If capture-manager setup has failed we have a hardware problem, OR we're running in the simulator.
@@ -74,6 +80,14 @@ final class MoccaApp: App, ObservableObject {
         previewViewController =  PreviewViewController(previewView: previewUIView, orientationPublisher: orientationPublisher)
         shutterButtonViewModel = ShutterButtonViewModel(photoTaker: photoTaker)
         exposureBiasViewModel =  ExposureBiasViewModel(captureManager: captureManager)
+        availableCameras =       DeviceResources.shared.allAvailableCameras(in: DeviceCaptureManager.supportedCameraDevices) // MARK: TODO: pull supportedCameraDevices out of DCM
+        
+        for availableCameraDevice in availableCameras {
+            let selected = ( captureManager?.activeCaptureDevice as! AVCaptureDevice === availableCameraDevice as! AVCaptureDevice )
+            let availableCamera = AvailableCamera(camera: availableCameraDevice)
+            let availableCameraViewModel = AvailableCameraButtonViewModel(selected: selected, camera: availableCamera, captureManager: captureManager)
+            availableCameraViewModels.append(availableCameraViewModel)
+        }
         
         sessionQueue.async {
             self.captureManager?.startCaptureSession()
@@ -90,13 +104,14 @@ final class MoccaApp: App, ObservableObject {
         // Compose our main app view.
         return ContentView(
             app: self,
-            previewViewController:  previewViewController,
-            widgetViewModel:        widgetViewModel,
-            shutterButtonViewModel: shutterButtonViewModel,
-            previewViewModel:       previewViewModel,
-            exposureBiasViewModel:  exposureBiasViewModel,
-            histogramViewModel:     histogramViewModel,
-            cameraErrorView:        CameraErrorView())
+            previewViewController:     previewViewController,
+            widgetViewModel:           widgetViewModel,
+            shutterButtonViewModel:    shutterButtonViewModel,
+            previewViewModel:          previewViewModel,
+            exposureBiasViewModel:     exposureBiasViewModel,
+            histogramViewModel:        histogramViewModel,
+            availableCameraViewModels: availableCameraViewModels,
+            cameraErrorView:           CameraErrorView())
             .environmentObject(orientationPublisher)
             .background(Color.black)
             .statusBar(hidden: true)
