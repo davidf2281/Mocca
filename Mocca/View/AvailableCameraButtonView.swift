@@ -6,19 +6,26 @@
 //
 
 import SwiftUI
-
+import AVFoundation
 struct AvailableCameraButtonView: View {
     
     @ObservedObject var viewModel: AvailableCameraButtonViewModel
     
     var body: some View {
-        let fovString = String(format: "%.0fº", viewModel.fov)
+//        let fovString = String(format: "%.0fº", viewModel.fov)
+        let angleString = viewModel.fov > 50 ? "wide" : "tele" // MARK: TODO: Yuck.
+        let displayString = viewModel.position == .back ? angleString : "front"
         ZStack {
-            Text(fovString).foregroundColor(viewModel.selected ? Color.white : Color.gray)
-            Circle().stroke(viewModel.selected ? Color.white : Color.gray, style: StrokeStyle( lineWidth: viewModel.selected ? 2 : 1 ))
-                .frame(width: 40, height: 40, alignment: .center)
+            Text(displayString).foregroundColor(viewModel.selected ? Color.white : Color.gray)
+                .font(.system(size: 14))
+                .padding(6)
+                .frame(minWidth: 50)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(viewModel.selected ? Color.white : Color.gray, lineWidth: viewModel.selected ? 2 : 1)
+                        )
+               
         }
-        .padding(EdgeInsets(top: 2, leading: 10, bottom: 0, trailing: 10))
         .onTapGesture {
             self.viewModel.tapped()
         }

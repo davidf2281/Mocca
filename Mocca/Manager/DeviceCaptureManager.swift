@@ -24,7 +24,9 @@ class DeviceCaptureManager: CaptureManager, ObservableObject {
     
     public static let supportedCameraDevices = [LogicalCameraDevice(type: .builtInTelephotoCamera, position: .back),
                                                 LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back),
-                                                LogicalCameraDevice(type: .builtInUltraWideCamera, position: .back)]
+                                                LogicalCameraDevice(type: .builtInUltraWideCamera, position: .back),
+                                                LogicalCameraDevice(type: .builtInTelephotoCamera, position: .front),
+                                                LogicalCameraDevice(type: .builtInWideAngleCamera, position: .front)]
     
     public private(set) var captureSession : TestableAVCaptureSession
     @Published public private(set) var activeCaptureDevice : TestableAVCaptureDevice
@@ -45,7 +47,7 @@ class DeviceCaptureManager: CaptureManager, ObservableObject {
             throw CaptureManagerError.captureDeviceNotFound
         }
         
-        let videoInput = try AVCaptureDeviceInput(device: initialCaptureDevice as! AVCaptureDevice)
+        let videoInput = try AVCaptureDeviceInput(device: initialCaptureDevice.captureDevice)
         
         let captureSession = AVCaptureSession()
         captureSession.sessionPreset = .photo // MARK: TODO: Should call canSetSessionPreset(_:) before setting the preset
@@ -54,10 +56,10 @@ class DeviceCaptureManager: CaptureManager, ObservableObject {
         
         let videoOutput = Self.configuredVideoDataOutput()
                 
-        try self.init(captureSession: captureSession, photoOutput: photoOutput, videoOutput: videoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput, resources:resources)
+        try self.init(captureSession: captureSession, photoOutput: photoOutput, videoOutput: videoOutput, initialCaptureDevice: initialCaptureDevice.captureDevice, videoInput: videoInput, resources:resources)
     }
     
-    public init(captureSession: TestableAVCaptureSession, photoOutput: AVCapturePhotoOutput, videoOutput: AVCaptureVideoDataOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: TestableAVCaptureDeviceInput, resources: Resources) throws {
+    public init(captureSession: TestableAVCaptureSession, photoOutput: AVCapturePhotoOutput, videoOutput: AVCaptureVideoDataOutput, initialCaptureDevice: AVCaptureDevice, videoInput: TestableAVCaptureDeviceInput, resources: Resources) throws {
         
         self.photoOutput =          photoOutput
         self.videoDataOutput =      videoOutput
@@ -124,8 +126,8 @@ class DeviceCaptureManager: CaptureManager, ObservableObject {
     /// - Parameter type: The type of camera to select
     /// - Returns: true if the operation succeeded; false otherwise
     public func selectCamera(type: LogicalCameraDevice) -> Outcome {
-        if let device = self.resources.physicalDevice(from: type) {
-            self.activeCaptureDevice = device
+        if let device = self.resources.availableCamera(from: type) {
+            self.activeCaptureDevice = device as! TestableAVCaptureDevice
             return .success
         }
         

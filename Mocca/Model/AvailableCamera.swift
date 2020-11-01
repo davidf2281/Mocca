@@ -6,18 +6,21 @@
 //
 
 import Foundation
+import AVFoundation
 
 typealias FOV = Float
 
 class AvailableCamera {
-    
+    let position: AVCaptureDevice.Position
+
     var fov: FOV {
         return self.captureDevice.activeFormat.videoFieldOfView
     }
     
-    let captureDevice: TestableAVCaptureDevice
+    let captureDevice: AVCaptureDevice
     
-    required init(camera: TestableAVCaptureDevice) {
+    required init(camera: AVCaptureDevice, position: AVCaptureDevice.Position) {
         self.captureDevice = camera
+        self.position = position
     }
 }

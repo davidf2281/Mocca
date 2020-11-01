@@ -60,7 +60,7 @@ final class MoccaApp: App, ObservableObject {
     private let previewUIView = PreviewUIView()
     
     /// Array of available physical video capture devices
-    private var availableCameras: [TestableAVCaptureDevice]
+    private var availableCameras: [AvailableCamera]
     
     init() {
         
@@ -82,9 +82,8 @@ final class MoccaApp: App, ObservableObject {
         exposureBiasViewModel =  ExposureBiasViewModel(captureManager: captureManager)
         availableCameras =       DeviceResources.shared.allAvailableCameras(in: DeviceCaptureManager.supportedCameraDevices) // MARK: TODO: pull supportedCameraDevices out of DCM
         
-        for availableCameraDevice in availableCameras {
-            let selected = ( captureManager?.activeCaptureDevice as! AVCaptureDevice === availableCameraDevice as! AVCaptureDevice )
-            let availableCamera = AvailableCamera(camera: availableCameraDevice)
+        for availableCamera in availableCameras {
+            let selected = ( captureManager?.activeCaptureDevice as! AVCaptureDevice === availableCamera.captureDevice )
             let availableCameraViewModel = AvailableCameraButtonViewModel(selected: selected, camera: availableCamera, captureManager: captureManager)
             availableCameraViewModels.append(availableCameraViewModel)
         }

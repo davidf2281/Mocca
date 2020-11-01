@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import AVFoundation
+
 protocol AvailableCameraButtonViewModelProtocol {
     var fov: FOV { get }
     var selected: Bool { get }
@@ -17,7 +18,8 @@ protocol AvailableCameraButtonViewModelProtocol {
 class AvailableCameraButtonViewModel: AvailableCameraButtonViewModelProtocol, ObservableObject {
     
     @Published private(set) var selected: Bool
-    
+    let position: AVCaptureDevice.Position
+
     private var cancellables = Set<AnyCancellable>()
     
     var fov: FOV {
@@ -41,12 +43,12 @@ class AvailableCameraButtonViewModel: AvailableCameraButtonViewModelProtocol, Ob
         self.selected = selected
         self.camera = camera
         self.captureManager = captureManager
-        
+        self.position = camera.position
         // Bind model's activeCaptureDevice to our selected state
         captureManager?.$activeCaptureDevice
             .map( { $0 as! AVCaptureDevice } )
             .sink(receiveValue: { (device) in
-                self.selected = (device === self.camera.captureDevice as! AVCaptureDevice)
+                self.selected = ( device === self.camera.captureDevice )
             })
             .store(in: &cancellables)
     }

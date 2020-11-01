@@ -21,16 +21,16 @@ class DeviceResources: Resources {
     /// - Parameter supportedCameraDevices: An array of CameraDevice
     /// - Returns: A physical camera of the preferred type, the first available if the preferred choice is not found, or nil if none are found.
     func anyAvailableCamera(preferredDevice:LogicalCameraDevice,
-                                          supportedCameraDevices: [LogicalCameraDevice]) -> TestableAVCaptureDevice? {
+                                          supportedCameraDevices: [LogicalCameraDevice]) -> AvailableCamera? {
         
         if supportedCameraDevices.contains(preferredDevice) {
-            if let device = physicalDevice(from: preferredDevice) {
-                return device
+            if let camera = availableCamera(from: preferredDevice) {
+                return camera
             }
         }
         
         for supportedDevice in supportedCameraDevices {
-            if let device = physicalDevice(from: supportedDevice) {
+            if let device = availableCamera(from: supportedDevice) {
                 return device
             }
         }
@@ -38,24 +38,24 @@ class DeviceResources: Resources {
         return nil
     }
     
-    func allAvailableCameras(in logicalDevices:[LogicalCameraDevice]) -> [TestableAVCaptureDevice] {
+    func allAvailableCameras(in logicalDevices:[LogicalCameraDevice]) -> [AvailableCamera] {
         
-        var availableCameras:[TestableAVCaptureDevice] = []
+        var availableCameras:[AvailableCamera] = []
         
         for logicalDevice in logicalDevices {
-            if let device = physicalDevice(from: logicalDevice) {
-                availableCameras.append(device)
-                print("fov: \(device.activeFormat.videoFieldOfView)")
+            if let camera = availableCamera(from: logicalDevice) {
+                availableCameras.append(camera)
+                print("fov: \(camera.captureDevice.activeFormat.videoFieldOfView)")
             }
         }
         
         return availableCameras
     }
     
-    func physicalDevice(from logicalDevice: LogicalCameraDevice) -> TestableAVCaptureDevice? {
+    func availableCamera(from logicalDevice: LogicalCameraDevice) -> AvailableCamera? {
         let session = AVCaptureDevice.DiscoverySession(deviceTypes: [logicalDevice.type], mediaType: .video, position: logicalDevice.position)
-        if let device = session.devices.first {
-            return device
+        if let camera = session.devices.first {
+            return AvailableCamera(camera: camera, position: logicalDevice.position)
         }
         
         return nil

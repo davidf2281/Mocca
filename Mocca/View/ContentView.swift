@@ -59,6 +59,7 @@ struct ContentView: View {
                         Spacer()
                         AvailableCameraButtonsView(viewModels: availableCameraViewModels)
                     }
+                    
                     Spacer()
                     shutterButtonView
                     Spacer()
@@ -70,6 +71,10 @@ struct ContentView: View {
                     previewView
                     Spacer()
                     VStack {
+                        if (availableCameraViewModels.count > 1) {
+                            Spacer()
+                            AvailableCameraButtonsView(viewModels: availableCameraViewModels)
+                        }
                         Spacer()
                         shutterButtonView
                         Spacer()
