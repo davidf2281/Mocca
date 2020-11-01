@@ -13,8 +13,8 @@ struct AvailableCameraButtonView: View {
     
     var body: some View {
 //        let fovString = String(format: "%.0fº", viewModel.fov)
-        let angleString = viewModel.fov > 50 ? "wide" : "tele" // MARK: TODO: Yuck.
-        let displayString = viewModel.position == .back ? angleString : "front"
+
+        let displayString = viewModel.position == .back ? viewModel.cameraTypeDisplayString() : "front"
         ZStack {
             Text(displayString).foregroundColor(viewModel.selected ? Color.white : Color.gray)
                 .font(.system(size: 14))

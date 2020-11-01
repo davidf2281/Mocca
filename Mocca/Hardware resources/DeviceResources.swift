@@ -55,7 +55,7 @@ class DeviceResources: Resources {
     func availableCamera(from logicalDevice: LogicalCameraDevice) -> AvailableCamera? {
         let session = AVCaptureDevice.DiscoverySession(deviceTypes: [logicalDevice.type], mediaType: .video, position: logicalDevice.position)
         if let camera = session.devices.first {
-            return AvailableCamera(camera: camera, position: logicalDevice.position)
+            return AvailableCamera(camera: camera, position: logicalDevice.position, type: logicalDevice.type)
         }
         
         return nil

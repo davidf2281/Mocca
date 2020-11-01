@@ -12,15 +12,16 @@ typealias FOV = Float
 
 class AvailableCamera {
     let position: AVCaptureDevice.Position
-
+    let type: AVCaptureDevice.DeviceType
     var fov: FOV {
         return self.captureDevice.activeFormat.videoFieldOfView
     }
     
     let captureDevice: AVCaptureDevice
     
-    required init(camera: AVCaptureDevice, position: AVCaptureDevice.Position) {
+    required init(camera: AVCaptureDevice, position: AVCaptureDevice.Position, type: AVCaptureDevice.DeviceType) {
         self.captureDevice = camera
         self.position = position
+        self.type = type
     }
 }

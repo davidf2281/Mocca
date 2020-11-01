@@ -25,7 +25,7 @@ struct PreviewView: View {
         
         let sizeClass: UserInterfaceSizeClass = verticalSizeClass == .regular ? .regular : .compact
         
-        let previewModifier = PreviewModifier(aspectRatio: aspectRatio, verticalSizeClass: sizeClass, widgetViewModel: widgetViewModel, previewViewModel: previewViewModel, exposureBiasViewModel: exposureBiasViewModel)
+        let previewModifier = PreviewModifier(previewViewModel: previewViewModel, aspectRatio: aspectRatio, verticalSizeClass: sizeClass, widgetViewModel: widgetViewModel, exposureBiasViewModel: exposureBiasViewModel)
         
         if System.runningInSimulator() == false {
             self.previewViewController
@@ -40,11 +40,11 @@ struct PreviewView: View {
 struct PreviewModifier: ViewModifier {
     
     @EnvironmentObject var orientationPublisher: OrientationPublisher
-    
+    @ObservedObject var previewViewModel: PreviewViewModel
+
     let aspectRatio: CGFloat
     let verticalSizeClass: UserInterfaceSizeClass
     let widgetViewModel: WidgetViewModel
-    let previewViewModel: PreviewViewModel
     let exposureBiasViewModel: ExposureBiasViewModel
     
     func body(content: Content) -> some View {
@@ -59,7 +59,9 @@ struct PreviewModifier: ViewModifier {
             GeometryReader { parent in
                 content
                     .border(Color(white: 1), width: 5)
-                    .overlay(WidgetView( viewModel: widgetViewModel).accessibility(label: Text("reticle")))
+                    .conditionalModifier(previewViewModel.hasBeenTapped) {view in
+                        view.overlay(WidgetView( viewModel: widgetViewModel).accessibility(label: Text("reticle")))
+                    }
                     // Drag gesture is simulating a tap gesture because SwiftUI won't tell us the location of actual tap gestures:
                     .gesture(DragGesture(minimumDistance: 10, coordinateSpace: .local)
                                 .onChanged { gesture in
@@ -80,5 +82,19 @@ struct PreviewModifier: ViewModifier {
             .padding(edgeInsets)
             .background(Color.black)
     }
+}
+
+extension View {
+    // 1 Create a ViewBuilder function that can be applied to any type of content conforming to view
+  @ViewBuilder func conditionalModifier<Content: View>(_ condition: Bool,
+                                                       transform: (Self) -> Content) -> some View {
+    if condition {
+        // 2 If condition matches, apply the transform
+      transform(self)
+    } else {
+      // 3 If not, just return the original view
+      self
+    }
+  }
 }
 

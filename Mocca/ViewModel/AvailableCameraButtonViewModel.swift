@@ -18,8 +18,15 @@ protocol AvailableCameraButtonViewModelProtocol {
 class AvailableCameraButtonViewModel: AvailableCameraButtonViewModelProtocol, ObservableObject {
     
     @Published private(set) var selected: Bool
-    let position: AVCaptureDevice.Position
-
+    
+    var position: AVCaptureDevice.Position {
+        return self.camera.position
+    }
+    
+    var type:AVCaptureDevice.DeviceType {
+        return self.camera.type
+    }
+    
     private var cancellables = Set<AnyCancellable>()
     
     var fov: FOV {
@@ -36,6 +43,19 @@ class AvailableCameraButtonViewModel: AvailableCameraButtonViewModelProtocol, Ob
         }
     }
     
+    func cameraTypeDisplayString() -> String {
+        switch self.type {
+        case .builtInTelephotoCamera:
+            return "tele"
+        case .builtInWideAngleCamera:
+            return "wide"
+        case .builtInUltraWideCamera:
+            return "ultrawide"
+        default:
+            return "other"
+        }
+    }
+    
     private let captureManager: DeviceCaptureManager?
     private let camera: AvailableCamera
     
@@ -43,7 +63,6 @@ class AvailableCameraButtonViewModel: AvailableCameraButtonViewModelProtocol, Ob
         self.selected = selected
         self.camera = camera
         self.captureManager = captureManager
-        self.position = camera.position
         // Bind model's activeCaptureDevice to our selected state
         captureManager?.$activeCaptureDevice
             .map( { $0 as! AVCaptureDevice } )
