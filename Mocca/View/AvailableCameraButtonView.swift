@@ -18,16 +18,9 @@ struct AvailableCameraButtonView: View {
             Circle().stroke(viewModel.selected ? Color.white : Color.gray, style: StrokeStyle( lineWidth: viewModel.selected ? 2 : 1 ))
                 .frame(width: 40, height: 40, alignment: .center)
         }
-        .animation(.default)
         .padding(EdgeInsets(top: 2, leading: 10, bottom: 0, trailing: 10))
         .onTapGesture {
             self.viewModel.tapped()
         }
     }
 }
-
-//struct AvailableCameraButtonView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AvailableCameraButtonView(AvailableCameraButtonViewModel(selected: true, camera: AvailableCamera(camera: Mock), captureManager: <#T##CaptureManager?#>)
-//    }
-//}

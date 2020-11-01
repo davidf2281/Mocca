@@ -51,6 +51,7 @@
 		8C7EF032251CEAB500CF9CFE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7EF031251CEAB500CF9CFE /* ContentView.swift */; };
 		8C7EF034251CEAB700CF9CFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C7EF033251CEAB700CF9CFE /* Assets.xcassets */; };
 		8C7EF037251CEAB700CF9CFE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C7EF036251CEAB700CF9CFE /* Preview Assets.xcassets */; };
+		8C7F4DB1254E1C0E007AD895 /* AvailableCameraButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7F4DB0254E1C0E007AD895 /* AvailableCameraButtonsView.swift */; };
 		8CA9F408252DD04F00730F4C /* ProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9F407252DD04F00730F4C /* ProjectTests.swift */; };
 		8CA9F413252DDB7200730F4C /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9F412252DDB7200730F4C /* System.swift */; };
 		8CBEB527252B2F9800D6525F /* MockPHPhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CBEB526252B2F9800D6525F /* MockPHPhotoLibrary.swift */; };
@@ -141,6 +142,7 @@
 		8C7EF043251CEAB700CF9CFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C7EF048251CEAB700CF9CFE /* MoccaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoccaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C7EF04E251CEAB700CF9CFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8C7F4DB0254E1C0E007AD895 /* AvailableCameraButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableCameraButtonsView.swift; sourceTree = "<group>"; };
 		8CA9F407252DD04F00730F4C /* ProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTests.swift; sourceTree = "<group>"; };
 		8CA9F412252DDB7200730F4C /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		8CBEB526252B2F9800D6525F /* MockPHPhotoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPHPhotoLibrary.swift; sourceTree = "<group>"; };
@@ -464,6 +466,7 @@
 				8CDEB03C2520BE180010DCCB /* WidgetView.swift */,
 				8C3E35B52529D4AD00D5E971 /* ShutterButtonView.swift */,
 				8C3CD8DF254D95ED00037A96 /* AvailableCameraButtonView.swift */,
+				8C7F4DB0254E1C0E007AD895 /* AvailableCameraButtonsView.swift */,
 				8C1A5C85252203D800D92F3C /* CameraErrorView.swift */,
 				8C118129254052AD004ED0B0 /* HistogramView.swift */,
 			);
@@ -655,6 +658,7 @@
 				8C11810A253F3B2A004ED0B0 /* DeviceResources.swift in Sources */,
 				8C118105253F3AA4004ED0B0 /* Resources.swift in Sources */,
 				8CDEB03D2520BE180010DCCB /* WidgetView.swift in Sources */,
+				8C7F4DB1254E1C0E007AD895 /* AvailableCameraButtonsView.swift in Sources */,
 				8C59B3FB25445DC9005D280B /* ExposureBiasViewModel.swift in Sources */,
 				8C1C872B252F300700001B14 /* Enums.swift in Sources */,
 				8CDE0404252756560083F736 /* PreviewViewModel.swift in Sources */,

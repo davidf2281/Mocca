@@ -57,11 +57,7 @@ struct ContentView: View {
                     
                     if (availableCameraViewModels.count > 1) {
                         Spacer()
-                        HStack{
-                            ForEach(availableCameraViewModels, id: \.ID) { cameraViewModel in
-                                AvailableCameraButtonView(viewModel: cameraViewModel)
-                            }
-                        }
+                        AvailableCameraButtonsView(viewModels: availableCameraViewModels)
                     }
                     Spacer()
                     shutterButtonView

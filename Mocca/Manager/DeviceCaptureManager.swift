@@ -14,7 +14,7 @@ struct LogicalCameraDevice: Equatable {
 }
 
 /// A class to handle creation and management of fully configured video and photo capture sessions and related functions.
-class DeviceCaptureManager: CaptureManager {
+class DeviceCaptureManager: CaptureManager, ObservableObject {
 
     public var videoPreviewLayer: TestableAVCaptureVideoPreviewLayer? {
         willSet {
@@ -27,7 +27,7 @@ class DeviceCaptureManager: CaptureManager {
                                                 LogicalCameraDevice(type: .builtInUltraWideCamera, position: .back)]
     
     public private(set) var captureSession : TestableAVCaptureSession
-    public private(set) var activeCaptureDevice : TestableAVCaptureDevice
+    @Published public private(set) var activeCaptureDevice : TestableAVCaptureDevice
 
     private let photoOutput: AVCapturePhotoOutput
     private let videoDataOutput: AVCaptureVideoDataOutput

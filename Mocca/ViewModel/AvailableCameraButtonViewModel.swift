@@ -6,17 +6,20 @@
 //
 
 import Foundation
-
-protocol AvailableCameraButtonViewModelProtocol: ObservableObject {
+import Combine
+import AVFoundation
+protocol AvailableCameraButtonViewModelProtocol {
     var fov: FOV { get }
     var selected: Bool { get }
     func tapped()
 }
 
-class AvailableCameraButtonViewModel: AvailableCameraButtonViewModelProtocol {
+class AvailableCameraButtonViewModel: AvailableCameraButtonViewModelProtocol, ObservableObject {
     
     @Published private(set) var selected: Bool
-
+    
+    private var cancellables = Set<AnyCancellable>()
+    
     var fov: FOV {
         return self.camera.fov
     }
@@ -31,12 +34,24 @@ class AvailableCameraButtonViewModel: AvailableCameraButtonViewModelProtocol {
         }
     }
     
-    private let captureManager: CaptureManager?
+    private let captureManager: DeviceCaptureManager?
     private let camera: AvailableCamera
     
-    required init(selected: Bool, camera:AvailableCamera, captureManager: CaptureManager?) {
+    required init(selected: Bool, camera:AvailableCamera, captureManager: DeviceCaptureManager?) {
         self.selected = selected
         self.camera = camera
         self.captureManager = captureManager
+        
+        // Bind model's activeCaptureDevice to our selected state
+        captureManager?.$activeCaptureDevice
+            .map( { $0 as! AVCaptureDevice } )
+            .sink(receiveValue: { (device) in
+                self.selected = (device === self.camera.captureDevice as! AVCaptureDevice)
+            })
+            .store(in: &cancellables)
+    }
+    
+    deinit {
+        cancellables.removeAll()
     }
 }
