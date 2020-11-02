@@ -84,6 +84,10 @@ class CameraOperation: CameraOperationProtocol {
     
     public static func setExposurePointOfInterest(_ point:CGPoint, on layer: TestableAVCaptureVideoPreviewLayer, for device: inout TestableAVCaptureDevice) -> Outcome {
         
+        if (!device.isExposurePointOfInterestSupported) {
+            return .failure
+        }
+        
         do {
             try device.lockForConfiguration()
         }
@@ -99,6 +103,10 @@ class CameraOperation: CameraOperationProtocol {
     }
     
     public static func setFocusPointOfInterest(_ point:CGPoint, on layer: TestableAVCaptureVideoPreviewLayer, for device: inout TestableAVCaptureDevice) -> Outcome {
+        
+        if (!device.isFocusPointOfInterestSupported) {
+            return .failure
+        }
         
         do {
             try device.lockForConfiguration()

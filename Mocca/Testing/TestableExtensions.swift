@@ -29,6 +29,7 @@ protocol TestableAVCaptureDevice {
     var isExposurePointOfInterestSupported: Bool { get }
     var exposurePointOfInterest: CGPoint { get set }
     var exposureMode: AVCaptureDevice.ExposureMode { get set }
+    var isFocusPointOfInterestSupported: Bool { get }
     var focusPointOfInterest: CGPoint { get set }
     var focusMode: AVCaptureDevice.FocusMode { get set }
     func setFocusModeLocked(lensPosition: Float, completionHandler handler: ((CMTime) -> Void)?)

@@ -59,7 +59,7 @@ struct PreviewModifier: ViewModifier {
             GeometryReader { parent in
                 content
                     .border(Color(white: 1), width: 5)
-                    .conditionalModifier(previewViewModel.hasBeenTapped) {view in
+                    .conditional(previewViewModel.hasBeenTapped) {view in
                         view.overlay(WidgetView( viewModel: widgetViewModel).accessibility(label: Text("reticle")))
                     }
                     // Drag gesture is simulating a tap gesture because SwiftUI won't tell us the location of actual tap gestures:
@@ -85,14 +85,11 @@ struct PreviewModifier: ViewModifier {
 }
 
 extension View {
-    // 1 Create a ViewBuilder function that can be applied to any type of content conforming to view
-  @ViewBuilder func conditionalModifier<Content: View>(_ condition: Bool,
-                                                       transform: (Self) -> Content) -> some View {
+  @ViewBuilder
+    func conditional<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
     if condition {
-        // 2 If condition matches, apply the transform
       transform(self)
     } else {
-      // 3 If not, just return the original view
       self
     }
   }
