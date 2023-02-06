@@ -70,14 +70,14 @@ final class ShutterButtonViewTests: XCTestCase {
     
     func testOuterCircleStyleIsSolidWhenStateIsCaptureError() throws {
         let sut = ShutterButtonView<MockShutterButtonViewModel>(viewModel: viewModel)
-        viewModel.state = .captureError
+        viewModel.state = .error(.captureError)
         let value = try sut.inspect().zStack().shape(0).strokeStyle()
         XCTAssertEqual(value, solidStroke)
     }
     
     func testOuterCircleStyleIsSolidWhenStateIsSaveError() throws {
         let sut = ShutterButtonView<MockShutterButtonViewModel>(viewModel: viewModel)
-        viewModel.state = .saveError
+        viewModel.state = .error(.saveError)
         let value = try sut.inspect().zStack().shape(0).strokeStyle()
         XCTAssertEqual(value, solidStroke)
     }
@@ -108,7 +108,7 @@ final class ShutterButtonViewTests: XCTestCase {
     
     func testInnerCircleIsGrayWhenStateIsCaptureError() throws {
         let sut = ShutterButtonView<MockShutterButtonViewModel>(viewModel: viewModel)
-        viewModel.state = .captureError
+        viewModel.state = .error(.captureError)
         let value = try sut.inspect().zStack().shape(1).fillShapeStyle(Color.self)
         XCTAssertEqual(value, .gray)
     }
@@ -122,7 +122,7 @@ final class ShutterButtonViewTests: XCTestCase {
     
     func testInnerCircleIsGrayWhenStateIsSaveError() throws {
         let sut = ShutterButtonView<MockShutterButtonViewModel>(viewModel: viewModel)
-        viewModel.state = .saveError
+        viewModel.state = .error(.saveError)
         let value = try sut.inspect().zStack().shape(1).fillShapeStyle(Color.self)
         XCTAssertEqual(value, .gray)
     }

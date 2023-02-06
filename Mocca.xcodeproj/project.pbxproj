@@ -20,7 +20,6 @@
 		8C11812525405162004ED0B0 /* HistogramViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C11812425405162004ED0B0 /* HistogramViewModel.swift */; };
 		8C11812A254052AD004ED0B0 /* HistogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C118129254052AD004ED0B0 /* HistogramView.swift */; };
 		8C1A5C86252203D800D92F3C /* CameraErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1A5C85252203D800D92F3C /* CameraErrorView.swift */; };
-		8C1C872B252F300700001B14 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C872A252F300700001B14 /* Enums.swift */; };
 		8C1C8766252F50DE00001B14 /* WidgetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */; };
 		8C1C876E252F58A100001B14 /* PreviewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C876D252F58A100001B14 /* PreviewViewModelTests.swift */; };
 		8C1C8777252F5C3B00001B14 /* ViewConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C8776252F5C3B00001B14 /* ViewConversion.swift */; };
@@ -99,7 +98,6 @@
 		8C11812425405162004ED0B0 /* HistogramViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistogramViewModel.swift; sourceTree = "<group>"; };
 		8C118129254052AD004ED0B0 /* HistogramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistogramView.swift; sourceTree = "<group>"; };
 		8C1A5C85252203D800D92F3C /* CameraErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraErrorView.swift; sourceTree = "<group>"; };
-		8C1C872A252F300700001B14 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetViewModelTests.swift; sourceTree = "<group>"; };
 		8C1C876D252F58A100001B14 /* PreviewViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewModelTests.swift; sourceTree = "<group>"; };
 		8C1C8776252F5C3B00001B14 /* ViewConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConversion.swift; sourceTree = "<group>"; };
@@ -402,7 +400,6 @@
 		8CCE88B825248F160086AF83 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				8C1C872A252F300700001B14 /* Enums.swift */,
 				8CCE88B325248F070086AF83 /* Orientation.swift */,
 				8C1180F3253F2962004ED0B0 /* CaptureUtils.swift */,
 				8CC3C449251DFD2F00CC4698 /* DeviceCaptureUtils.swift */,
@@ -644,7 +641,6 @@
 				8C118105253F3AA4004ED0B0 /* Resources.swift in Sources */,
 				8CDEB03D2520BE180010DCCB /* WidgetView.swift in Sources */,
 				8C59B3FB25445DC9005D280B /* ExposureBiasViewModel.swift in Sources */,
-				8C1C872B252F300700001B14 /* Enums.swift in Sources */,
 				8CDE0404252756560083F736 /* PreviewViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -891,6 +887,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "MoccaTests/MoccaTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mocca.app/Mocca";
@@ -918,6 +915,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "MoccaTests/MoccaTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mocca.app/Mocca";

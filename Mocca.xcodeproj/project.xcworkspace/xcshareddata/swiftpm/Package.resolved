@@ -1,16 +1,14 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "ViewInspector",
-        "repositoryURL": "https://github.com/nalexn/ViewInspector",
-        "state": {
-          "branch": null,
-          "revision": "170d0abb2c19e7dd08f2a2a9b08e6ffbb875661b",
-          "version": "0.4.12"
-        }
+  "pins" : [
+    {
+      "identity" : "viewinspector",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nalexn/ViewInspector",
+      "state" : {
+        "revision" : "170d0abb2c19e7dd08f2a2a9b08e6ffbb875661b",
+        "version" : "0.4.12"
       }
-    ]
-  },
-  "version": 1
+    }
+  ],
+  "version" : 2
 }

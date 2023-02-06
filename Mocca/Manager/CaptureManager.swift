@@ -25,7 +25,7 @@ protocol CaptureManager {
     var videoPreviewLayer: TestableAVCaptureVideoPreviewLayer? { get set }
     func startCaptureSession ()
     func stopCaptureSession ()
-    func selectCamera(type: LogicalCameraDevice) -> Outcome
+    func selectCamera(type: LogicalCameraDevice) -> Result<Void, CaptureManagerError>
     func currentPhotoSettings() -> AVCapturePhotoSettings
     func capturePhoto(settings:AVCapturePhotoSettings, delegate: AVCapturePhotoCaptureDelegate)
     func setSampleBufferDelegate(_ delegate: AVCaptureVideoDataOutputSampleBufferDelegate,

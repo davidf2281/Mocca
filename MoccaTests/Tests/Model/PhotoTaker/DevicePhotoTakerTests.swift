@@ -75,7 +75,7 @@ class DevicePhotoTakerTests: XCTestCase {
         
         taker.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: NSError())
         
-        XCTAssert(taker.state == .captureError)
+        XCTAssert(taker.state == .error(.captureError))
         waitForSimulatedDiskWrite()
         XCTAssert(taker.state == .ready)
     }
@@ -92,8 +92,8 @@ class DevicePhotoTakerTests: XCTestCase {
         
         taker.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: NSError())
                 
-        XCTAssert(taker.state == .captureError)
+        XCTAssert(taker.state == .error(.captureError))
         waitForSimulatedDiskWrite()
-        XCTAssert(taker.state == .saveError)
+        XCTAssert(taker.state == .error(.saveError))
     }
 }

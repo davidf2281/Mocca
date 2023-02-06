@@ -177,7 +177,10 @@ class DeviceCaptureManagerTests: XCTestCase {
         XCTAssert(sut.activeCaptureDevice as! MockAVCaptureDevice === mockDevice)
         
         let result = sut.selectCamera(type: logicalDevice)
-        XCTAssertEqual(result, .success)
+        guard case .success = result else {
+            XCTFail()
+            return
+        }
         
         XCTAssert(sut.activeCaptureDevice as! MockAVCaptureDevice === newMockDevice)
     }
@@ -197,7 +200,10 @@ class DeviceCaptureManagerTests: XCTestCase {
         XCTAssert(sut.activeCaptureDevice as! MockAVCaptureDevice === mockDevice)
         
         let result = sut.selectCamera(type: logicalDevice)
-        XCTAssertEqual(result, .failure)
+        guard case .failure(.captureDeviceNotFound) = result else {
+            XCTFail()
+            return
+        }
         
         // Check originally selected camera is still selected
         XCTAssert(sut.activeCaptureDevice as! MockAVCaptureDevice === mockDevice)

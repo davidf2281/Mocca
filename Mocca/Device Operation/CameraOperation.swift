@@ -82,13 +82,13 @@ class CameraOperation: CameraOperationProtocol {
         device.unlockForConfiguration()
     }
     
-    public static func setExposurePointOfInterest(_ point:CGPoint, on layer: TestableAVCaptureVideoPreviewLayer, for device: inout TestableAVCaptureDevice) -> Outcome {
+    public static func setExposurePointOfInterest(_ point:CGPoint, on layer: TestableAVCaptureVideoPreviewLayer, for device: inout TestableAVCaptureDevice) -> Result<Void, OperationError> {
         
         do {
             try device.lockForConfiguration()
         }
         catch {
-            return .failure
+            return .failure(.lockForConfigurationFailed)
         }
         
         let convertedPoint = layer.captureDevicePointConverted(fromLayerPoint: point)
@@ -98,13 +98,13 @@ class CameraOperation: CameraOperationProtocol {
         return .success
     }
     
-    public static func setFocusPointOfInterest(_ point:CGPoint, on layer: TestableAVCaptureVideoPreviewLayer, for device: inout TestableAVCaptureDevice) -> Outcome {
+    public static func setFocusPointOfInterest(_ point:CGPoint, on layer: TestableAVCaptureVideoPreviewLayer, for device: inout TestableAVCaptureDevice) -> Result<Void, OperationError> {
         
         do {
             try device.lockForConfiguration()
         }
         catch {
-            return .failure
+            return .failure(.lockForConfigurationFailed)
         }
         
         let convertedPoint = layer.captureDevicePointConverted(fromLayerPoint: point)
@@ -113,5 +113,17 @@ class CameraOperation: CameraOperationProtocol {
         device.unlockForConfiguration()
         return .success
     }
-    
+}
+
+extension CameraOperation {
+    enum OperationError: Error {
+        case lockForConfigurationFailed
+    }
+}
+
+// https://stackoverflow.com/a/46863180/2201154
+extension Result where Success == Void {
+    static var success: Result {
+        return .success(())
+    }
 }

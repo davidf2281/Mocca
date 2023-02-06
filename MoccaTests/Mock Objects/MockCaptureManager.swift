@@ -34,7 +34,7 @@ class MockCaptureManager: CaptureManager {
         return AVCapturePhotoSettings()
     }
     
-    func selectCamera(type: LogicalCameraDevice) -> Outcome {
+    func selectCamera(type: LogicalCameraDevice) -> Result<Void, CaptureManagerError> {
         lastSelectedCameraDevice = type
         return .success
     }

@@ -45,8 +45,11 @@ class DeviceCaptureManager: CaptureManager {
             throw CaptureManagerError.captureDeviceNotFound
         }
         
-        let videoInput = try AVCaptureDeviceInput(device: initialCaptureDevice as! AVCaptureDevice)
-        
+        guard let initialCaptureDevice = initialCaptureDevice as? AVCaptureDevice else {
+           throw CaptureManagerError.captureDeviceNotFound
+        }
+       
+        let videoInput = try AVCaptureDeviceInput(device: initialCaptureDevice)
         let captureSession = AVCaptureSession()
         captureSession.sessionPreset = .photo
         
@@ -123,13 +126,13 @@ class DeviceCaptureManager: CaptureManager {
     /// Sets the active session's capture device to the physical camera matching the supplied type
     /// - Parameter type: The type of camera to select
     /// - Returns: true if the operation succeeded; false otherwise
-    public func selectCamera(type: LogicalCameraDevice) -> Outcome {
+    public func selectCamera(type: LogicalCameraDevice) -> Result<Void, CaptureManagerError> {
         if let device = self.resources.physicalDevice(from: type) {
             self.activeCaptureDevice = device
             return .success
         }
         
-        return .failure
+        return .failure(.captureDeviceNotFound)
     }
     
     public func setSampleBufferDelegate(_ delegate: AVCaptureVideoDataOutputSampleBufferDelegate,
@@ -163,3 +166,4 @@ class DeviceCaptureManager: CaptureManager {
         return settings
     }
 }
+

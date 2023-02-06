@@ -20,10 +20,10 @@ protocol CameraOperationProtocol {
     
     static func setExposurePointOfInterest(_ point:CGPoint,
                                     on layer: TestableAVCaptureVideoPreviewLayer,
-                                    for device: inout TestableAVCaptureDevice) -> Outcome
+                                           for device: inout TestableAVCaptureDevice) -> Result<Void, CameraOperation.OperationError>
     
     static func setFocusPointOfInterest(_ point:CGPoint,
                                  on layer: TestableAVCaptureVideoPreviewLayer,
-                                 for device: inout TestableAVCaptureDevice) -> Outcome
+                                 for device: inout TestableAVCaptureDevice) -> Result<Void, CameraOperation.OperationError>
 
 }
