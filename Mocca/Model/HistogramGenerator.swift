@@ -59,25 +59,28 @@ public class HistogramGenerator {
         
         let binCount = 128
         
-        let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)!
+        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+           return nil
+        }
+       
         let width = CVPixelBufferGetWidth(imageBuffer)
         let height = CVPixelBufferGetHeight(imageBuffer)
         
         var mtlTextureCache : CVMetalTextureCache?
         CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, mtlDevice, nil, &mtlTextureCache)
         
-        if (mtlTextureCache == nil) {
+        guard let mtlTextureCache else {
             return nil
         }
         
         var textureRef : CVMetalTexture?
-        CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, mtlTextureCache!, imageBuffer, nil, MTLPixelFormat.bgra8Unorm, width, height, 0, &textureRef)
+        CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, mtlTextureCache, imageBuffer, nil, MTLPixelFormat.bgra8Unorm, width, height, 0, &textureRef)
         
-        if (textureRef == nil) {
+        guard let textureRef else {
             return nil
         }
         
-        guard let imageTexture = CVMetalTextureGetTexture(textureRef!) else {
+        guard let imageTexture = CVMetalTextureGetTexture(textureRef) else {
             return nil
         }
         
