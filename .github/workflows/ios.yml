@@ -17,6 +17,8 @@ jobs:
       - name: Build and test
         run: xcodebuild test -project Mocca.xcodeproj -scheme Mocca -destination 'platform=iOS Simulator,name=iPhone 14 Pro,OS=16.2' -resultBundlePath ./BuildResults/results build test
       - name: Convert test results to something codecov can understand
-        run: xcrun xccov view --report --json ./BuildResults/results.xcresult > result.lcov
+        run: |
+        xcrun xccov view --report --json ./BuildResults/results.xcresult > result.json
+        ./bin/xccov2lcov result.json > result.lcov
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
