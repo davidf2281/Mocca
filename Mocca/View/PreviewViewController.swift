@@ -57,13 +57,16 @@ final class PreviewViewController: UIViewController {
     }
 }
 
-extension PreviewViewController: UIViewControllerRepresentable {
+struct PreviewViewControllerRepresentable: UIViewControllerRepresentable {
     
     public typealias UIViewControllerType = PreviewViewController
     
-    func makeUIViewController(context: UIViewControllerRepresentableContext<PreviewViewController>) -> PreviewViewController {
+    let previewView: PreviewUIView?
+    private(set) var orientationPublisher : OrientationPublisher
+    
+    func makeUIViewController(context: Context) -> PreviewViewController {
         return PreviewViewController(previewView: self.previewView, orientationPublisher: orientationPublisher)
     }
     
-    func updateUIViewController(_ uiViewController: PreviewViewController, context: UIViewControllerRepresentableContext<PreviewViewController>) {}
+    func updateUIViewController(_ uiViewController: PreviewViewController, context: Context) {}
 }
