@@ -10,21 +10,21 @@ import XCTest
 
 final class HistogramGeneratorTests: XCTestCase {
 
-    func testExample() throws {
+    func testHistogramGeneration() throws {
         guard let mtlDevice = MTLCreateSystemDefaultDevice() else {
-            XCTFail()
+            XCTFail("Couldn't create metal device")
             return
         }
         
         let sut = HistogramGenerator(mtlDevice: mtlDevice, binCount: 256)
         
         guard let buffer = mockCMSampleBuffer() else {
-            XCTFail()
+            XCTFail("Mock sample buffer is nil")
             return
         }
         
         guard let result = sut?.generate(sampleBuffer: buffer) else {
-            XCTFail()
+            XCTFail("Histogram generate() returned nil")
             return
         }
         
