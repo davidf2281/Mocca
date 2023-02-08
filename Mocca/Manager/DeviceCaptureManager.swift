@@ -52,9 +52,7 @@ class DeviceCaptureManager: CaptureManager {
         let videoInput = try AVCaptureDeviceInput(device: initialCaptureDevice)
         let captureSession = AVCaptureSession()
         captureSession.sessionPreset = .photo
-        
         let photoOutput = Self.configuredPhotoOutput()
-        
         let videoOutput = Self.configuredVideoDataOutput()
                 
         try self.init(captureSession: captureSession, photoOutput: photoOutput, videoOutput: videoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput, resources:resources)
@@ -166,4 +164,3 @@ class DeviceCaptureManager: CaptureManager {
         return settings
     }
 }
-

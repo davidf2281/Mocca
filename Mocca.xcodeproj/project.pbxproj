@@ -65,6 +65,7 @@
 		8CDEB04A2520C9E00010DCCB /* FocusSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDEB0492520C9E00010DCCB /* FocusSetting.swift */; };
 		8CE07E3B252B3D5A00702E14 /* CaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE07E3A252B3D5A00702E14 /* CaptureManager.swift */; };
 		8CE07E43252B457100702E14 /* MockCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE07E42252B457100702E14 /* MockCaptureManager.swift */; };
+		8CE53EBE2993F06A00DE5B6F /* HistogramGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE53EBD2993F06A00DE5B6F /* HistogramGeneratorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -150,6 +151,7 @@
 		8CDEB0492520C9E00010DCCB /* FocusSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetting.swift; sourceTree = "<group>"; };
 		8CE07E3A252B3D5A00702E14 /* CaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureManager.swift; sourceTree = "<group>"; };
 		8CE07E42252B457100702E14 /* MockCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCaptureManager.swift; sourceTree = "<group>"; };
+		8CE53EBD2993F06A00DE5B6F /* HistogramGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistogramGeneratorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +252,7 @@
 		8C1C8764252F502700001B14 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8CE53EBC2993F04E00DE5B6F /* HistogramGenerator */,
 				8C4E6945253B32CA00ED1B29 /* DeviceCaptureManager */,
 				8CBEB525252B2F7500D6525F /* PhotoTaker */,
 			);
@@ -473,6 +476,14 @@
 			path = "Mock Objects";
 			sourceTree = "<group>";
 		};
+		8CE53EBC2993F04E00DE5B6F /* HistogramGenerator */ = {
+			isa = PBXGroup;
+			children = (
+				8CE53EBD2993F06A00DE5B6F /* HistogramGeneratorTests.swift */,
+			);
+			path = HistogramGenerator;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -657,6 +668,7 @@
 				8C68B18025301AF80040AC9A /* OrientationTests.swift in Sources */,
 				8C1180D3253F17C9004ED0B0 /* MockAVCaptureVideoPreviewLayer.swift in Sources */,
 				8C1C8766252F50DE00001B14 /* WidgetViewModelTests.swift in Sources */,
+				8CE53EBE2993F06A00DE5B6F /* HistogramGeneratorTests.swift in Sources */,
 				8CBEB527252B2F9800D6525F /* MockPHPhotoLibrary.swift in Sources */,
 				8C6728AB251E10610066A836 /* MockAVCaptureSession.swift in Sources */,
 				8CBEB52F252B302400D6525F /* DevicePhotoTakerTests.swift in Sources */,
