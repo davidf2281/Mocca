@@ -44,9 +44,9 @@ class ConcretePhotoTaker: NSObject, PhotoTaker {
 class DevicePhotoTaker: ConcretePhotoTaker, AVCapturePhotoCaptureDelegate, ObservableObject  {
     
     private let captureManager: CaptureManager?
-    private let photoLibrary:   TestablePHPhotoLibrary
+    private let photoLibrary:   PHPhotoLibraryContract
     
-    init(captureManager: CaptureManager?, photoLibrary: TestablePHPhotoLibrary) {
+    init(captureManager: CaptureManager?, photoLibrary: PHPhotoLibraryContract) {
         self.captureManager = captureManager
         self.photoLibrary = photoLibrary
     }

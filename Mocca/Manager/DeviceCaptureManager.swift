@@ -16,7 +16,7 @@ struct LogicalCameraDevice: Equatable {
 /// A class to handle creation and management of fully configured video and photo capture sessions and related functions.
 class DeviceCaptureManager: CaptureManager {
 
-    public var videoPreviewLayer: TestableAVCaptureVideoPreviewLayer? {
+    public var videoPreviewLayer: AVCaptureVideoPreviewLayerContract? {
         willSet {
             assert(self.videoPreviewLayer == nil, "Video preview layer may be set only once")
         }
@@ -26,8 +26,8 @@ class DeviceCaptureManager: CaptureManager {
                                                 LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back),
                                                 LogicalCameraDevice(type: .builtInUltraWideCamera, position: .back)]
     
-    public private(set) var captureSession : TestableAVCaptureSession
-    public private(set) var activeCaptureDevice : TestableAVCaptureDevice
+    public private(set) var captureSession : AVCaptureSessionContract
+    public private(set) var activeCaptureDevice : AVCaptureDeviceContract
 
     private let photoOutput: AVCapturePhotoOutput
     private let videoDataOutput: AVCaptureVideoDataOutput
@@ -52,15 +52,13 @@ class DeviceCaptureManager: CaptureManager {
         let videoInput = try AVCaptureDeviceInput(device: initialCaptureDevice)
         let captureSession = AVCaptureSession()
         captureSession.sessionPreset = .photo
-        
         let photoOutput = Self.configuredPhotoOutput()
-        
         let videoOutput = Self.configuredVideoDataOutput()
                 
         try self.init(captureSession: captureSession, photoOutput: photoOutput, videoOutput: videoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput, resources:resources)
     }
     
-    public init(captureSession: TestableAVCaptureSession, photoOutput: AVCapturePhotoOutput, videoOutput: AVCaptureVideoDataOutput, initialCaptureDevice: TestableAVCaptureDevice, videoInput: TestableAVCaptureDeviceInput, resources: Resources) throws {
+    public init(captureSession: AVCaptureSessionContract, photoOutput: AVCapturePhotoOutput, videoOutput: AVCaptureVideoDataOutput, initialCaptureDevice: AVCaptureDeviceContract, videoInput: AVCaptureDeviceInputContract, resources: Resources) throws {
         
         self.photoOutput =          photoOutput
         self.videoDataOutput =      videoOutput
@@ -166,4 +164,3 @@ class DeviceCaptureManager: CaptureManager {
         return settings
     }
 }
-

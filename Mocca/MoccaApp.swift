@@ -6,9 +6,7 @@
 //
 
 import SwiftUI
-import AVFoundation
 import Photos
-import Combine
 @main
 
 final class MoccaApp: App, ObservableObject {
@@ -25,7 +23,7 @@ final class MoccaApp: App, ObservableObject {
     private let previewViewModel: PreviewViewModel
     
     /// Representable UIViewController container for camera preview, since SwiftUI does not yet support this natively.
-    private let previewViewController: PreviewViewController
+    private let previewViewController: PreviewViewControllerRepresentable
     
     /// Backs the shutter button, sending taps to photoTaker dependency
     private let shutterButtonViewModel: ShutterButtonViewModel
@@ -56,6 +54,8 @@ final class MoccaApp: App, ObservableObject {
     /// Capture-session video preview (ie, camera viewfinder).
     private let previewUIView = PreviewUIView()
     
+    private let sampleBufferIntermediary: SampleBufferIntermediary
+    
     init() {
         
         // If capture-manager setup has failed we have a hardware problem, OR we're running in the simulator.
@@ -67,20 +67,23 @@ final class MoccaApp: App, ObservableObject {
         // AVCaptureVideoPreviewLayer's point-conversion functions. Only the preview layer can do this.
         captureManager?.videoPreviewLayer = previewUIView.videoPreviewLayer
         
-        photoTaker =             DevicePhotoTaker(captureManager: captureManager ?? nil, photoLibrary: PHPhotoLibrary.shared())
-        histogramViewModel =     HistogramViewModel(histogramGenerator: histogramGenerator, captureManager: captureManager)
-        widgetViewModel =        WidgetViewModel(captureManager: captureManager, dockedPosition:CGPoint(x: 55, y: 55), displayCharacter:"f")
-        previewViewModel =       PreviewViewModel(captureManager: captureManager)
-        previewViewController =  PreviewViewController(previewView: previewUIView, orientationPublisher: orientationPublisher)
-        shutterButtonViewModel = ShutterButtonViewModel(photoTaker: photoTaker)
-        exposureBiasViewModel =  ExposureBiasViewModel(captureManager: captureManager)
+        self.photoTaker =             DevicePhotoTaker(captureManager: self.captureManager ?? nil, photoLibrary: PHPhotoLibrary.shared())
+        let sampleBufferQueue = DispatchQueue(label: "com.mocca-app.videoSampleBufferQueue")
+        self.histogramViewModel =     HistogramViewModel(histogramGenerator: self.histogramGenerator)
+        self.sampleBufferIntermediary = SampleBufferIntermediary(sampleBufferHandler: self.histogramViewModel)
+        self.captureManager?.setSampleBufferDelegate(self.sampleBufferIntermediary, queue: sampleBufferQueue)
+        self.widgetViewModel =        WidgetViewModel(captureManager: captureManager, dockedPosition:CGPoint(x: 55, y: 55), displayCharacter:"f")
+        self.previewViewModel =       PreviewViewModel(captureManager: captureManager)
+        self.previewViewController =  PreviewViewControllerRepresentable(previewView: previewUIView, orientationPublisher: orientationPublisher)
+        self.shutterButtonViewModel = ShutterButtonViewModel(photoTaker: photoTaker)
+        self.exposureBiasViewModel =  ExposureBiasViewModel(captureManager: captureManager)
         
-        sessionQueue.async {
-            self.captureManager?.startCaptureSession()
+        sessionQueue.async { [weak self] in
+            self?.captureManager?.startCaptureSession()
             DispatchQueue.main.async {
-                self.previewUIView.videoPreviewLayer.session = self.captureManager?.captureSession as? AVCaptureSession
-                self.previewUIView.videoPreviewLayer.connection?.videoOrientation = Orientation.AVOrientation(for: Orientation.currentInterfaceOrientation())
-                self.previewUIView.videoPreviewLayer.videoGravity = .resizeAspect
+                self?.previewUIView.videoPreviewLayer.session = self?.captureManager?.captureSession as? AVCaptureSession
+                self?.previewUIView.videoPreviewLayer.connection?.videoOrientation = Orientation.AVOrientation(for: Orientation.currentInterfaceOrientation())
+                self?.previewUIView.videoPreviewLayer.videoGravity = .resizeAspect
             }
         }
     }

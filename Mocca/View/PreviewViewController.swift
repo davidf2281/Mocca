@@ -31,7 +31,8 @@ final class PreviewViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        self.orientationPublisher.interfaceOrientation = Orientation.currentInterfaceOrientation()
+        // TODO: Publishing interface orientation here generates runtime warning "Publishing changes from within view updates is not allowed". Figure out why we ever had this line here since it appears to make no difference when commented out
+        // self.orientationPublisher.interfaceOrientation = Orientation.currentInterfaceOrientation()
         self.view.backgroundColor = UIColor.black
         if let preview = self.previewView {
             preview.frame = self.view.frame
@@ -57,13 +58,16 @@ final class PreviewViewController: UIViewController {
     }
 }
 
-extension PreviewViewController: UIViewControllerRepresentable {
+struct PreviewViewControllerRepresentable: UIViewControllerRepresentable {
     
     public typealias UIViewControllerType = PreviewViewController
     
-    func makeUIViewController(context: UIViewControllerRepresentableContext<PreviewViewController>) -> PreviewViewController {
+    let previewView: PreviewUIView?
+    private(set) var orientationPublisher : OrientationPublisher
+    
+    func makeUIViewController(context: Context) -> PreviewViewController {
         return PreviewViewController(previewView: self.previewView, orientationPublisher: orientationPublisher)
     }
     
-    func updateUIViewController(_ uiViewController: PreviewViewController, context: UIViewControllerRepresentableContext<PreviewViewController>) {}
+    func updateUIViewController(_ uiViewController: PreviewViewController, context: Context) {}
 }

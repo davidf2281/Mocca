@@ -11,7 +11,7 @@ import Dispatch
 
 @testable import Mocca
 
-class MockPHPhotoLibrary: TestablePHPhotoLibrary {
+class MockPHPhotoLibrary: PHPhotoLibraryContract {
     
     // Test vars
     var performChangesCalled = false

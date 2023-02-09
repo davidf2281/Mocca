@@ -11,13 +11,14 @@ import AVFoundation
 import Photos
 
 /* Empty extensions are required. */
-extension AVCaptureDevice:            TestableAVCaptureDevice {}
-extension AVCaptureDeviceInput:       TestableAVCaptureDeviceInput {}
-extension AVCaptureSession:           TestableAVCaptureSession {}
-extension AVCaptureVideoPreviewLayer: TestableAVCaptureVideoPreviewLayer {}
-extension PHPhotoLibrary:             TestablePHPhotoLibrary {}
+extension AVCaptureDevice:            AVCaptureDeviceContract {}
+extension AVCaptureDeviceInput:       AVCaptureDeviceInputContract {}
+extension AVCaptureSession:           AVCaptureSessionContract {}
+extension AVCaptureVideoPreviewLayer: AVCaptureVideoPreviewLayerContract {}
+extension CMSampleBuffer:             CMSampleBufferContract { }
+extension PHPhotoLibrary:             PHPhotoLibraryContract {}
 
-protocol TestableAVCaptureDevice {
+protocol AVCaptureDeviceContract {
     var iso: Float { get }
     var activeFormat: AVCaptureDevice.Format { get set }
     var formats: [AVCaptureDevice.Format] { get }
@@ -38,13 +39,15 @@ protocol TestableAVCaptureDevice {
     func unlockForConfiguration()
 }
 
-protocol TestableAVCaptureDeviceInput {}
+protocol AVCaptureDeviceInputContract {}
 
-protocol TestableAVCaptureVideoPreviewLayer {
+protocol CMSampleBufferContract: AnyObject {}
+
+protocol AVCaptureVideoPreviewLayerContract {
     func captureDevicePointConverted(fromLayerPoint pointInLayer: CGPoint) -> CGPoint
 }
 
-protocol TestableAVCaptureSession {
+protocol AVCaptureSessionContract {
     var sessionPreset: AVCaptureSession.Preset { get set }
     func beginConfiguration()
     func canAddInput(_: AVCaptureInput) -> Bool
@@ -56,6 +59,6 @@ protocol TestableAVCaptureSession {
     func stopRunning()
 }
 
-protocol TestablePHPhotoLibrary {
+protocol PHPhotoLibraryContract {
     func performChanges(_ changeBlock: @escaping () -> Void, completionHandler: ((Bool, Error?) -> Void)?)
 }

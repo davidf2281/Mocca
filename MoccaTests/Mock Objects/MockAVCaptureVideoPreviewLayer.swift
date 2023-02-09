@@ -9,7 +9,7 @@ import Foundation
 import AVFoundation
 @testable import Mocca
 
-class MockAVCaptureVideoPreviewLayer: TestableAVCaptureVideoPreviewLayer {
+class MockAVCaptureVideoPreviewLayer: AVCaptureVideoPreviewLayerContract {
     func captureDevicePointConverted(fromLayerPoint pointInLayer: CGPoint) -> CGPoint {
         return pointInLayer
     }

@@ -8,34 +8,38 @@
 import Foundation
 import AVFoundation
 
-class HistogramViewModel: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleBufferDelegate {
+protocol SampleBufferHandler {
+    func processSampleBuffer(_ sampleBuffer: CMSampleBufferContract)
+}
+
+class HistogramViewModel: NSObject, ObservableObject {
     @Published private(set) var histogram: Histogram?
     
-    private let sampleBufferQueue = DispatchQueue(label: "com.mocca-app.videoSampleBufferQueue")
     private let histogramProcessingQueue = DispatchQueue(label: "com.mocca-app.histogramProcessingQueue")
-    private let histogramGenerator: HistogramGenerator?
+    private let histogramGenerator: HistogramGeneratorContract?
     private var sampleCount = 0 // Used to limit update rate
-    required init(histogramGenerator: HistogramGenerator?, captureManager: CaptureManager?) {
+    
+    required init(histogramGenerator: HistogramGeneratorContract?) {
         self.histogramGenerator = histogramGenerator
         super.init()
-        captureManager?.setSampleBufferDelegate(self, queue: sampleBufferQueue)
     }
-    
-    // MARK: AVCaptureVideoDataOutputSampleBufferDelegate
-    public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        
-        // Reduce system load a little bit by generating a new histogram only every three frames
-//        sampleCount += 1
-//        if sampleCount < 3 {
-//            return
-//        }
-//        sampleCount = 0
+}
 
-        histogramProcessingQueue.async {
-            let histogram = self.histogramGenerator?.generate(sampleBuffer: sampleBuffer)
+extension HistogramViewModel: SampleBufferHandler {
+    func processSampleBuffer(_ sampleBuffer: CMSampleBufferContract) {
+        // Reduce system load a little bit by generating a new histogram only every three frames
+        sampleCount += 1
+        if sampleCount < 3 {
+            return
+        }
+        sampleCount = 0
+
+        histogramProcessingQueue.async { [weak self] in
+            let histogram = self?.histogramGenerator?.generate(sampleBuffer: sampleBuffer)
             DispatchQueue.main.async {
-                self.histogram = histogram
+                self?.histogram = histogram
             }
         }
     }
 }
+

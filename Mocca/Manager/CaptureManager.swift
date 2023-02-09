@@ -21,8 +21,8 @@ enum CaptureManagerError: Error {
 }
 
 protocol CaptureManager {
-    var activeCaptureDevice: TestableAVCaptureDevice { get }
-    var videoPreviewLayer: TestableAVCaptureVideoPreviewLayer? { get set }
+    var activeCaptureDevice: AVCaptureDeviceContract { get }
+    var videoPreviewLayer: AVCaptureVideoPreviewLayerContract? { get set }
     func startCaptureSession ()
     func stopCaptureSession ()
     func selectCamera(type: LogicalCameraDevice) -> Result<Void, CaptureManagerError>

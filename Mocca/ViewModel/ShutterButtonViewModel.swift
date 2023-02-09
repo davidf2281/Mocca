@@ -27,9 +27,9 @@ class ShutterButtonViewModel: ShutterButtonViewModelProtocol {
         
         // Bind model's state with ours:
         photoTaker.$state
-            .sink() { value in
+            .sink() { [weak self] value in
                 DispatchQueue.main.async {
-                    self.state = value
+                    self?.state = value
                 }
             }.store(in: &cancellables)
     }
@@ -37,9 +37,5 @@ class ShutterButtonViewModel: ShutterButtonViewModelProtocol {
     public func tapped () {
         // TODO: Do something with the outcome
         _ = self.photoTaker.takePhoto()
-    }
-    
-    deinit {
-        cancellables.removeAll()
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 import AVFoundation
 @testable import Mocca
 
-class MockAVCaptureDevice: TestableAVCaptureDevice {
+class MockAVCaptureDevice: AVCaptureDeviceContract {
 
     // Test vars
     var exposureMode                                = AVCaptureDevice.ExposureMode.autoExpose// MARK: TODO

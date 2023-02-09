@@ -16,14 +16,14 @@ class MockResources: Resources {
     
     // Protocol conformance
 
-    var deviceToReturn: TestableAVCaptureDevice?
+    var deviceToReturn: AVCaptureDeviceContract?
     var metalDevice: MTLDevice? = MTLCreateSystemDefaultDevice()
     
-    func anyAvailableCamera(preferredDevice: LogicalCameraDevice, supportedCameraDevices: [LogicalCameraDevice]) -> TestableAVCaptureDevice? {
+    func anyAvailableCamera(preferredDevice: LogicalCameraDevice, supportedCameraDevices: [LogicalCameraDevice]) -> AVCaptureDeviceContract? {
         return nil
     }
     
-    func physicalDevice(from logicalDevice: LogicalCameraDevice) -> TestableAVCaptureDevice? {
+    func physicalDevice(from logicalDevice: LogicalCameraDevice) -> AVCaptureDeviceContract? {
         
         if (physicalDeviceCallShouldSucceed == false) {
             return nil

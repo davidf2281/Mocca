@@ -15,16 +15,19 @@ class CameraOperationTests: XCTestCase {
     private var device: MockAVCaptureDevice!
     private var layer: MockAVCaptureVideoPreviewLayer!
     private var utils: MockCaptureUtils!
+    private var sut: CameraOperation!
     override func setUp() {
         utils = MockCaptureUtils()
         device = MockAVCaptureDevice()
         layer = MockAVCaptureVideoPreviewLayer()
         manager = MockCaptureManager(captureDevice: device, layer: layer)
+        
+        sut = CameraOperation()
     }
     
     func testSetIso() throws {
         XCTAssertEqual(device.iso, 0)
-        try CameraOperation.setIso(200.0, for: device, utils: utils) { (CMTime) in }
+        try sut.setIso(200.0, for: device, utils: utils) { (CMTime) in }
         XCTAssert(device.iso == 200.0)
     }
 
@@ -32,7 +35,7 @@ class CameraOperationTests: XCTestCase {
         let currentTimescale = device.exposureDuration.timescale
 
         XCTAssertEqual(device.exposureDuration, .zero)
-        try CameraOperation.setExposure(seconds: 0.1, for: device, utils: utils, completion: { (CMTime) in })
+        try sut.setExposure(seconds: 0.1, for: device, utils: utils, completion: { (CMTime) in })
         
         XCTAssertEqual(device.exposureDuration, CMTimeMakeWithSeconds(0.1, preferredTimescale: currentTimescale))
     }

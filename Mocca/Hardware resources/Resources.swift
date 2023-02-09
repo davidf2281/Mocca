@@ -13,7 +13,7 @@ protocol Resources {
     var metalDevice: MTLDevice? { get }
     
     func anyAvailableCamera(preferredDevice:LogicalCameraDevice,
-                            supportedCameraDevices: [LogicalCameraDevice]) -> TestableAVCaptureDevice?
+                            supportedCameraDevices: [LogicalCameraDevice]) -> AVCaptureDeviceContract?
     
-    func physicalDevice(from logicalDevice: LogicalCameraDevice) -> TestableAVCaptureDevice?
+    func physicalDevice(from logicalDevice: LogicalCameraDevice) -> AVCaptureDeviceContract?
 }

@@ -15,7 +15,7 @@ struct PreviewView: View {
     let widgetViewModel: WidgetViewModel
     let previewViewModel: PreviewViewModel
     let exposureBiasViewModel: ExposureBiasViewModel
-    let previewViewController: PreviewViewController
+    let previewViewController: PreviewViewControllerRepresentable
     
     var body: some View {
         
