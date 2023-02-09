@@ -10,8 +10,8 @@ import Foundation
 class MockCaptureManager: CaptureManager {
     
     // Protocol conformance
-    var activeCaptureDevice: TestableAVCaptureDevice
-    var videoPreviewLayer: TestableAVCaptureVideoPreviewLayer?
+    var activeCaptureDevice: AVCaptureDeviceContract
+    var videoPreviewLayer: AVCaptureVideoPreviewLayerContract?
     
     func capturePhoto(settings: AVCapturePhotoSettings, delegate: AVCapturePhotoCaptureDelegate) {
         self.capturePhotoCalled = true
@@ -23,7 +23,7 @@ class MockCaptureManager: CaptureManager {
         videoPreviewLayer = MockAVCaptureVideoPreviewLayer()
     }
     
-    init(captureDevice:TestableAVCaptureDevice, layer: TestableAVCaptureVideoPreviewLayer) {
+    init(captureDevice:AVCaptureDeviceContract, layer: AVCaptureVideoPreviewLayerContract) {
         activeCaptureDevice = captureDevice
         videoPreviewLayer = layer
     }

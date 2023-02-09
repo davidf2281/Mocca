@@ -8,22 +8,25 @@
 import Foundation
 import AVFoundation
 
+protocol SampleBufferHandler {
+    func processSampleBuffer(_ sampleBuffer: CMSampleBufferContract)
+}
+
 class HistogramViewModel: NSObject, ObservableObject {
     @Published private(set) var histogram: Histogram?
     
     private let histogramProcessingQueue = DispatchQueue(label: "com.mocca-app.histogramProcessingQueue")
-    private let histogramGenerator: HistogramGenerator?
+    private let histogramGenerator: HistogramGeneratorContract?
     private var sampleCount = 0 // Used to limit update rate
     
-    required init(histogramGenerator: HistogramGenerator?) {
+    required init(histogramGenerator: HistogramGeneratorContract?) {
         self.histogramGenerator = histogramGenerator
         super.init()
     }
 }
 
-extension HistogramViewModel: AVCaptureVideoDataOutputSampleBufferDelegate {
-    public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        
+extension HistogramViewModel: SampleBufferHandler {
+    func processSampleBuffer(_ sampleBuffer: CMSampleBufferContract) {
         // Reduce system load a little bit by generating a new histogram only every three frames
         sampleCount += 1
         if sampleCount < 3 {
@@ -39,3 +42,4 @@ extension HistogramViewModel: AVCaptureVideoDataOutputSampleBufferDelegate {
         }
     }
 }
+

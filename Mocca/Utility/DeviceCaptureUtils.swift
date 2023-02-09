@@ -11,27 +11,27 @@ import AVFoundation
 
 struct DeviceCaptureUtils: CaptureUtils {
     
-    public func minIso(for device:TestableAVCaptureDevice) -> Float {
+    public func minIso(for device:AVCaptureDeviceContract) -> Float {
         let minIso = device.activeFormat.minISO
         return minIso
     }
     
-    public func maxIso(for device:TestableAVCaptureDevice) -> Float {
+    public func maxIso(for device:AVCaptureDeviceContract) -> Float {
         let maxIso = device.activeFormat.maxISO
         return maxIso
     }
     
-    public func maxExposureSeconds(for device:TestableAVCaptureDevice) -> Float64 {
+    public func maxExposureSeconds(for device:AVCaptureDeviceContract) -> Float64 {
         let maxDuration = device.activeFormat.maxExposureDuration
         return CMTimeGetSeconds(maxDuration)
     }
     
-    public func minExposureSeconds(for device:TestableAVCaptureDevice) -> Float64 {
+    public func minExposureSeconds(for device:AVCaptureDeviceContract) -> Float64 {
         let minDuration = device.activeFormat.minExposureDuration
         return CMTimeGetSeconds(minDuration)
     }
     
-    public func highestResolutionFullRangeVideoFormat(_ device:TestableAVCaptureDevice) -> AVCaptureDevice.Format? {
+    public func highestResolutionFullRangeVideoFormat(_ device:AVCaptureDeviceContract) -> AVCaptureDevice.Format? {
         
         var highestPixelCount : UInt = 0
         var returnFormat : AVCaptureDevice.Format? = nil

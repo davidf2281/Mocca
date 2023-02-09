@@ -21,7 +21,7 @@ class DeviceResources: Resources {
     /// - Parameter supportedCameraDevices: An array of CameraDevice
     /// - Returns: A physical camera of the preferred type, the first available if the preferred choice is not found, or nil if none are found.
     func anyAvailableCamera(preferredDevice:LogicalCameraDevice,
-                                          supportedCameraDevices: [LogicalCameraDevice]) -> TestableAVCaptureDevice? {
+                                          supportedCameraDevices: [LogicalCameraDevice]) -> AVCaptureDeviceContract? {
         
         if supportedCameraDevices.contains(preferredDevice) {
             if let device = physicalDevice(from: preferredDevice) {
@@ -38,7 +38,7 @@ class DeviceResources: Resources {
         return nil
     }
     
-    func physicalDevice(from logicalDevice: LogicalCameraDevice) -> TestableAVCaptureDevice? {
+    func physicalDevice(from logicalDevice: LogicalCameraDevice) -> AVCaptureDeviceContract? {
         let session = AVCaptureDevice.DiscoverySession(deviceTypes: [logicalDevice.type], mediaType: .video, position: logicalDevice.position)
         if let device = session.devices.first {
             return device

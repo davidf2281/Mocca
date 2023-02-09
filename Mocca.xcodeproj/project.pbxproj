@@ -67,6 +67,8 @@
 		8CE07E43252B457100702E14 /* MockCaptureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE07E42252B457100702E14 /* MockCaptureManager.swift */; };
 		8CE53EBE2993F06A00DE5B6F /* HistogramGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE53EBD2993F06A00DE5B6F /* HistogramGeneratorTests.swift */; };
 		8CE53EC22995559000DE5B6F /* ViewConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE53EC12995559000DE5B6F /* ViewConversionTests.swift */; };
+		8CE53EC4299562FE00DE5B6F /* HistogramViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE53EC3299562FE00DE5B6F /* HistogramViewModelTests.swift */; };
+		8CE53EC729956F2000DE5B6F /* SampleBufferIntermediary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE53EC629956F2000DE5B6F /* SampleBufferIntermediary.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,6 +156,8 @@
 		8CE07E42252B457100702E14 /* MockCaptureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCaptureManager.swift; sourceTree = "<group>"; };
 		8CE53EBD2993F06A00DE5B6F /* HistogramGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistogramGeneratorTests.swift; sourceTree = "<group>"; };
 		8CE53EC12995559000DE5B6F /* ViewConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConversionTests.swift; sourceTree = "<group>"; };
+		8CE53EC3299562FE00DE5B6F /* HistogramViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistogramViewModelTests.swift; sourceTree = "<group>"; };
+		8CE53EC629956F2000DE5B6F /* SampleBufferIntermediary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleBufferIntermediary.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,27 +232,12 @@
 		8C1C8761252F4FEA00001B14 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				8C1C8763252F501900001B14 /* Widget */,
-				8C1C8762252F500C00001B14 /* Preview */,
-				8CD793C7252A22CD0071F3F6 /* ShutterButton */,
+				8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */,
+				8C1C876D252F58A100001B14 /* PreviewViewModelTests.swift */,
+				8CD793C8252A22F00071F3F6 /* ShutterButtonViewModelTests.swift */,
+				8CE53EC3299562FE00DE5B6F /* HistogramViewModelTests.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		8C1C8762252F500C00001B14 /* Preview */ = {
-			isa = PBXGroup;
-			children = (
-				8C1C876D252F58A100001B14 /* PreviewViewModelTests.swift */,
-			);
-			path = Preview;
-			sourceTree = "<group>";
-		};
-		8C1C8763252F501900001B14 /* Widget */ = {
-			isa = PBXGroup;
-			children = (
-				8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */,
-			);
-			path = Widget;
 			sourceTree = "<group>";
 		};
 		8C1C8764252F502700001B14 /* Model */ = {
@@ -336,9 +325,10 @@
 				8CDEB01C251FDFB10010DCCB /* View */,
 				8CDE03D925262BCD0083F736 /* ViewModel */,
 				8CDEB01B251FDFA20010DCCB /* Model */,
+				8C1180C7253EFDFC004ED0B0 /* Device Operation */,
 				8C0E39F22525F6B1004BFFCA /* Manager */,
 				8C118103253F3A89004ED0B0 /* Hardware resources */,
-				8C1180C7253EFDFC004ED0B0 /* Device Operation */,
+				8CE53EC529956F0200DE5B6F /* Helper */,
 				8CCE88B825248F160086AF83 /* Utility */,
 				8C0E39F32525F6C4004BFFCA /* Testing */,
 				8CADB30C253044A50061447C /* Supporting files */,
@@ -416,14 +406,6 @@
 			path = Utility;
 			sourceTree = "<group>";
 		};
-		8CD793C7252A22CD0071F3F6 /* ShutterButton */ = {
-			isa = PBXGroup;
-			children = (
-				8CD793C8252A22F00071F3F6 /* ShutterButtonViewModelTests.swift */,
-			);
-			path = ShutterButton;
-			sourceTree = "<group>";
-		};
 		8CDE03D925262BCD0083F736 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -485,6 +467,14 @@
 				8CE53EBD2993F06A00DE5B6F /* HistogramGeneratorTests.swift */,
 			);
 			path = HistogramGenerator;
+			sourceTree = "<group>";
+		};
+		8CE53EC529956F0200DE5B6F /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				8CE53EC629956F2000DE5B6F /* SampleBufferIntermediary.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -635,6 +625,7 @@
 				8CC3C44C251DFD2F00CC4698 /* DeviceCaptureUtils.swift in Sources */,
 				8C1180F4253F2962004ED0B0 /* CaptureUtils.swift in Sources */,
 				8C11812A254052AD004ED0B0 /* HistogramView.swift in Sources */,
+				8CE53EC729956F2000DE5B6F /* SampleBufferIntermediary.swift in Sources */,
 				8C3E35BB2529DB7900D5E971 /* ShutterButtonViewModel.swift in Sources */,
 				8CE07E3B252B3D5A00702E14 /* CaptureManager.swift in Sources */,
 				8C11812525405162004ED0B0 /* HistogramViewModel.swift in Sources */,
@@ -664,6 +655,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C4E6947253B32F500ED1B29 /* DeviceCaptureManagerTests.swift in Sources */,
+				8CE53EC4299562FE00DE5B6F /* HistogramViewModelTests.swift in Sources */,
 				8C6728AE251E10610066A836 /* UnavailableInitFactory.m in Sources */,
 				8CE53EC22995559000DE5B6F /* ViewConversionTests.swift in Sources */,
 				8C46436E25320C1F00889AC3 /* BundlePlistValues.swift in Sources */,

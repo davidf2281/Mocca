@@ -31,7 +31,11 @@ struct Histogram {
     let blueBins: [HistogramBin]
 }
 
-class HistogramGenerator {
+protocol HistogramGeneratorContract {
+    func generate(sampleBuffer: CMSampleBufferContract) -> Histogram?
+}
+
+class HistogramGenerator: HistogramGeneratorContract {
     
     private let mtlDevice: MTLDevice?
     private let commandQueue: MTLCommandQueue
@@ -64,13 +68,13 @@ class HistogramGenerator {
         self.blueBins = Array(repeating: HistogramBin.empty(), count: binCount)
     }
     
-    func generate(sampleBuffer: CMSampleBuffer) -> Histogram? {
+    func generate(sampleBuffer: CMSampleBufferContract) -> Histogram? {
         
         guard  let mtlDevice = self.mtlDevice else {
             return nil
         }
         
-        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer as! CMSampleBuffer) else {
             return nil
         }
         

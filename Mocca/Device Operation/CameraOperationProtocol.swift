@@ -10,20 +10,20 @@ import AVFoundation
 
 protocol CameraOperationProtocol {
     
-    static func setIso(_ iso : Float, for device: TestableAVCaptureDevice, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws
+    static func setIso(_ iso : Float, for device: AVCaptureDeviceContract, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws
 
-    static func setExposure(seconds : Float64, for device: TestableAVCaptureDevice, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws
+    static func setExposure(seconds : Float64, for device: AVCaptureDeviceContract, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws
     
-    static func canSetExposureTargetBias(ev: EV, for device: TestableAVCaptureDevice) -> Bool
+    static func canSetExposureTargetBias(ev: EV, for device: AVCaptureDeviceContract) -> Bool
     
-    static func setExposureTargetBias(ev: EV, for device: TestableAVCaptureDevice, completion: @escaping (CMTime) -> Void) throws
+    static func setExposureTargetBias(ev: EV, for device: AVCaptureDeviceContract, completion: @escaping (CMTime) -> Void) throws
     
     static func setExposurePointOfInterest(_ point:CGPoint,
-                                    on layer: TestableAVCaptureVideoPreviewLayer,
-                                           for device: inout TestableAVCaptureDevice) -> Result<Void, CameraOperation.OperationError>
+                                    on layer: AVCaptureVideoPreviewLayerContract,
+                                           for device: inout AVCaptureDeviceContract) -> Result<Void, CameraOperation.OperationError>
     
     static func setFocusPointOfInterest(_ point:CGPoint,
-                                 on layer: TestableAVCaptureVideoPreviewLayer,
-                                 for device: inout TestableAVCaptureDevice) -> Result<Void, CameraOperation.OperationError>
+                                 on layer: AVCaptureVideoPreviewLayerContract,
+                                 for device: inout AVCaptureDeviceContract) -> Result<Void, CameraOperation.OperationError>
 
 }

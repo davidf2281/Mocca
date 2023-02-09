@@ -6,9 +6,7 @@
 //
 
 import SwiftUI
-import AVFoundation
 import Photos
-import Combine
 @main
 
 final class MoccaApp: App, ObservableObject {
@@ -56,6 +54,8 @@ final class MoccaApp: App, ObservableObject {
     /// Capture-session video preview (ie, camera viewfinder).
     private let previewUIView = PreviewUIView()
     
+    private let sampleBufferIntermediary: SampleBufferIntermediary
+    
     init() {
         
         // If capture-manager setup has failed we have a hardware problem, OR we're running in the simulator.
@@ -70,7 +70,8 @@ final class MoccaApp: App, ObservableObject {
         self.photoTaker =             DevicePhotoTaker(captureManager: self.captureManager ?? nil, photoLibrary: PHPhotoLibrary.shared())
         let sampleBufferQueue = DispatchQueue(label: "com.mocca-app.videoSampleBufferQueue")
         self.histogramViewModel =     HistogramViewModel(histogramGenerator: self.histogramGenerator)
-        self.captureManager?.setSampleBufferDelegate(self.histogramViewModel, queue: sampleBufferQueue)
+        self.sampleBufferIntermediary = SampleBufferIntermediary(sampleBufferHandler: self.histogramViewModel)
+        self.captureManager?.setSampleBufferDelegate(self.sampleBufferIntermediary, queue: sampleBufferQueue)
         self.widgetViewModel =        WidgetViewModel(captureManager: captureManager, dockedPosition:CGPoint(x: 55, y: 55), displayCharacter:"f")
         self.previewViewModel =       PreviewViewModel(captureManager: captureManager)
         self.previewViewController =  PreviewViewControllerRepresentable(previewView: previewUIView, orientationPublisher: orientationPublisher)

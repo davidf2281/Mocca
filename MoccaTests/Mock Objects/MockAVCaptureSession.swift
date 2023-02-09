@@ -10,7 +10,7 @@ import Foundation
 import AVFoundation
 @testable import Mocca
 
-class MockAVCaptureSession: TestableAVCaptureSession {
+class MockAVCaptureSession: AVCaptureSessionContract {
   
     // MARK: Protocol requirements
     var sessionPreset: AVCaptureSession.Preset = .inputPriority
