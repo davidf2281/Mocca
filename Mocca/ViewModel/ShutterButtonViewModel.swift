@@ -38,8 +38,4 @@ class ShutterButtonViewModel: ShutterButtonViewModelProtocol {
         // TODO: Do something with the outcome
         _ = self.photoTaker.takePhoto()
     }
-    
-    deinit {
-        cancellables.removeAll()
-    }
 }
