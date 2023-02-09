@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8C1180C9253EFE2A004ED0B0 /* CameraOperationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1180C8253EFE2A004ED0B0 /* CameraOperationProtocol.swift */; };
+		8C1180C9253EFE2A004ED0B0 /* CameraOperationContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1180C8253EFE2A004ED0B0 /* CameraOperationContract.swift */; };
 		8C1180CE253EFE7F004ED0B0 /* CameraOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1180CD253EFE7F004ED0B0 /* CameraOperation.swift */; };
 		8C1180D3253F17C9004ED0B0 /* MockAVCaptureVideoPreviewLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1180D2253F17C9004ED0B0 /* MockAVCaptureVideoPreviewLayer.swift */; };
 		8C1180E7253F2032004ED0B0 /* CameraOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1180E6253F2032004ED0B0 /* CameraOperationTests.swift */; };
@@ -69,6 +69,8 @@
 		8CE53EC22995559000DE5B6F /* ViewConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE53EC12995559000DE5B6F /* ViewConversionTests.swift */; };
 		8CE53EC4299562FE00DE5B6F /* HistogramViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE53EC3299562FE00DE5B6F /* HistogramViewModelTests.swift */; };
 		8CE53EC729956F2000DE5B6F /* SampleBufferIntermediary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE53EC629956F2000DE5B6F /* SampleBufferIntermediary.swift */; };
+		8CE53EC929957F8200DE5B6F /* MockCameraOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE53EC829957F8200DE5B6F /* MockCameraOperation.swift */; };
+		8CE53ECB29957FA800DE5B6F /* ExposureBiasViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE53ECA29957FA800DE5B6F /* ExposureBiasViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,7 +91,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8C1180C8253EFE2A004ED0B0 /* CameraOperationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOperationProtocol.swift; sourceTree = "<group>"; };
+		8C1180C8253EFE2A004ED0B0 /* CameraOperationContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOperationContract.swift; sourceTree = "<group>"; };
 		8C1180CD253EFE7F004ED0B0 /* CameraOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOperation.swift; sourceTree = "<group>"; };
 		8C1180D2253F17C9004ED0B0 /* MockAVCaptureVideoPreviewLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAVCaptureVideoPreviewLayer.swift; sourceTree = "<group>"; };
 		8C1180E6253F2032004ED0B0 /* CameraOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOperationTests.swift; sourceTree = "<group>"; };
@@ -158,6 +160,8 @@
 		8CE53EC12995559000DE5B6F /* ViewConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConversionTests.swift; sourceTree = "<group>"; };
 		8CE53EC3299562FE00DE5B6F /* HistogramViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistogramViewModelTests.swift; sourceTree = "<group>"; };
 		8CE53EC629956F2000DE5B6F /* SampleBufferIntermediary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleBufferIntermediary.swift; sourceTree = "<group>"; };
+		8CE53EC829957F8200DE5B6F /* MockCameraOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCameraOperation.swift; sourceTree = "<group>"; };
+		8CE53ECA29957FA800DE5B6F /* ExposureBiasViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExposureBiasViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,7 +210,7 @@
 		8C1180C7253EFDFC004ED0B0 /* Device Operation */ = {
 			isa = PBXGroup;
 			children = (
-				8C1180C8253EFE2A004ED0B0 /* CameraOperationProtocol.swift */,
+				8C1180C8253EFE2A004ED0B0 /* CameraOperationContract.swift */,
 				8C1180CD253EFE7F004ED0B0 /* CameraOperation.swift */,
 			);
 			path = "Device Operation";
@@ -236,6 +240,7 @@
 				8C1C876D252F58A100001B14 /* PreviewViewModelTests.swift */,
 				8CD793C8252A22F00071F3F6 /* ShutterButtonViewModelTests.swift */,
 				8CE53EC3299562FE00DE5B6F /* HistogramViewModelTests.swift */,
+				8CE53ECA29957FA800DE5B6F /* ExposureBiasViewModelTests.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -457,6 +462,7 @@
 				8C1180D2253F17C9004ED0B0 /* MockAVCaptureVideoPreviewLayer.swift */,
 				8C1180F8253F2A0E004ED0B0 /* MockCaptureUtils.swift */,
 				8C11810E253F6CE3004ED0B0 /* MockResources.swift */,
+				8CE53EC829957F8200DE5B6F /* MockCameraOperation.swift */,
 			);
 			path = "Mock Objects";
 			sourceTree = "<group>";
@@ -639,7 +645,7 @@
 				8C7EF030251CEAB500CF9CFE /* MoccaApp.swift in Sources */,
 				8C6728C0251E14180066A836 /* PreviewUIView.swift in Sources */,
 				8C118120254021E8004ED0B0 /* HistogramGenerator.swift in Sources */,
-				8C1180C9253EFE2A004ED0B0 /* CameraOperationProtocol.swift in Sources */,
+				8C1180C9253EFE2A004ED0B0 /* CameraOperationContract.swift in Sources */,
 				8CDEB0452520C9C90010DCCB /* ExposureSetting.swift in Sources */,
 				8C1A5C86252203D800D92F3C /* CameraErrorView.swift in Sources */,
 				8C11810A253F3B2A004ED0B0 /* DeviceResources.swift in Sources */,
@@ -662,6 +668,7 @@
 				8C1180F9253F2A0E004ED0B0 /* MockCaptureUtils.swift in Sources */,
 				8C1C876E252F58A100001B14 /* PreviewViewModelTests.swift in Sources */,
 				8C68B18025301AF80040AC9A /* OrientationTests.swift in Sources */,
+				8CE53ECB29957FA800DE5B6F /* ExposureBiasViewModelTests.swift in Sources */,
 				8C1180D3253F17C9004ED0B0 /* MockAVCaptureVideoPreviewLayer.swift in Sources */,
 				8C1C8766252F50DE00001B14 /* WidgetViewModelTests.swift in Sources */,
 				8CE53EBE2993F06A00DE5B6F /* HistogramGeneratorTests.swift in Sources */,
@@ -672,6 +679,7 @@
 				8C6728AC251E10610066A836 /* MockAVCaptureDevice.swift in Sources */,
 				8C4E6941253B328400ED1B29 /* MockAVCaptureDeviceInput.swift in Sources */,
 				8C1180E7253F2032004ED0B0 /* CameraOperationTests.swift in Sources */,
+				8CE53EC929957F8200DE5B6F /* MockCameraOperation.swift in Sources */,
 				8C61C4A12539A9240093E78A /* ShutterButtonViewTests.swift in Sources */,
 				8CD793C9252A22F00071F3F6 /* ShutterButtonViewModelTests.swift in Sources */,
 				8C11810F253F6CE3004ED0B0 /* MockResources.swift in Sources */,

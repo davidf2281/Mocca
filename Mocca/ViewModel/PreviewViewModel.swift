@@ -18,16 +18,18 @@ class PreviewViewModel: ObservableObject {
     // varying aspect ratios
     /// The aspect ratio of the preview's video capture layer
     @Published private(set) var aspectRatio: CGFloat = 0.75
-    
-    required init(captureManager: CaptureManager?) {
+    private let cameraOperation: CameraOperationContract
+
+    required init(captureManager: CaptureManager?, cameraOperation: CameraOperationContract = CameraOperation()) {
         self.captureManager = captureManager
+        self.cameraOperation = cameraOperation
     }
     
     func tapped(position:CGPoint, frameSize:CGSize) {
         if var device = self.captureManager?.activeCaptureDevice,
            let layer = self.captureManager?.videoPreviewLayer {
-            _ = CameraOperation.setFocusPointOfInterest(position, on: layer, for: &device)
-            _ = CameraOperation.setExposurePointOfInterest(position, on: layer, for: &device)
+            _ = cameraOperation.setFocusPointOfInterest(position, on: layer, for: &device)
+            _ = cameraOperation.setExposurePointOfInterest(position, on: layer, for: &device)
         }
     }
 }
