@@ -12,8 +12,10 @@ import AVFoundation
 
 class MockAVCaptureDevice: AVCaptureDeviceContract {
 
+    struct LockForConfigurationError: Error {}
+    
     // Test vars
-    var exposureMode                                = AVCaptureDevice.ExposureMode.autoExpose// MARK: TODO
+    var exposureMode: AVCaptureDevice.ExposureMode  = .locked
     var configurationLocked : Bool                  = false
     var configurationWasLocked : Bool               = false
     var configurationWasUnlocked : Bool             = false
@@ -71,7 +73,11 @@ class MockAVCaptureDevice: AVCaptureDeviceContract {
         self.iso = ISO
     }
     
+    var lockForConfigurationShouldFail = false
     func lockForConfiguration() throws {
+        if lockForConfigurationShouldFail {
+            throw(LockForConfigurationError())
+        }
         self.configurationLocked = true
         self.configurationWasLocked = true
     }
@@ -84,4 +90,3 @@ class MockAVCaptureDevice: AVCaptureDeviceContract {
         }
     }
 }
-

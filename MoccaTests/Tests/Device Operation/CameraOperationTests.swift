@@ -15,12 +15,14 @@ class CameraOperationTests: XCTestCase {
     var mockDevice: MockAVCaptureDevice!
     var mockFormat: MockAVCaptureDeviceFormat!
     var mockUtils: MockCaptureUtils!
+    var mockVideoPreviewLayer: MockAVCaptureVideoPreviewLayer!
     
     override func setUpWithError() throws {
         sut = CameraOperation()
         mockDevice = MockAVCaptureDevice()
         mockFormat = MockAVCaptureDeviceFormat()
         mockUtils = MockCaptureUtils()
+        mockVideoPreviewLayer = MockAVCaptureVideoPreviewLayer()
     }
     
     func testSetIsoSuccess() throws {
@@ -174,5 +176,79 @@ class CameraOperationTests: XCTestCase {
         XCTAssertEqual(mockDevice.exposureTargetBias, 0)
     }
     
+    func testSetExposurePointOfInterestSuccess() throws {
+        
+        // Initial conditions
+        XCTAssertFalse(mockDevice.configurationLocked)
+        XCTAssertFalse(mockDevice.configurationWasLocked)
+        XCTAssertEqual(mockDevice.exposurePointOfInterest, .zero)
+        XCTAssertNil(mockVideoPreviewLayer.lastPointInLayer)
+        XCTAssertEqual(mockDevice.exposureMode, .locked)
+        
+        let point = CGPoint(x: 100, y: 50)
+        let result = sut.setExposurePointOfInterest(point, on: mockVideoPreviewLayer, for: mockDevice)
+        
+        guard case .success = result else { XCTFail(); return }
+        XCTAssertEqual(mockVideoPreviewLayer.lastPointInLayer, point)
+        XCTAssertEqual(mockDevice.exposurePointOfInterest, point)
+        XCTAssertEqual(mockDevice.exposureMode, .autoExpose)
+    }
     
+    func testSetExposurePointOfInterestFailure() throws {
+        
+        // Initial conditions
+        XCTAssertFalse(mockDevice.configurationLocked)
+        XCTAssertFalse(mockDevice.configurationWasLocked)
+        XCTAssertEqual(mockDevice.exposurePointOfInterest, .zero)
+        XCTAssertNil(mockVideoPreviewLayer.lastPointInLayer)
+        XCTAssertEqual(mockDevice.exposureMode, .locked)
+        
+        mockDevice.lockForConfigurationShouldFail = true
+        
+        let point = CGPoint(x: 100, y: 50)
+        let result = sut.setExposurePointOfInterest(point, on: mockVideoPreviewLayer, for: mockDevice)
+        
+        guard case .failure(let error) = result, error == .lockForConfigurationFailed else { XCTFail(); return }
+        XCTAssertNil(mockVideoPreviewLayer.lastPointInLayer)
+        XCTAssertEqual(mockDevice.exposurePointOfInterest, .zero)
+        XCTAssertEqual(mockDevice.exposureMode, .locked)
+    }
+        
+    func testSetFocusPointOfInterestSuccess() throws {
+        
+        // Initial conditions
+        XCTAssertFalse(mockDevice.configurationLocked)
+        XCTAssertFalse(mockDevice.configurationWasLocked)
+        XCTAssertEqual(mockDevice.focusPointOfInterest, .zero)
+        XCTAssertNil(mockVideoPreviewLayer.lastPointInLayer)
+        XCTAssertEqual(mockDevice.focusMode, .locked)
+        
+        let point = CGPoint(x: 100, y: 50)
+        let result = sut.setFocusPointOfInterest(point, on: mockVideoPreviewLayer, for: mockDevice)
+        
+        guard case .success = result else { XCTFail(); return }
+        XCTAssertEqual(mockVideoPreviewLayer.lastPointInLayer, point)
+        XCTAssertEqual(mockDevice.focusPointOfInterest, point)
+        XCTAssertEqual(mockDevice.focusMode, .autoFocus)
+    }
+    
+    func testSetFocusPointOfInterestFailure() throws {
+        
+        // Initial conditions
+        XCTAssertFalse(mockDevice.configurationLocked)
+        XCTAssertFalse(mockDevice.configurationWasLocked)
+        XCTAssertEqual(mockDevice.focusPointOfInterest, .zero)
+        XCTAssertNil(mockVideoPreviewLayer.lastPointInLayer)
+        XCTAssertEqual(mockDevice.focusMode, .locked)
+        
+        mockDevice.lockForConfigurationShouldFail = true
+        
+        let point = CGPoint(x: 100, y: 50)
+        let result = sut.setFocusPointOfInterest(point, on: mockVideoPreviewLayer, for: mockDevice)
+        
+        guard case .failure(let error) = result, error == .lockForConfigurationFailed else { XCTFail(); return }
+        XCTAssertNil(mockVideoPreviewLayer.lastPointInLayer)
+        XCTAssertEqual(mockDevice.focusPointOfInterest, .zero)
+        XCTAssertEqual(mockDevice.focusMode, .locked)
+    }
 }

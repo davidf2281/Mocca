@@ -10,7 +10,10 @@ import AVFoundation
 @testable import Mocca
 
 class MockAVCaptureVideoPreviewLayer: AVCaptureVideoPreviewLayerContract {
+    
+    var lastPointInLayer: CGPoint? = nil
     func captureDevicePointConverted(fromLayerPoint pointInLayer: CGPoint) -> CGPoint {
+        lastPointInLayer = pointInLayer
         return pointInLayer
     }
 }
