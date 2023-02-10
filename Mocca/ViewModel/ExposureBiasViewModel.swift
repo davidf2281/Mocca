@@ -45,7 +45,7 @@ class ExposureBiasViewModel: ExposureBiasViewModelProtocol {
             if (cameraOperation.canSetExposureTargetBias(ev: newComp, for: device)) {
                 if cameraOperation.willTargetBiasHaveEffect(ev: newComp, for: device){
                     do {
-                        _ = try cameraOperation.setExposureTargetBias(ev: self.compensation, for: device, completion: { time in })
+                        _ = try cameraOperation.setExposureTargetBias(ev: self.compensation, for: device, completion: nil)
                         self.compensation = newComp
                     } catch {
                         // MARK: TODO: UI error feedback

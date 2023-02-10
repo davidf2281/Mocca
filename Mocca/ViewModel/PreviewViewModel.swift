@@ -26,10 +26,10 @@ class PreviewViewModel: ObservableObject {
     }
     
     func tapped(position:CGPoint, frameSize:CGSize) {
-        if var device = self.captureManager?.activeCaptureDevice,
+        if let device = self.captureManager?.activeCaptureDevice,
            let layer = self.captureManager?.videoPreviewLayer {
-            _ = cameraOperation.setFocusPointOfInterest(position, on: layer, for: &device)
-            _ = cameraOperation.setExposurePointOfInterest(position, on: layer, for: &device)
+            _ = cameraOperation.setFocusPointOfInterest(position, on: layer, for: device)
+            _ = cameraOperation.setExposurePointOfInterest(position, on: layer, for: device)
         }
     }
 }

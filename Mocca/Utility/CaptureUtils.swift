@@ -49,12 +49,7 @@ struct CaptureUtils: CaptureUtilsContract {
         
         return returnFormat
     }
-    
-    public func aspectRatio(for format:AVCaptureDevice.Format) -> CGFloat {
-        let dimensions = CMVideoFormatDescriptionGetDimensions(format.formatDescription)
-        return CGFloat(dimensions.width / dimensions.height)
-    }
-    
+
     /// Computes a byte code corresponding to the 420f full-range pixel format
     /// - Returns: A FourCharCode representing the 420f pixel format identifier
     private func fourTwentyFCode() -> FourCharCode {

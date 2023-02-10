@@ -10,25 +10,29 @@ import AVFoundation
 @testable import Mocca
 
 class MockCaptureUtils: CaptureUtilsContract {
+    
+    var minIsoToReturn: Float = 100
     func minIso(for device: AVCaptureDeviceContract) -> Float {
-        return 100
+        return minIsoToReturn
     }
     
+    var maxIsoToReturn: Float = 3200
     func maxIso(for device: AVCaptureDeviceContract) -> Float {
-        return 3200
+        return maxIsoToReturn
     }
     
-    func maxExposureSeconds(for device: AVCaptureDeviceContract) -> Float64 {
-        0.3
-    }
-    
+    var minExposureSecondsToReturn: Float64 = 0.001
     func minExposureSeconds(for device: AVCaptureDeviceContract) -> Float64 {
-        0.001
+        return minExposureSecondsToReturn
     }
     
+    var maxExposureSecondsToReturn: Float64 = 0.3
+    func maxExposureSeconds(for device: AVCaptureDeviceContract) -> Float64 {
+        return maxExposureSecondsToReturn
+    }
+    
+    var aspectRatioToReturn: CGFloat = 0.75
     func aspectRatio(for format: AVCaptureDevice.Format) -> CGFloat {
-        return 0.75
+        return aspectRatioToReturn
     }
-    
-    
 }

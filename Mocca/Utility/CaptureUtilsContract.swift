@@ -13,5 +13,4 @@ protocol CaptureUtilsContract {
     func maxIso(for device:AVCaptureDeviceContract) -> Float
     func maxExposureSeconds(for device:AVCaptureDeviceContract) -> Float64
     func minExposureSeconds(for device:AVCaptureDeviceContract) -> Float64
-    func aspectRatio(for format:AVCaptureDevice.Format) -> CGFloat
 }
