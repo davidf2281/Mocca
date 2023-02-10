@@ -12,12 +12,12 @@ import AVFoundation
 class MockCameraOperation: CameraOperationContract {
     
     var setIsoCalls = 0
-    func setIso(_ iso: Float, for device: Mocca.AVCaptureDeviceContract, utils: Mocca.CaptureUtils, completion: @escaping (CMTime) -> Void) throws {
+    func setIso(_ iso: Float, for device: Mocca.AVCaptureDeviceContract, utils: Mocca.CaptureUtilsContract, completion: @escaping (CMTime) -> Void) throws {
         setIsoCalls += 1
     }
     
     var setExposureCalls = 0
-    func setExposure(seconds: Float64, for device: Mocca.AVCaptureDeviceContract, utils: Mocca.CaptureUtils, completion: @escaping (CMTime) -> Void) throws {
+    func setExposure(seconds: Float64, for device: Mocca.AVCaptureDeviceContract, utils: Mocca.CaptureUtilsContract, completion: @escaping (CMTime) -> Void) throws {
         setExposureCalls += 0
     }
     

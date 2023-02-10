@@ -10,9 +10,9 @@ import AVFoundation
 
 protocol CameraOperationContract {
     
-    func setIso(_ iso : Float, for device: AVCaptureDeviceContract, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws
+    func setIso(_ iso : Float, for device: AVCaptureDeviceContract, utils:CaptureUtilsContract, completion: @escaping (CMTime) -> Void) throws
 
-    func setExposure(seconds : Float64, for device: AVCaptureDeviceContract, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws
+    func setExposure(seconds : Float64, for device: AVCaptureDeviceContract, utils:CaptureUtilsContract, completion: @escaping (CMTime) -> Void) throws
     
     func canSetExposureTargetBias(ev: EV, for device: AVCaptureDeviceContract) -> Bool
     

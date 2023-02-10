@@ -9,7 +9,7 @@ import Foundation
 import AVFoundation
 @testable import Mocca
 
-class MockCaptureUtils: CaptureUtils {
+class MockCaptureUtils: CaptureUtilsContract {
     func minIso(for device: AVCaptureDeviceContract) -> Float {
         return 100
     }

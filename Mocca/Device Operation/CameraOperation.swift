@@ -10,7 +10,7 @@ import AVFoundation
 
 class CameraOperation: CameraOperationContract {
     
-    public func setIso(_ iso : Float, for device: AVCaptureDeviceContract, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws {
+    public func setIso(_ iso : Float, for device: AVCaptureDeviceContract, utils:CaptureUtilsContract, completion: @escaping (CMTime) -> Void) throws {
         
         let minIso = utils.minIso(for: device)
         let maxIso = utils.maxIso(for: device)
@@ -26,7 +26,7 @@ class CameraOperation: CameraOperationContract {
         device.unlockForConfiguration()
     }
     
-    public func setExposure(seconds : Float64, for device: AVCaptureDeviceContract, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws {
+    public func setExposure(seconds : Float64, for device: AVCaptureDeviceContract, utils:CaptureUtilsContract, completion: @escaping (CMTime) -> Void) throws {
         
         let minExposure = utils.minExposureSeconds(for: device)
         let maxExposure = utils.maxExposureSeconds(for: device)
@@ -121,7 +121,7 @@ extension CameraOperation {
     }
 }
 
-// https://stackoverflow.com/a/46863180/2201154
+// Credit: https://stackoverflow.com/a/46863180/2201154
 extension Result where Success == Void {
     static var success: Result {
         return .success(())
