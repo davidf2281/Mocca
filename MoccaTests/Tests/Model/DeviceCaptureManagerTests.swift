@@ -51,7 +51,7 @@ class DeviceCaptureManagerTests: XCTestCase {
     func testManagerInitializesCaptureSession() throws {
         let input = UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
 
-        _ = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput,videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
+        _ = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput, videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
         
         XCTAssertTrue(mockCaptureSession.beginConfigirationCalled)
         
@@ -73,7 +73,7 @@ class DeviceCaptureManagerTests: XCTestCase {
         mockCaptureSession.canAddInputResponse = false
         
         do {
-            _ = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput,videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
+            _ = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput, videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
         } catch CaptureManagerError.addVideoInputFailed {
             // Expected error
         } catch {
@@ -106,7 +106,7 @@ class DeviceCaptureManagerTests: XCTestCase {
         mockCaptureSession.canAddOutputResponse = false
         
         do {
-            _ = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput,videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
+            _ = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput, videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
         } catch CaptureManagerError.addPhotoOutputFailed {
             // Expected error
         } catch {
@@ -117,7 +117,7 @@ class DeviceCaptureManagerTests: XCTestCase {
     func testStartSession() throws {
         let input = UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
 
-        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput,videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
+        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput, videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
 
         
         sut.startCaptureSession()
@@ -127,7 +127,7 @@ class DeviceCaptureManagerTests: XCTestCase {
     func testStopSession() throws {
         let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
 
-        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput,videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
+        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput, videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
 
         
         sut.stopCaptureSession()
@@ -155,7 +155,7 @@ class DeviceCaptureManagerTests: XCTestCase {
     // "It is illegal to reuse a AVCapturePhotoSettings instance for multiple captures."
     func testCurrentPhotoSettingsReturnsUniqueSettingsObject() throws {
         let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
-        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput,videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
+        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput, videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
 
 
         let settingsA = sut.currentPhotoSettings()
@@ -167,7 +167,7 @@ class DeviceCaptureManagerTests: XCTestCase {
     func testSuccessfulSelectionOfDeviceCamera() throws {
         let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
         
-        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput,videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
+        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput, videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
 
         let logicalDevice = LogicalCameraDevice(type: .builtInTelephotoCamera, position: .back)
         let newMockDevice = MockAVCaptureDevice()
@@ -188,7 +188,7 @@ class DeviceCaptureManagerTests: XCTestCase {
     func testUnsuccessfulSelectionOfDeviceCamera() throws {
         let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
         
-        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput,videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
+        let sut = try DeviceCaptureManager(captureSession: mockCaptureSession, photoOutput: photoOutput, videoOutput: videoDataOutput, initialCaptureDevice: mockDevice, videoInput: input, resources: mockResources)
 
         
         let logicalDevice = LogicalCameraDevice(type: .builtInTelephotoCamera, position: .back)
@@ -212,7 +212,7 @@ class DeviceCaptureManagerTests: XCTestCase {
 //    func testCapturePhoto () throws {
 //        let input =   UnavailableInitFactory.instanceOfAVCaptureDeviceInput()
 //
-//        let _ = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
+//        let sut = try DeviceCaptureManager(captureSession: session, output: output, initialCaptureDevice: device, videoInput: input)
 //
 //        let settings = AVCapturePhotoSettings()
 //        let taker = DevicePhotoTaker(captureManager: sut, photoLibrary: MockPHPhotoLibrary())
