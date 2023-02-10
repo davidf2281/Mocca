@@ -69,12 +69,12 @@ class HistogramGenerator: HistogramGeneratorContract {
     }
     
     func generate(sampleBuffer: CMSampleBufferContract) -> Histogram? {
-        
-        guard  let mtlDevice = self.mtlDevice else {
-            return nil
-        }
-        
-        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer as! CMSampleBuffer) else {
+
+        guard
+            let mtlDevice = self.mtlDevice,
+            let sampleBuffer = guardedBufferCast(sampleBuffer),
+            let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
+        else {
             return nil
         }
         
@@ -107,12 +107,10 @@ class HistogramGenerator: HistogramGeneratorContract {
         
         let bufferLength = histogram.histogramSize(forSourceFormat: imageTexture.pixelFormat)
         
-        guard let histogramResults = mtlDevice.makeBuffer(length: bufferLength,
-                                                          options: [.storageModeShared]) else {
-            return nil
-        }
-        
-        guard let buffer = self.commandQueue.makeCommandBuffer() else {
+        guard
+            let histogramResults = mtlDevice.makeBuffer(length: bufferLength, options: [.storageModeShared]),
+            let buffer = self.commandQueue.makeCommandBuffer()
+        else {
             return nil
         }
         
@@ -142,5 +140,16 @@ class HistogramGenerator: HistogramGeneratorContract {
         }
         
         return Histogram(maxValue: UInt32(width * height), redBins: redBins, greenBins: greenBins, blueBins: blueBins)
+    }
+}
+
+extension HistogramGenerator {
+    
+    // Credit: https://stackoverflow.com/a/43927394/2201154
+    func guardedBufferCast<T>(_ value: T) -> CMSampleBuffer? {
+        guard CFGetTypeID(value as CFTypeRef) == CMSampleBuffer.self.typeID else {
+            return nil
+        }
+        return (value as! CMSampleBuffer)
     }
 }

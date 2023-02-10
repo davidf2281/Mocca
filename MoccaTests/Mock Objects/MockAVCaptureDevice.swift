@@ -42,10 +42,12 @@ class MockAVCaptureDevice: AVCaptureDeviceContract {
             exposurePointOfInterestCalled = true
         }
     }
-    func setExposureTargetBias(_ bias: Float, completionHandler handler: ((CMTime) -> Void)?) {}
+    func setExposureTargetBias(_ bias: Float, completionHandler handler: ((CMTime) -> Void)?) {
+        self.exposureTargetBias = bias
+    }
 
     var setLensPosition : Float?
-    var activeFormat: AVCaptureDevice.Format = UnavailableInitFactory.instanceOfAVCaptureDeviceFormat()
+    var activeFormat: AVCaptureDeviceFormatContract = MockAVCaptureDeviceFormat()
     var formats: [AVCaptureDevice.Format] = []
     var activeVideoMinFrameDuration: CMTime = .zero
     var exposureDuration: CMTime = .zero
@@ -70,12 +72,13 @@ class MockAVCaptureDevice: AVCaptureDeviceContract {
     }
     
     func lockForConfiguration() throws {
-        self.configurationLocked =    true
+        self.configurationLocked = true
         self.configurationWasLocked = true
     }
     
     func unlockForConfiguration() {
         self.configurationWasUnlocked = true
+        self.configurationLocked = false
         if (self.configurationWasLocked == true) {
             self.configurationWasUnlockedAfterLocking = true
         }

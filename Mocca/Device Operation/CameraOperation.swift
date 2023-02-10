@@ -10,7 +10,7 @@ import AVFoundation
 
 class CameraOperation: CameraOperationContract {
     
-    public func setIso(_ iso : Float, for device: AVCaptureDeviceContract, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws {
+    public func setIso(_ iso : Float, for device: AVCaptureDeviceContract, utils: CaptureUtilsContract = CaptureUtils(), completion: @escaping (CMTime) -> Void) throws {
         
         let minIso = utils.minIso(for: device)
         let maxIso = utils.maxIso(for: device)
@@ -26,7 +26,7 @@ class CameraOperation: CameraOperationContract {
         device.unlockForConfiguration()
     }
     
-    public func setExposure(seconds : Float64, for device: AVCaptureDeviceContract, utils:CaptureUtils, completion: @escaping (CMTime) -> Void) throws {
+    public func setExposure(seconds : Float64, for device: AVCaptureDeviceContract, utils: CaptureUtilsContract = CaptureUtils(), completion: @escaping (CMTime) -> Void) throws {
         
         let minExposure = utils.minExposureSeconds(for: device)
         let maxExposure = utils.maxExposureSeconds(for: device)
@@ -55,18 +55,18 @@ class CameraOperation: CameraOperationContract {
 
         let isoIsOnLowerLimit = device.iso <= device.activeFormat.minISO
         
-        if isoIsOnUpperLimit && ev >= device.exposureTargetBias {
+        if isoIsOnUpperLimit && ev >= device.maxExposureTargetBias {
             return false
         }
         
-        if isoIsOnLowerLimit && ev <= device.exposureTargetBias {
+        if isoIsOnLowerLimit && ev <= device.minExposureTargetBias {
             return false
         }
         
         return true
     }
     
-    func setExposureTargetBias(ev: EV, for device: AVCaptureDeviceContract, completion: @escaping (CMTime) -> Void) throws {
+    func setExposureTargetBias(ev: EV, for device: AVCaptureDeviceContract, completion: ((CMTime) -> Void)?) throws {
 
         let minBias = device.minExposureTargetBias
         let maxBias = device.maxExposureTargetBias
@@ -82,7 +82,7 @@ class CameraOperation: CameraOperationContract {
         device.unlockForConfiguration()
     }
     
-    func setExposurePointOfInterest(_ point:CGPoint, on layer: AVCaptureVideoPreviewLayerContract, for device: inout AVCaptureDeviceContract) -> Result<Void, OperationError> {
+    func setExposurePointOfInterest(_ point:CGPoint, on layer: AVCaptureVideoPreviewLayerContract, for device: AVCaptureDeviceContract) -> Result<Void, OperationError> {
         
         do {
             try device.lockForConfiguration()
@@ -98,7 +98,7 @@ class CameraOperation: CameraOperationContract {
         return .success
     }
     
-    func setFocusPointOfInterest(_ point:CGPoint, on layer: AVCaptureVideoPreviewLayerContract, for device: inout AVCaptureDeviceContract) -> Result<Void, OperationError> {
+    func setFocusPointOfInterest(_ point:CGPoint, on layer: AVCaptureVideoPreviewLayerContract, for device: AVCaptureDeviceContract) -> Result<Void, OperationError> {
         
         do {
             try device.lockForConfiguration()
@@ -121,7 +121,7 @@ extension CameraOperation {
     }
 }
 
-// https://stackoverflow.com/a/46863180/2201154
+// Credit: https://stackoverflow.com/a/46863180/2201154
 extension Result where Success == Void {
     static var success: Result {
         return .success(())
