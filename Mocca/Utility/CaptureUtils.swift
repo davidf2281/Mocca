@@ -11,43 +11,48 @@ import AVFoundation
 
 struct CaptureUtils: CaptureUtilsContract {
     
-    public func minIso(for device:AVCaptureDeviceContract) -> Float {
+    func minIso(for device:AVCaptureDeviceContract) -> Float {
         let minIso = device.activeFormat.minISO
         return minIso
     }
     
-    public func maxIso(for device:AVCaptureDeviceContract) -> Float {
+    func maxIso(for device:AVCaptureDeviceContract) -> Float {
         let maxIso = device.activeFormat.maxISO
         return maxIso
     }
     
-    public func maxExposureSeconds(for device:AVCaptureDeviceContract) -> Float64 {
+    func maxExposureSeconds(for device:AVCaptureDeviceContract) -> Float64 {
         let maxDuration = device.activeFormat.maxExposureDuration
         return CMTimeGetSeconds(maxDuration)
     }
     
-    public func minExposureSeconds(for device:AVCaptureDeviceContract) -> Float64 {
+    func minExposureSeconds(for device:AVCaptureDeviceContract) -> Float64 {
         let minDuration = device.activeFormat.minExposureDuration
         return CMTimeGetSeconds(minDuration)
     }
     
-    public func highestResolutionFullRangeVideoFormat(_ device:AVCaptureDeviceContract) -> AVCaptureDevice.Format? {
-        
-        var highestPixelCount : UInt = 0
-        var returnFormat : AVCaptureDevice.Format? = nil
-        
-        for format in device.formats {
-            let dimensions = CMVideoFormatDescriptionGetDimensions(format.formatDescription)
-            let pixelCount = UInt(dimensions.height * dimensions.width)
-            let description = CMFormatDescriptionGetMediaSubType(format.formatDescription)
-            
-            if description == fourTwentyFCode() && pixelCount > highestPixelCount {
-                highestPixelCount = pixelCount
-                returnFormat = format
-            }
+    func highestResolutionFullRangeVideoFormat(_ device:AVCaptureDeviceContract) -> AVCaptureDeviceFormatContract? {
+   
+        let fourTwentyFormats = device.formats.compactMap {
+            let mediaSubType = $0.formatDescription.mediaSubType.rawValue
+            return mediaSubType == fourTwentyFCode() ? $0 : nil
         }
         
-        return returnFormat
+        return highestResolutionFormat(fourTwentyFormats)
+    }
+    
+    private func highestResolutionFormat(_ formats: [AVCaptureDeviceFormatContract]) -> AVCaptureDeviceFormatContract? {
+            var highestPixelCount = 0
+            var returnFormat : AVCaptureDeviceFormatContract? = nil
+            for format in formats {
+                let pixelCount = format.formatDescription.dimensions.width * format.formatDescription.dimensions.height
+                if pixelCount > highestPixelCount {
+                    highestPixelCount = Int(pixelCount)
+                    returnFormat = format
+                }
+            }
+            
+            return returnFormat
     }
 
     /// Computes a byte code corresponding to the 420f full-range pixel format

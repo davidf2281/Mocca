@@ -7,7 +7,7 @@
 
 import Foundation
 @testable import Mocca
-class MockCaptureManager: CaptureManager {
+class MockCaptureManager: CaptureManagerContract {
     
     // Protocol conformance
     var activeCaptureDevice: AVCaptureDeviceContract

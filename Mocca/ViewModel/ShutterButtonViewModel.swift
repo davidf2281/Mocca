@@ -17,11 +17,11 @@ class ShutterButtonViewModel: ShutterButtonViewModelProtocol {
     
     @Published private(set) var state: PhotoTakerState
     
-    private(set) var photoTaker: PhotoTaker
+    private(set) var photoTaker: PhotoTakerContract
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(photoTaker: ConcretePhotoTaker) {
+    init(photoTaker: PhotoTaker) {
         self.photoTaker = photoTaker
         self.state = photoTaker.state
         

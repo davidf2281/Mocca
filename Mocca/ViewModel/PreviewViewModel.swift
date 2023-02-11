@@ -10,7 +10,7 @@ import CoreGraphics
 
 class PreviewViewModel: ObservableObject {
     
-    private let captureManager: CaptureManager?
+    private let captureManager: CaptureManagerContract?
 
     // MARK: TODO:
     // Update aspect ratio dynamically from CaptureManager's currentOutputAspectRatio() function
@@ -20,7 +20,7 @@ class PreviewViewModel: ObservableObject {
     @Published private(set) var aspectRatio: CGFloat = 0.75
     private let cameraOperation: CameraOperationContract
 
-    required init(captureManager: CaptureManager?, cameraOperation: CameraOperationContract = CameraOperation()) {
+    required init(captureManager: CaptureManagerContract?, cameraOperation: CameraOperationContract = CameraOperation()) {
         self.captureManager = captureManager
         self.cameraOperation = cameraOperation
     }

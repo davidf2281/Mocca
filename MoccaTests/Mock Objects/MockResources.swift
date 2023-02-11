@@ -9,7 +9,7 @@ import Foundation
 import AVFoundation
 @testable import Mocca
 
-class MockResources: Resources {
+class MockResources: ResourcesContract {
     
     // Test vars
     var physicalDeviceCallShouldSucceed = true

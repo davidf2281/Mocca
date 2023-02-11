@@ -8,7 +8,7 @@
 import Foundation
 import AVFoundation
 
-class DeviceResources: Resources {
+class DeviceResources: ResourcesContract {
     
     static let shared = DeviceResources()
     

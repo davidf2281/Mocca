@@ -20,13 +20,13 @@ class ExposureBiasViewModel: ExposureBiasViewModelProtocol {
     
     @Published private(set) var compensation: EV = 0
     
-    private let captureManager: CaptureManager?
+    private let captureManager: CaptureManagerContract?
     
     private var compensationAtDragStart:EV = 0
     private var dragStarted = false
     private let cameraOperation: CameraOperationContract
     
-    required init(captureManager: CaptureManager?, cameraOperation: CameraOperationContract = CameraOperation()) {
+    required init(captureManager: CaptureManagerContract?, cameraOperation: CameraOperationContract = CameraOperation()) {
         self.captureManager = captureManager
         self.cameraOperation = cameraOperation
     }

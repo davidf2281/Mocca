@@ -35,9 +35,9 @@ final class MoccaApp: App, ObservableObject {
     private let exposureBiasViewModel: ExposureBiasViewModel
     
     /// Capture manager is the intermediary class dealing with all communication with the device's physical camera hardware.
-    private let captureManager: DeviceCaptureManager? = {
-        var manager : DeviceCaptureManager?
-        do { try manager = DeviceCaptureManager(resources: DeviceResources.shared) } catch { manager = nil }
+    private let captureManager: CaptureManager? = {
+        var manager : CaptureManager?
+        do { try manager = CaptureManager(resources: DeviceResources.shared) } catch { manager = nil }
         return manager
     }()
     

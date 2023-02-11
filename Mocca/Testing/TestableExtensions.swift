@@ -17,11 +17,13 @@ extension AVCaptureSession:           AVCaptureSessionContract {}
 extension AVCaptureVideoPreviewLayer: AVCaptureVideoPreviewLayerContract {}
 extension CMSampleBuffer:             CMSampleBufferContract { }
 extension PHPhotoLibrary:             PHPhotoLibraryContract {}
+extension AVCaptureDevice.Format:     AVCaptureDeviceFormatContract {}
+extension CMFormatDescription:        CMFormatDescriptionContract {}
 
 protocol AVCaptureDeviceContract: AnyObject {
     var iso: Float { get }
     var activeFormat: AVCaptureDeviceFormatContract { get set }
-    var formats: [AVCaptureDevice.Format] { get }
+    var formats: [AVCaptureDeviceFormatContract] { get }
     var activeVideoMinFrameDuration: CMTime { get set }
     var exposureDuration: CMTime { get }
     var exposureTargetBias: Float { get }
@@ -38,6 +40,36 @@ protocol AVCaptureDeviceContract: AnyObject {
     func lockForConfiguration() throws
     func unlockForConfiguration()
 }
+
+protocol AVCaptureDevicePropertyUnshadowing {
+    var formats: [AVCaptureDevice.Format] { get }
+}
+
+extension AVCaptureDeviceContract {
+    private var realDevice: (some AVCaptureDevice)? {
+        self as? AVCaptureDevice ?? nil
+    }
+    
+    var activeFormat: AVCaptureDeviceFormatContract {
+        get {
+            return realDevice?.activeFormat ?? EmptyAVCaptureDeviceFormat()
+        }
+        set {
+            if let realDevice {
+                realDevice.activeFormat = newValue
+            }
+        }
+    }
+    
+    var formats: [AVCaptureDeviceFormatContract] {
+        if let realDevice {
+            return (realDevice as AVCaptureDevicePropertyUnshadowing).formats
+        }
+        return []
+    }
+}
+
+extension AVCaptureDevice : AVCaptureDevicePropertyUnshadowing {}
 
 protocol AVCaptureDeviceInputContract {}
 
@@ -63,35 +95,44 @@ protocol PHPhotoLibraryContract {
     func performChanges(_ changeBlock: @escaping () -> Void, completionHandler: ((Bool, Error?) -> Void)?)
 }
 
-extension AVCaptureDeviceContract {
-    private var realDevice: AVCaptureDevice? {
-        self as? AVCaptureDevice ?? nil
+protocol CMFormatDescriptionContract {
+    var dimensions: CMVideoDimensions { get }
+    var mediaSubType: CMFormatDescription.MediaSubType { get }
+}
+
+extension CMFormatDescriptionContract {
+
+    var dimensions: CMVideoDimensions {
+        return realDescription?.dimensions ?? assert(CMVideoDimensions(width: 0, height: 0))
     }
     
-    var activeFormat: AVCaptureDeviceFormatContract {
-        get {
-            return realDevice?.activeFormat ?? EmptyAVCaptureDeviceFormat()
+    var mediaSubType: CMFormatDescription.MediaSubType {
+        return realDescription?.mediaSubType ?? assert(CMFormatDescription.MediaSubType.pixelFormat_32BGRA)
+    }
+    
+    private var realDescription: CMFormatDescription? {
+        guardedCast(self)
+    }
+    
+    private func guardedCast<T>(_ value: T) -> CMFormatDescription? {
+        guard CFGetTypeID(value as CFTypeRef) == CMFormatDescription.self.typeID else {
+            return nil
         }
-        set {
-            if let realDevice {
-                realDevice.activeFormat = newValue
-            }
-        }
+        return (value as! CMFormatDescription)
     }
 }
 
+private class EmptyCMFormatDescription: CMFormatDescriptionContract {}
+
 private class EmptyAVCaptureDeviceFormat: AVCaptureDeviceFormatContract {}
 
-// ***************************************************************
-
-protocol AVCaptureDeviceFormatContract {
+protocol AVCaptureDeviceFormatContract: AnyObject {
     var minISO: Float { get }
     var maxISO: Float { get }
     var minExposureDuration: CMTime { get }
     var maxExposureDuration: CMTime { get }
+    var formatDescription: CMFormatDescriptionContract { get }
 }
-
-extension AVCaptureDevice.Format: AVCaptureDeviceFormatContract {}
 
 extension AVCaptureDeviceFormatContract {
     
@@ -100,32 +141,27 @@ extension AVCaptureDeviceFormatContract {
     }
     
     var minISO: Float {
-        self.realFormat?.minISO ?? Float.assert()
+        self.realFormat?.minISO ?? assert(0)
     }
     
     var maxISO: Float {
-        self.realFormat?.maxISO ?? Float.assert()
+        self.realFormat?.maxISO ?? assert(0)
     }
     
     var minExposureDuration: CMTime {
-        return realFormat?.minExposureDuration ?? CMTime.assert()
+        return realFormat?.minExposureDuration ?? assert(CMTime.zero)
     }
     
     var maxExposureDuration: CMTime {
-        return realFormat?.maxExposureDuration ?? CMTime.assert()
+        return realFormat?.maxExposureDuration ?? assert(CMTime.zero)
+    }
+    
+    var formatDescription: CMFormatDescriptionContract {
+        return realFormat?.formatDescription ?? assert(EmptyCMFormatDescription())
     }
 }
 
-fileprivate extension Float {
-    static func assert() -> Self {
-        Swift.assert(false)
-        return Float(0)
-    }
-}
-
-fileprivate extension CMTime {
-    static func assert() -> Self {
-        Swift.assert(false)
-        return CMTimeMake(value: 1, timescale: 1)
-    }
+fileprivate func assert<T>(_ value: T) -> T {
+    Swift.assert(false)
+    return value
 }

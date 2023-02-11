@@ -8,7 +8,7 @@
 import Foundation
 import AVFoundation
 
-protocol Resources {
+protocol ResourcesContract {
     
     var metalDevice: MTLDevice? { get }
     

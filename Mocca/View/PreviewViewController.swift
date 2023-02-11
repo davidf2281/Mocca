@@ -13,7 +13,7 @@ final class PreviewViewController: UIViewController {
     
     private let previewView: PreviewUIView?
     
-    private(set) public var orientationPublisher : OrientationPublisher
+    private(set) var orientationPublisher : OrientationPublisher
 
     required init?(coder: NSCoder) {
         fatalError("Use initWithPreviewView: orientationPublisher:")
