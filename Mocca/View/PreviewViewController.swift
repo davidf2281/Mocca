@@ -48,10 +48,8 @@ final class PreviewViewController: UIViewController {
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { (context) -> Void in
-            
             self.orientationPublisher.interfaceOrientation = Orientation.currentInterfaceOrientation()
             self.previewView?.videoPreviewLayer.connection?.videoOrientation = Orientation.AVOrientation(for: self.orientationPublisher.interfaceOrientation)
-            
         }, completion: nil)
         
         super.viewWillTransition(to: size, with: coordinator)
