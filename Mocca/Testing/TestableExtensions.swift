@@ -11,7 +11,6 @@ import AVFoundation
 import Photos
 
 /* Empty extensions are required. */
-extension AVCaptureDevice:            AVCaptureDeviceContract {}
 extension AVCaptureDeviceInput:       AVCaptureDeviceInputContract {}
 extension AVCaptureSession:           AVCaptureSessionContract {}
 extension AVCaptureVideoPreviewLayer: AVCaptureVideoPreviewLayerContract {}
@@ -20,56 +19,6 @@ extension PHPhotoLibrary:             PHPhotoLibraryContract {}
 extension AVCaptureDevice.Format:     AVCaptureDeviceFormatContract {}
 extension CMFormatDescription:        CMFormatDescriptionContract {}
 
-protocol AVCaptureDeviceContract: AnyObject {
-    var iso: Float { get }
-    var activeFormat: AVCaptureDeviceFormatContract { get set }
-    var formats: [AVCaptureDeviceFormatContract] { get }
-    var activeVideoMinFrameDuration: CMTime { get set }
-    var exposureDuration: CMTime { get }
-    var exposureTargetBias: Float { get }
-    var maxExposureTargetBias: Float { get }
-    var minExposureTargetBias: Float { get }
-    var isExposurePointOfInterestSupported: Bool { get }
-    var exposurePointOfInterest: CGPoint { get set }
-    var exposureMode: AVCaptureDevice.ExposureMode { get set }
-    var focusPointOfInterest: CGPoint { get set }
-    var focusMode: AVCaptureDevice.FocusMode { get set }
-    func setFocusModeLocked(lensPosition: Float, completionHandler handler: ((CMTime) -> Void)?)
-    func setExposureModeCustom(duration: CMTime, iso ISO: Float, completionHandler handler: ((CMTime) -> Void)?)
-    func setExposureTargetBias(_ bias: Float, completionHandler handler: ((CMTime) -> Void)?)
-    func lockForConfiguration() throws
-    func unlockForConfiguration()
-}
-
-protocol AVCaptureDevicePropertyUnshadowing {
-    var formats: [AVCaptureDevice.Format] { get }
-}
-
-extension AVCaptureDeviceContract {
-    private var realDevice: (some AVCaptureDevice)? {
-        self as? AVCaptureDevice ?? nil
-    }
-    
-    var activeFormat: AVCaptureDeviceFormatContract {
-        get {
-            return realDevice?.activeFormat ?? EmptyAVCaptureDeviceFormat()
-        }
-        set {
-            if let realDevice {
-                realDevice.activeFormat = newValue
-            }
-        }
-    }
-    
-    var formats: [AVCaptureDeviceFormatContract] {
-        if let realDevice {
-            return (realDevice as AVCaptureDevicePropertyUnshadowing).formats
-        }
-        return []
-    }
-}
-
-extension AVCaptureDevice : AVCaptureDevicePropertyUnshadowing {}
 
 protocol AVCaptureDeviceInputContract {}
 
@@ -123,8 +72,6 @@ extension CMFormatDescriptionContract {
 }
 
 private class EmptyCMFormatDescription: CMFormatDescriptionContract {}
-
-private class EmptyAVCaptureDeviceFormat: AVCaptureDeviceFormatContract {}
 
 protocol AVCaptureDeviceFormatContract: AnyObject {
     var minISO: Float { get }
