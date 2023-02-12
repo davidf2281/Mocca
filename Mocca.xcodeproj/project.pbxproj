@@ -19,6 +19,7 @@
 		8C118120254021E8004ED0B0 /* HistogramGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C11811F254021E8004ED0B0 /* HistogramGenerator.swift */; };
 		8C11812525405162004ED0B0 /* HistogramViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C11812425405162004ED0B0 /* HistogramViewModel.swift */; };
 		8C11812A254052AD004ED0B0 /* HistogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C118129254052AD004ED0B0 /* HistogramView.swift */; };
+		8C12BD0229985FEB008C181D /* MockPhotoTaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C12BD0129985FEB008C181D /* MockPhotoTaker.swift */; };
 		8C1A5C86252203D800D92F3C /* CameraErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1A5C85252203D800D92F3C /* CameraErrorView.swift */; };
 		8C1C8766252F50DE00001B14 /* WidgetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */; };
 		8C1C876E252F58A100001B14 /* PreviewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1C876D252F58A100001B14 /* PreviewViewModelTests.swift */; };
@@ -104,6 +105,7 @@
 		8C11811F254021E8004ED0B0 /* HistogramGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistogramGenerator.swift; sourceTree = "<group>"; };
 		8C11812425405162004ED0B0 /* HistogramViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistogramViewModel.swift; sourceTree = "<group>"; };
 		8C118129254052AD004ED0B0 /* HistogramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistogramView.swift; sourceTree = "<group>"; };
+		8C12BD0129985FEB008C181D /* MockPhotoTaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPhotoTaker.swift; sourceTree = "<group>"; };
 		8C1A5C85252203D800D92F3C /* CameraErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraErrorView.swift; sourceTree = "<group>"; };
 		8C1C8765252F50DE00001B14 /* WidgetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetViewModelTests.swift; sourceTree = "<group>"; };
 		8C1C876D252F58A100001B14 /* PreviewViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewModelTests.swift; sourceTree = "<group>"; };
@@ -450,6 +452,7 @@
 				8C1180F8253F2A0E004ED0B0 /* MockCaptureUtils.swift */,
 				8C11810E253F6CE3004ED0B0 /* MockResources.swift */,
 				8CE53EC829957F8200DE5B6F /* MockCameraOperation.swift */,
+				8C12BD0129985FEB008C181D /* MockPhotoTaker.swift */,
 			);
 			path = "Mock Objects";
 			sourceTree = "<group>";
@@ -655,6 +658,7 @@
 				8CBEB527252B2F9800D6525F /* MockPHPhotoLibrary.swift in Sources */,
 				8C6728AB251E10610066A836 /* MockAVCaptureSession.swift in Sources */,
 				8CBEB52F252B302400D6525F /* DevicePhotoTakerTests.swift in Sources */,
+				8C12BD0229985FEB008C181D /* MockPhotoTaker.swift in Sources */,
 				8CE07E43252B457100702E14 /* MockCaptureManager.swift in Sources */,
 				8C6728AC251E10610066A836 /* MockAVCaptureDevice.swift in Sources */,
 				8C4E6941253B328400ED1B29 /* MockAVCaptureDeviceInput.swift in Sources */,

@@ -23,7 +23,8 @@ enum PhotoTakerError: Error {
 
 protocol PhotoTakerContract {
     var state: PhotoTakerState { get }
-    
+    var statePublisher: Published<PhotoTakerState>.Publisher { get }
+
     func resetState() -> Result<PhotoTakerState, PhotoTakerError>
     func takePhoto() -> Result<PhotoTakerState, PhotoTakerError>
 }
@@ -31,6 +32,7 @@ protocol PhotoTakerContract {
 class PhotoTaker: NSObject, PhotoTakerContract {
     
     @Published fileprivate(set) var state: PhotoTakerState = .ready
+    var statePublisher: Published<PhotoTakerState>.Publisher { $state }
     
     public func resetState() -> Result<PhotoTakerState, PhotoTakerError> {
         self.state = .ready
@@ -77,14 +79,5 @@ class DevicePhotoTaker: PhotoTaker, AVCapturePhotoCaptureDelegate, ObservableObj
             creationRequest.addResource(with: .photo, data: photo.fileDataRepresentation()!, options: nil)}, completionHandler:{ (success: Bool, error : Error?) -> Void in
                 self.state = ( success ? .ready : .error(.saveError) )
             })
-    }
-}
-
-class MockPhotoTaker: PhotoTaker, ObservableObject {
-    private(set) var takePhotoCalled = false
-    override public func takePhoto() -> Result<PhotoTakerState, PhotoTakerError> {
-        self.takePhotoCalled = true
-        self.state = .capturePending
-        return .success(.capturePending)
     }
 }
