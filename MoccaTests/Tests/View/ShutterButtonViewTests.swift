@@ -11,7 +11,7 @@ import SwiftUI
 @testable import Mocca
 import ViewInspector
 
-extension ShutterButtonView: Inspectable { }
+extension ShutterButtonView { }
 
 private class MockShutterButtonViewModel: ShutterButtonViewModelProtocol {
     var state: PhotoTakerState = .ready
