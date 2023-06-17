@@ -12,12 +12,12 @@ class DevicePhotoTakerTests: XCTestCase {
 
     private var manager: MockCaptureManager = MockCaptureManager()
     private var photoLibrary: MockPHPhotoLibrary = MockPHPhotoLibrary()
-    private var taker: DevicePhotoTaker!
+    private var sut: DevicePhotoTaker!
     
     override func setUp() {
         manager = MockCaptureManager()
         photoLibrary = MockPHPhotoLibrary()
-        taker = DevicePhotoTaker(captureManager: manager, photoLibrary: photoLibrary)
+        sut = DevicePhotoTaker(captureManager: manager, photoLibrary: photoLibrary)
     }
     
     func waitForSimulatedDiskWrite() {
@@ -27,21 +27,21 @@ class DevicePhotoTakerTests: XCTestCase {
     
     func testPhotoTakerAsksCaptureManagerToTakePhoto() throws {
         XCTAssertFalse(manager.capturePhotoCalled)
-        _ = taker.takePhoto()
+        _ = sut.takePhoto()
         XCTAssertTrue(manager.capturePhotoCalled)
     }
     
     func testPhotoTakerSetsItselfAsCaptureDelegate() {
         XCTAssertNil(manager.captureDelegate)
-        _ = taker.takePhoto()
+        _ = sut.takePhoto()
         XCTAssertNotNil(manager.captureDelegate)
-        XCTAssert(taker === manager.captureDelegate)
+        XCTAssert(sut === manager.captureDelegate)
     }
     
     func testPhotoTakerCallsPerformChangesOnPhotoLibrary() {
         XCTAssertFalse(photoLibrary.performChangesCalled)
-        _ = taker.takePhoto()
-        taker.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: nil)
+        _ = sut.takePhoto()
+        sut.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: nil)
         XCTAssertTrue(photoLibrary.performChangesCalled)
     }
     
@@ -49,51 +49,69 @@ class DevicePhotoTakerTests: XCTestCase {
         
         photoLibrary.shouldSucceedOnPerformChanges = true
 
-        XCTAssert(taker.state == .ready)
+        XCTAssert(sut.state == .ready)
         XCTAssertTrue(photoLibrary.shouldSucceedOnPerformChanges)
         
-        _ = taker.takePhoto()
-        XCTAssert(taker.state == .capturePending)
+        _ = sut.takePhoto()
+        XCTAssert(sut.state == .capturePending)
         
-        taker.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: nil)
-        XCTAssert(taker.state == .saving)
+        sut.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: nil)
+        XCTAssert(sut.state == .saving)
 
         waitForSimulatedDiskWrite()
         
-        XCTAssert(taker.state == .ready)
+        XCTAssert(sut.state == .ready)
     }
     
     func testPhotoTakerStateSequenceForErroredCaptureButSuccessfulSave() {
         
         photoLibrary.shouldSucceedOnPerformChanges = true
 
-        XCTAssert(taker.state == .ready)
+        XCTAssert(sut.state == .ready)
         XCTAssertTrue(photoLibrary.shouldSucceedOnPerformChanges)
         
-        _ = taker.takePhoto()
-        XCTAssert(taker.state == .capturePending)
+        _ = sut.takePhoto()
+        XCTAssert(sut.state == .capturePending)
         
-        taker.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: NSError())
+        sut.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: NSError())
         
-        XCTAssert(taker.state == .error(.captureError))
+        XCTAssert(sut.state == .error(.captureError))
         waitForSimulatedDiskWrite()
-        XCTAssert(taker.state == .ready)
+        XCTAssert(sut.state == .ready)
     }
     
     func testPhotoTakerStateSequenceForFailedCaptureAndFailedSave() {
         
         photoLibrary.shouldSucceedOnPerformChanges = false
         
-        XCTAssert(taker.state == .ready)
+        XCTAssert(sut.state == .ready)
         XCTAssertFalse(photoLibrary.shouldSucceedOnPerformChanges)
         
-        _ = taker.takePhoto()
-        XCTAssert(taker.state == .capturePending)
+        _ = sut.takePhoto()
+        XCTAssert(sut.state == .capturePending)
         
-        taker.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: NSError())
+        sut.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: NSError())
                 
-        XCTAssert(taker.state == .error(.captureError))
+        XCTAssert(sut.state == .error(.captureError))
         waitForSimulatedDiskWrite()
-        XCTAssert(taker.state == .error(.saveError))
+        XCTAssert(sut.state == .error(.saveError))
+    }
+    
+    func testPhotoTakerResetState() {
+        
+        photoLibrary.shouldSucceedOnPerformChanges = false
+        XCTAssert(sut.state == .ready)
+        _ = sut.takePhoto()
+        sut.photoOutput(AVCapturePhotoOutput(), didFinishProcessingPhoto: UnavailableInitFactory.instanceOfAVCapturePhoto(), error: NSError())
+        waitForSimulatedDiskWrite()
+        XCTAssert(sut.state == .error(.saveError))
+        
+        let result = sut.resetState()
+        guard case .success(.ready) = result else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(sut.state, .ready)
     }
 }

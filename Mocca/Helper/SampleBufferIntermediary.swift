@@ -8,7 +8,7 @@
 import Foundation
 import AVFoundation
 
-/// Class to receive frame samples, since the main Mocca App can't do it as it can't conform to AVCaptureVideoDataOutputSampleBufferDelegate unless it's a subclasses of NSObject, which cause problems.
+/// Class to receive frame samples, since only subclasses of NSObject can conform to AVCaptureVideoDataOutputSampleBufferDelegate and we'd rather encapsulate that in one place.
 
 class SampleBufferIntermediary: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     

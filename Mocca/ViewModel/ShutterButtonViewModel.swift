@@ -17,16 +17,16 @@ class ShutterButtonViewModel: ShutterButtonViewModelProtocol {
     
     @Published private(set) var state: PhotoTakerState
     
-    private(set) var photoTaker: PhotoTaker
+    private(set) var photoTaker: PhotoTakerContract
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(photoTaker: ConcretePhotoTaker) {
+    init(photoTaker: PhotoTakerContract) {
         self.photoTaker = photoTaker
         self.state = photoTaker.state
         
         // Bind model's state with ours:
-        photoTaker.$state
+        photoTaker.statePublisher
             .sink() { [weak self] value in
                 DispatchQueue.main.async {
                     self?.state = value

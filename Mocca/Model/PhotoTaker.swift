@@ -21,16 +21,18 @@ enum PhotoTakerError: Error {
     case saveError
 }
 
-protocol PhotoTaker {
+protocol PhotoTakerContract {
     var state: PhotoTakerState { get }
-    
+    var statePublisher: Published<PhotoTakerState>.Publisher { get }
+
     func resetState() -> Result<PhotoTakerState, PhotoTakerError>
     func takePhoto() -> Result<PhotoTakerState, PhotoTakerError>
 }
 
-class ConcretePhotoTaker: NSObject, PhotoTaker {
+class PhotoTaker: NSObject, PhotoTakerContract {
     
     @Published fileprivate(set) var state: PhotoTakerState = .ready
+    var statePublisher: Published<PhotoTakerState>.Publisher { $state }
     
     public func resetState() -> Result<PhotoTakerState, PhotoTakerError> {
         self.state = .ready
@@ -41,12 +43,12 @@ class ConcretePhotoTaker: NSObject, PhotoTaker {
 }
 
 /// Communicates with capture manager to kick off capture of a photo, saving the resulting AVCapturePhoto object to device.
-class DevicePhotoTaker: ConcretePhotoTaker, AVCapturePhotoCaptureDelegate, ObservableObject  {
+class DevicePhotoTaker: PhotoTaker, AVCapturePhotoCaptureDelegate, ObservableObject  {
     
-    private let captureManager: CaptureManager?
+    private let captureManager: CaptureManagerContract?
     private let photoLibrary:   PHPhotoLibraryContract
     
-    init(captureManager: CaptureManager?, photoLibrary: PHPhotoLibraryContract) {
+    init(captureManager: CaptureManagerContract?, photoLibrary: PHPhotoLibraryContract) {
         self.captureManager = captureManager
         self.photoLibrary = photoLibrary
     }
@@ -77,14 +79,5 @@ class DevicePhotoTaker: ConcretePhotoTaker, AVCapturePhotoCaptureDelegate, Obser
             creationRequest.addResource(with: .photo, data: photo.fileDataRepresentation()!, options: nil)}, completionHandler:{ (success: Bool, error : Error?) -> Void in
                 self.state = ( success ? .ready : .error(.saveError) )
             })
-    }
-}
-
-class MockPhotoTaker: ConcretePhotoTaker, ObservableObject {
-    private(set) var takePhotoCalled = false
-    override public func takePhoto() -> Result<PhotoTakerState, PhotoTakerError> {
-        self.takePhotoCalled = true
-        self.state = .capturePending
-        return .success(.capturePending)
     }
 }

@@ -50,7 +50,10 @@ class MockAVCaptureDevice: AVCaptureDeviceContract {
 
     var setLensPosition : Float?
     var activeFormat: AVCaptureDeviceFormatContract = MockAVCaptureDeviceFormat()
-    var formats: [AVCaptureDevice.Format] = []
+    var formatsToReturn: [AVCaptureDeviceFormatContract] = [MockAVCaptureDeviceFormat()]
+    var formats: [AVCaptureDeviceFormatContract] {
+        formatsToReturn
+    }
     var activeVideoMinFrameDuration: CMTime = .zero
     var exposureDuration: CMTime = .zero
     

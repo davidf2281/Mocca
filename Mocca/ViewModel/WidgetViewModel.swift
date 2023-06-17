@@ -10,7 +10,7 @@ import CoreGraphics
 
 class WidgetViewModel: ObservableObject {
     
-    private let captureManager: CaptureManager?
+    private let captureManager: CaptureManagerContract?
     @Published public var position: CGPoint
     
     private(set) var dockedPosition: CGPoint
@@ -30,7 +30,7 @@ class WidgetViewModel: ObservableObject {
         }
     }
     
-    required init(captureManager: CaptureManager?, dockedPosition: CGPoint, displayCharacter: String, cameraOperation: CameraOperationContract = CameraOperation()) {
+    required init(captureManager: CaptureManagerContract?, dockedPosition: CGPoint, displayCharacter: String, cameraOperation: CameraOperationContract = CameraOperation()) {
         self.captureManager = captureManager
         self.dockedPosition = dockedPosition
         self.position = dockedPosition
