@@ -40,21 +40,13 @@ extension AVCaptureDevice: AVCaptureDevicePropertyUnshadowing {}
 private class EmptyAVCaptureDeviceFormat: AVCaptureDeviceFormatContract {}
 
 extension AVCaptureDeviceContract {
-    private var realDevice: AVCaptureDevicePropertyUnshadowing? {
-        get {
-            if let self = self as? AVCaptureDevice {
-                return self as AVCaptureDevicePropertyUnshadowing
-            }
-            return nil
-        }
-        set {}
-    }
+    private var realDevice: AVCaptureDevicePropertyUnshadowing? { self as? AVCaptureDevice }
 
     var activeFormat: AVCaptureDeviceFormatContract {
         get { realDevice?.activeFormat ?? assert(EmptyAVCaptureDeviceFormat()) }
         set {
-            if let newValue = newValue as? AVCaptureDevice.Format {
-                realDevice?.activeFormat = newValue
+            if let newValue = newValue as? AVCaptureDevice.Format, var realDevice {
+                realDevice.activeFormat = newValue
             }
         }
     }

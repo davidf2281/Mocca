@@ -205,13 +205,13 @@
 			path = Manager;
 			sourceTree = "<group>";
 		};
-		8C0E39F32525F6C4004BFFCA /* Testing */ = {
+		8C0E39F32525F6C4004BFFCA /* Testable extensions */ = {
 			isa = PBXGroup;
 			children = (
 				8CC3C44A251DFD2F00CC4698 /* TestableExtensions.swift */,
 				8C12BD0329989725008C181D /* AVCaptureDevice-TestableExtensions.swift */,
 			);
-			path = Testing;
+			path = "Testable extensions";
 			sourceTree = "<group>";
 		};
 		8C1180C7253EFDFC004ED0B0 /* Device Operation */ = {
@@ -335,7 +335,7 @@
 				8C118103253F3A89004ED0B0 /* Hardware resources */,
 				8CE53EC529956F0200DE5B6F /* Helper */,
 				8CCE88B825248F160086AF83 /* Utility */,
-				8C0E39F32525F6C4004BFFCA /* Testing */,
+				8C0E39F32525F6C4004BFFCA /* Testable extensions */,
 				8CADB30C253044A50061447C /* Supporting files */,
 			);
 			path = Mocca;
