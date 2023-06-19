@@ -24,7 +24,14 @@ struct HistogramBin {
     }
 }
 
-struct Histogram {
+protocol HistogramContract {
+    var maxValue: UInt32 { get }
+    var redBins: [HistogramBin] { get }
+    var greenBins: [HistogramBin] { get }
+    var blueBins: [HistogramBin] { get }
+}
+
+struct Histogram: HistogramContract {
     let maxValue: UInt32
     let redBins: [HistogramBin]
     let greenBins: [HistogramBin]
@@ -32,12 +39,12 @@ struct Histogram {
 }
 
 protocol HistogramGeneratorContract {
-    func generate(sampleBuffer: CMSampleBufferContract) -> Histogram?
+    func generate(sampleBuffer: SampleBuffer) -> HistogramContract?
 }
 
 class HistogramGenerator: HistogramGeneratorContract {
-    
-    private let mtlDevice: MTLDevice?
+
+    private let metalDevice: MTLDevice?
     private let commandQueue: MTLCommandQueue
     private let commandBuffer: MTLCommandBuffer
     private let binCount: Int
@@ -45,9 +52,9 @@ class HistogramGenerator: HistogramGeneratorContract {
     private var greenBins: [HistogramBin]
     private var blueBins:  [HistogramBin]
     
-    required init?(mtlDevice: MTLDevice?, binCount: Int = 128) {
+    required init?(metalDevice: MTLDevice?, binCount: Int = 128) {
         
-        guard let commandQueue = mtlDevice?.makeCommandQueue() else {
+        guard let commandQueue = metalDevice?.makeCommandQueue() else {
             return nil
         }
         
@@ -61,17 +68,17 @@ class HistogramGenerator: HistogramGeneratorContract {
         
         self.commandQueue = commandQueue
         self.commandBuffer = buffer
-        self.mtlDevice = mtlDevice
+        self.metalDevice = metalDevice
         self.binCount = binCount
         self.redBins = Array(repeating: HistogramBin.empty(), count: binCount)
         self.greenBins = Array(repeating: HistogramBin.empty(), count: binCount)
         self.blueBins = Array(repeating: HistogramBin.empty(), count: binCount)
     }
     
-    func generate(sampleBuffer: CMSampleBufferContract) -> Histogram? {
+    func generate(sampleBuffer: SampleBuffer) -> HistogramContract? {
 
         guard
-            let mtlDevice = self.mtlDevice,
+            let mtlDevice = self.metalDevice,
             let sampleBuffer = guardedBufferCast(sampleBuffer),
             let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
         else {
@@ -124,22 +131,27 @@ class HistogramGenerator: HistogramGeneratorContract {
         
         let dataPointer = histogramResults.contents().assumingMemoryBound(to: UInt32.self)
         
+        var maxValue: UInt32 = 0
+        
         for index in 0..<binCount {
             let red = dataPointer[index]
             redBins[index] = HistogramBin(value: red, index: index, ID: index)
+            if red > maxValue { maxValue = red }
         }
         
         for index in binCount..<(binCount * 2) {
             let green = dataPointer[index]
             greenBins[index - binCount] = HistogramBin(value: green, index: index - binCount, ID: index)
+            if green > maxValue { maxValue = green }
         }
         
         for index in (binCount * 2)..<(binCount * 3) {
             let blue = dataPointer[index]
             blueBins[index - binCount * 2] = HistogramBin(value:blue, index: index - binCount * 2, ID: index)
+            if blue > maxValue { maxValue = blue }
         }
         
-        return Histogram(maxValue: UInt32(width * height), redBins: redBins, greenBins: greenBins, blueBins: blueBins)
+        return Histogram(maxValue: maxValue, redBins: redBins, greenBins: greenBins, blueBins: blueBins)
     }
 }
 

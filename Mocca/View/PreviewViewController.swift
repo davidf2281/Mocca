@@ -6,15 +6,12 @@
 //
 
 import UIKit
-import AVFoundation
 import SwiftUI
 
 final class PreviewViewController: UIViewController {
-    
-    private let previewView: PreviewUIView?
-    
-    private(set) var orientationPublisher : OrientationPublisher
 
+    private let viewModel: PreviewViewControllerViewModelContract
+    
     required init?(coder: NSCoder) {
         fatalError("Use initWithPreviewView: orientationPublisher:")
     }
@@ -23,33 +20,32 @@ final class PreviewViewController: UIViewController {
         fatalError("Use initWithPreviewView: orientationPublisher:")
     }
     
-    required init(previewView: PreviewUIView?, orientationPublisher: OrientationPublisher) {
-        self.previewView = previewView
-        self.orientationPublisher = orientationPublisher
+    required init(viewModel: PreviewViewControllerViewModelContract) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.view.translatesAutoresizingMaskIntoConstraints = false
     }
     
     override func viewDidLoad() {
-        // TODO: Publishing interface orientation here generates runtime warning "Publishing changes from within view updates is not allowed". Figure out why we ever had this line here since it appears to make no difference when commented out
-        // self.orientationPublisher.interfaceOrientation = Orientation.currentInterfaceOrientation()
-        self.view.backgroundColor = UIColor.black
-        if let preview = self.previewView {
+        self.view.backgroundColor = viewModel.backgroundColor
+        if let preview = self.viewModel.previewView {
             preview.frame = self.view.frame
             self.view.addSubview(preview)
         }
     }
 
     override func viewDidLayoutSubviews() {
-        if let preview = self.previewView {
-            preview.videoPreviewLayer.frame = self.view.frame
+        if let previewView = self.viewModel.previewView {
+            let theFrame: CGRect = self.view.frame
+            previewView.videoPreviewLayer?.frame = theFrame
         }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { (context) -> Void in
-            self.orientationPublisher.interfaceOrientation = Orientation.currentInterfaceOrientation()
-            self.previewView?.videoPreviewLayer.connection?.videoOrientation = Orientation.AVOrientation(for: self.orientationPublisher.interfaceOrientation)
+            self.viewModel.orientationPublisher.interfaceOrientation = Orientation.currentInterfaceOrientation()
+            self.viewModel.previewView?.videoPreviewLayer?.captureConnection?.orientation =
+            self.viewModel.orientationPublisher.interfaceOrientation
         }, completion: nil)
         
         super.viewWillTransition(to: size, with: coordinator)
@@ -58,13 +54,16 @@ final class PreviewViewController: UIViewController {
 
 struct PreviewViewControllerRepresentable: UIViewControllerRepresentable {
     
-    public typealias UIViewControllerType = PreviewViewController
+    typealias UIViewControllerType = PreviewViewController
     
-    let previewView: PreviewUIView?
-    private(set) var orientationPublisher : OrientationPublisher
+    private let viewModel: PreviewViewControllerViewModel
+    
+    init(viewModel: PreviewViewControllerViewModel) {
+        self.viewModel = viewModel
+    }
     
     func makeUIViewController(context: Context) -> PreviewViewController {
-        return PreviewViewController(previewView: self.previewView, orientationPublisher: orientationPublisher)
+        return PreviewViewController(viewModel: self.viewModel)
     }
     
     func updateUIViewController(_ uiViewController: PreviewViewController, context: Context) {}

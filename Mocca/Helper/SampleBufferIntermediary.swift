@@ -17,7 +17,10 @@ class SampleBufferIntermediary: NSObject, AVCaptureVideoDataOutputSampleBufferDe
     }
     
     let sampleBufferHandler: SampleBufferHandler
+    
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         self.sampleBufferHandler.processSampleBuffer(sampleBuffer)
     }
 }
+
+extension SampleBufferIntermediary: CaptureVideoDataOutputSampleBufferDelegate {}

@@ -7,13 +7,21 @@
 
 import SwiftUI
 
-struct ShutterButtonView<Model>: View where Model: ShutterButtonViewModelProtocol {
+struct ShutterButtonView<T: ShutterButtonViewModelContract>: View {
 
-    @ObservedObject var viewModel: Model
+    @ObservedObject var viewModel: T
     
-    private let continuousAnimation = Animation.linear(duration: 2).repeatForever(autoreverses: false)
     private let solidStroke = StrokeStyle( lineWidth: 3 )
     private let dashedStroke = StrokeStyle( lineWidth: 3, dash: [10] )
+    private var shutterButtonAnimation: Animation {
+        viewModel.state != .ready ?
+        Animation.linear(duration: 2).repeatForever(autoreverses: false) :
+            .easeIn(duration: 0)
+    }
+    
+    init(viewModel: T) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         ZStack {
@@ -23,7 +31,7 @@ struct ShutterButtonView<Model>: View where Model: ShutterButtonViewModelProtoco
                     viewModel.state != .ready ? Angle(degrees: 360) : Angle(degrees: 0), axis: (x: 0.0, y: 0.0, z: 1.0), perspective: 0
                 )
                 .foregroundColor(.gray)
-                .animation(viewModel.state != .ready ? continuousAnimation : .easeIn(duration: 0))
+                .animation(shutterButtonAnimation, value: viewModel.state)
             Circle()
                 .fill(viewModel.state == .ready ? Color.red : Color.gray)
                 .frame(width: 50, height: 50, alignment: .center)

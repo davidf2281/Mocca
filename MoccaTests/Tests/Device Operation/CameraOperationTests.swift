@@ -12,17 +12,17 @@ import AVFoundation
 class CameraOperationTests: XCTestCase {
     
     var sut: CameraOperation!
-    var mockDevice: MockAVCaptureDevice!
+    var mockDevice: MockCaptureDevice!
     var mockFormat: MockAVCaptureDeviceFormat!
     var mockUtils: MockCaptureUtils!
-    var mockVideoPreviewLayer: MockAVCaptureVideoPreviewLayer!
+    var mockVideoPreviewLayer: MockCaptureVideoPreviewLayer!
     
     override func setUpWithError() throws {
         sut = CameraOperation()
-        mockDevice = MockAVCaptureDevice()
+        mockDevice = MockCaptureDevice()
         mockFormat = MockAVCaptureDeviceFormat()
         mockUtils = MockCaptureUtils()
-        mockVideoPreviewLayer = MockAVCaptureVideoPreviewLayer()
+        mockVideoPreviewLayer = MockCaptureVideoPreviewLayer()
     }
     
     func testSetIsoSuccess() throws {

@@ -6,6 +6,8 @@
 //
 
 import XCTest
+import AVFoundation
+
 @testable import Mocca
 
 final class HistogramGeneratorTests: XCTestCase {
@@ -19,7 +21,7 @@ final class HistogramGeneratorTests: XCTestCase {
             return
         }
         
-        let sut = HistogramGenerator(mtlDevice: mtlDevice, binCount: 256)
+        let sut = HistogramGenerator(metalDevice: mtlDevice, binCount: 256)
         
         guard let buffer = mockCMSampleBuffer() else {
             XCTFail("Mock sample buffer is nil")

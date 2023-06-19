@@ -7,31 +7,31 @@
 //
 
 import Foundation
-import AVFoundation
+import CoreMedia.CMTime
 
 struct CaptureUtils: CaptureUtilsContract {
     
-    func minIso(for device:AVCaptureDeviceContract) -> Float {
+    func minIso(for device:CaptureDevice) -> Float {
         let minIso = device.activeFormat.minISO
         return minIso
     }
     
-    func maxIso(for device:AVCaptureDeviceContract) -> Float {
+    func maxIso(for device:CaptureDevice) -> Float {
         let maxIso = device.activeFormat.maxISO
         return maxIso
     }
     
-    func maxExposureSeconds(for device:AVCaptureDeviceContract) -> Float64 {
+    func maxExposureSeconds(for device:CaptureDevice) -> Float64 {
         let maxDuration = device.activeFormat.maxExposureDuration
         return CMTimeGetSeconds(maxDuration)
     }
     
-    func minExposureSeconds(for device:AVCaptureDeviceContract) -> Float64 {
+    func minExposureSeconds(for device:CaptureDevice) -> Float64 {
         let minDuration = device.activeFormat.minExposureDuration
         return CMTimeGetSeconds(minDuration)
     }
     
-    func highestResolutionFullRangeVideoFormat(_ device:AVCaptureDeviceContract) -> AVCaptureDeviceFormatContract? {
+    func highestResolutionFullRangeVideoFormat(_ device:CaptureDevice) -> CaptureDeviceFormat? {
    
         let fourTwentyFormats = device.formats.compactMap {
             let mediaSubType = $0.formatDescription.mediaSubType.rawValue
@@ -41,9 +41,9 @@ struct CaptureUtils: CaptureUtilsContract {
         return highestResolutionFormat(fourTwentyFormats)
     }
     
-    private func highestResolutionFormat(_ formats: [AVCaptureDeviceFormatContract]) -> AVCaptureDeviceFormatContract? {
+    private func highestResolutionFormat(_ formats: [CaptureDeviceFormat]) -> CaptureDeviceFormat? {
             var highestPixelCount = 0
-            var returnFormat : AVCaptureDeviceFormatContract? = nil
+            var returnFormat : CaptureDeviceFormat? = nil
             for format in formats {
                 let pixelCount = format.formatDescription.dimensions.width * format.formatDescription.dimensions.height
                 if pixelCount > highestPixelCount {

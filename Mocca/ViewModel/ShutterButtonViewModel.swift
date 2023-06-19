@@ -8,25 +8,24 @@
 import Foundation
 import Combine
 
-protocol ShutterButtonViewModelProtocol: ObservableObject {
+protocol ShutterButtonViewModelContract: ObservableObject {
     var state: PhotoTakerState { get }
     func tapped()
 }
 
-class ShutterButtonViewModel: ShutterButtonViewModelProtocol {
+class ShutterButtonViewModel: ShutterButtonViewModelContract {
     
     @Published private(set) var state: PhotoTakerState
     
-    private(set) var photoTaker: PhotoTakerContract
+    private(set) var photoTaker: PhotoTakerContract?
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(photoTaker: PhotoTakerContract) {
+    init(photoTaker: PhotoTakerContract?) {
         self.photoTaker = photoTaker
-        self.state = photoTaker.state
+        self.state = photoTaker?.state ?? .error(.unknown)
         
-        // Bind model's state with ours:
-        photoTaker.statePublisher
+        photoTaker?.statePublisher
             .sink() { [weak self] value in
                 DispatchQueue.main.async {
                     self?.state = value
@@ -34,8 +33,7 @@ class ShutterButtonViewModel: ShutterButtonViewModelProtocol {
             }.store(in: &cancellables)
     }
     
-    public func tapped () {
-        // TODO: Do something with the outcome
-        _ = self.photoTaker.takePhoto()
+    func tapped () {
+        self.photoTaker?.takePhoto()
     }
 }

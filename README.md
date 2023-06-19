@@ -5,12 +5,12 @@
 
 Mocca - the **MO**re **C**ontrollable **C**amera **A**pp - is a minimalist stills-only iOS camera. Its design goal is to appeal to those accustomed to manual photography who often want more predictable control than the stock iOS camera app affords. With Mocca you must set the focus/exposure point yourself and — unlike the stock iOS app — it stays where you put it, instead of resetting itself on a whim just as you're about to hit the shutter button.
 
-Mocca is very much a work in progress, but the main branch is always in a useable state. It's currently very simple indeed (just a camera preview, shutter button and a tap-to-set focus/exposure reticle), but entirely functional.
+Mocca is a work in progress, but the main branch is always in a useable state. It's currently very simple (just a camera preview, shutter button, live histogram and a tap-to-set focus/exposure reticle), but entirely functional.
 
 #### About the code
-With the exception of a bit of Objective-C in the unit tests, Mocca is written entirely in Swift, using the new declarative SwiftUI framework and based on the MVVM (model-view-viewmodel) design pattern, which suits SwiftUI well.
+With the exception of a bit of Objective-C in the unit tests, Mocca is written entirely in Swift + SwiftUI and based on the MVVM pattern.
 
-An important goal of Mocca is a clean, highly testable codebase: new features will be added only when existing features have sufficient test coverage to be confident of moving forward.
+The main goal of Mocca is a clean, highly testable codebase: new features will be added only when existing features have sufficient test coverage to be confident of moving forward.
 
 #### Upcoming features
 * Physical-camera selection for multiple-camera devices

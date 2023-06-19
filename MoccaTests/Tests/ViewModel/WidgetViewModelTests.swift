@@ -13,12 +13,12 @@ class WidgetViewModelTests: XCTestCase {
     private var sut: WidgetViewModel!
 
     private var manager: MockCaptureManager = MockCaptureManager()
-    private var device: MockAVCaptureDevice!
-    private var layer: MockAVCaptureVideoPreviewLayer!
+    private var device: MockCaptureDevice!
+    private var layer: MockCaptureVideoPreviewLayer!
     
     override func setUp() {
-        device = MockAVCaptureDevice()
-        layer = MockAVCaptureVideoPreviewLayer()
+        device = MockCaptureDevice()
+        layer = MockCaptureVideoPreviewLayer()
         manager = MockCaptureManager(captureDevice: device, layer: layer)
         sut = WidgetViewModel(captureManager:manager, dockedPosition:CGPoint(x: 110,y: 210), displayCharacter:"f")
     }
@@ -27,7 +27,7 @@ class WidgetViewModelTests: XCTestCase {
         XCTAssert(sut.dockedPosition == CGPoint(x: 110,y: 210))
         XCTAssertEqual(sut.displayCharacter, "f")
     }
-    
+
     func testDragEndedSetsDeviceFocusPointOfInterest() {
         XCTAssertFalse(device.focusPointOfInterestCalled)
         XCTAssertEqual(device.focusPointOfInterest, CGPoint.zero)

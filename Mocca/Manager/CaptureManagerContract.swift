@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import AVFoundation
 
 enum CaptureManagerError: Error {
     case captureDeviceNotFound
@@ -20,14 +19,21 @@ enum CaptureManagerError: Error {
     case unknown
 }
 
+enum CaptureManagerConfigError: Error {
+    case captureDeviceNotFound
+    case videoPreviewLayerNil
+}
+
 protocol CaptureManagerContract {
-    var activeCaptureDevice: AVCaptureDeviceContract { get }
-    var videoPreviewLayer: AVCaptureVideoPreviewLayerContract? { get set }
+    var activeCaptureDevice: CaptureDevice { get }
+    
+    // Capture manager requires a reference to the video preview layer to convert view coords to camera-device coords using
+    // AVCaptureVideoPreviewLayer's point-conversion functions. Only the preview layer can do this.
+    var videoPreviewLayer: CaptureVideoPreviewLayer { get }
+    var captureSession : CaptureSession { get }
     func startCaptureSession ()
     func stopCaptureSession ()
     func selectCamera(type: LogicalCameraDevice) -> Result<Void, CaptureManagerError>
-    func currentPhotoSettings() -> AVCapturePhotoSettings
-    func capturePhoto(settings:AVCapturePhotoSettings, delegate: AVCapturePhotoCaptureDelegate)
-    func setSampleBufferDelegate(_ delegate: AVCaptureVideoDataOutputSampleBufferDelegate,
+    func setSampleBufferDelegate(_ delegate: CaptureVideoDataOutputSampleBufferDelegate,
                                  queue callbackQueue: DispatchQueue)
 }

@@ -5,76 +5,84 @@
 //  Copyright © 2019 n/a. All rights reserved.
 //
 
-import UIKit
-import AVFoundation
+import Foundation
+
+enum CaptureDeviceType {
+    case builtInWideAngleCamera
+    case builtInUltraWideCamera
+    case builtInTelephotoCamera
+    case builtInDualCamera
+    case builtInDualWideCamera
+    case builtInTripleCamera
+    case unsupported
+}
+
+enum CaptureDevicePosition {
+    case front
+    case back
+    case unspecified
+    case unsupported
+}
 
 struct LogicalCameraDevice: Equatable {
-    let type: AVCaptureDevice.DeviceType
-    let position: AVCaptureDevice.Position
+    let type: CaptureDeviceType
+    let position: CaptureDevicePosition
+}
+
+enum PhotoTakerState: Equatable {
+    case ready
+    case capturePending
+    case saving
+    case error(_ error: PhotoTakerError)
+}
+
+enum PhotoTakerError: Error {
+    case captureError
+    case saveError
+    case unknown
+}
+
+protocol PhotoTakerContract {
+    var state: PhotoTakerState { get }
+    var statePublisher: Published<PhotoTakerState>.Publisher { get }
+    func resetState() -> Result<PhotoTakerState, PhotoTakerError>
+    func takePhoto()
 }
 
 /// A class to handle creation and management of fully configured video and photo capture sessions and related functions.
-class CaptureManager: CaptureManagerContract {
+class CaptureManager: CaptureManagerContract, ObservableObject {
+ 
+    @Published fileprivate(set) var state: PhotoTakerState = .ready
+    var statePublisher: Published<PhotoTakerState>.Publisher { $state }
+    
+    let videoPreviewLayer: CaptureVideoPreviewLayer
+    
+    private(set) var captureSession : CaptureSession
+    private(set) var activeCaptureDevice : CaptureDevice
 
-    public var videoPreviewLayer: AVCaptureVideoPreviewLayerContract? {
-        willSet {
-            assert(self.videoPreviewLayer == nil, "Video preview layer may be set only once")
-        }
-    }
+    private let photoOutput: CapturePhotoOutput
+    private let videoOutput: CaptureVideoOutput
+    private let resources: DeviceResourcesContract
+    private let photoLibrary: PhotoLibrary
     
-    public static let supportedCameraDevices = [LogicalCameraDevice(type: .builtInTelephotoCamera, position: .back),
-                                                LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back),
-                                                LogicalCameraDevice(type: .builtInUltraWideCamera, position: .back)]
+    lazy private var photoCaptureIntermediary: PhotoCaptureIntermediary = PhotoCaptureIntermediary(delegate: self)
     
-    public private(set) var captureSession : AVCaptureSessionContract
-    public private(set) var activeCaptureDevice : AVCaptureDeviceContract
-
-    private let photoOutput: AVCapturePhotoOutput
-    private let videoDataOutput: AVCaptureVideoDataOutput
-    private let photoSettings: AVCapturePhotoSettings
-    private let resources: ResourcesContract
-    
-    convenience init(resources: ResourcesContract) throws {
+    init(captureSession: CaptureSession, photoOutput: CapturePhotoOutput, videoOutput: CaptureVideoOutput, initialCaptureDevice: CaptureDevice, videoInput: CaptureDeviceInput, resources: DeviceResourcesContract, videoPreviewLayer: CaptureVideoPreviewLayer, photoLibrary: PhotoLibrary) throws {
         
-        let startupCamera = LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back)
-        
-        guard let initialCaptureDevice =
-                resources.anyAvailableCamera(preferredDevice: startupCamera,
-                                        supportedCameraDevices: Self.supportedCameraDevices)
-        else {
-            throw CaptureManagerError.captureDeviceNotFound
-        }
-        
-        guard let initialCaptureDevice = initialCaptureDevice as? AVCaptureDevice else {
-           throw CaptureManagerError.captureDeviceNotFound
-        }
-       
-        let videoInput = try AVCaptureDeviceInput(device: initialCaptureDevice)
-        let captureSession = AVCaptureSession()
-        captureSession.sessionPreset = .photo
-        let photoOutput = Self.configuredPhotoOutput()
-        let videoOutput = Self.configuredVideoDataOutput()
-                
-        let format = CaptureUtils().highestResolutionFullRangeVideoFormat(initialCaptureDevice)
-        print(format ?? "nuffink")
-        
-        try self.init(captureSession: captureSession, photoOutput: photoOutput, videoOutput: videoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: videoInput, resources:resources)
-    }
-    
-    public init(captureSession: AVCaptureSessionContract, photoOutput: AVCapturePhotoOutput, videoOutput: AVCaptureVideoDataOutput, initialCaptureDevice: AVCaptureDeviceContract, videoInput: AVCaptureDeviceInputContract, resources: ResourcesContract) throws {
-        
-        self.photoOutput =          photoOutput
-        self.videoDataOutput =      videoOutput
-        self.captureSession =       captureSession
-        self.activeCaptureDevice =  initialCaptureDevice
+        self.photoOutput = photoOutput
+        self.videoOutput = videoOutput
+        self.captureSession = captureSession
+        self.activeCaptureDevice = initialCaptureDevice
         self.resources = resources
-                
+        self.videoPreviewLayer = videoPreviewLayer
+        self.photoLibrary = photoLibrary
+        
         // MARK: Capture-session configuration
         self.captureSession.beginConfiguration()
         
         // MARK: Capture-session inputs
-        if self.captureSession.canAddInput(videoInput as! AVCaptureDeviceInput) {
-            self.captureSession.addInput(videoInput as! AVCaptureDeviceInput)
+        if self.captureSession.canAddInput(videoInput) {
+            self.captureSession.addInput(videoInput)
         } else {
             throw CaptureManagerError.addVideoInputFailed
         }
@@ -86,48 +94,34 @@ class CaptureManager: CaptureManagerContract {
             throw CaptureManagerError.addPhotoOutputFailed
         }
         
-        if captureSession.canAddOutput(videoDataOutput) {
-            captureSession.addOutput(videoDataOutput)
+        if captureSession.canAddOutput(videoOutput) {
+            captureSession.addOutput(videoOutput)
         } else {
             throw CaptureManagerError.addVideoDataOutputFailed
         }
         
-        // MARK: Photo settings
-        self.photoSettings = CaptureManager.configuredPhotoSettings(for: photoOutput)
-        
         captureSession.commitConfiguration()
     }
     
-    /// Start the capture session
-    public func startCaptureSession () {
+    /// Starts the capture session
+    func startCaptureSession () {
         self.captureSession.startRunning()
     }
     
-    /// Stop the capture session
-    public func stopCaptureSession () {
+    /// Stops the capture session
+    func stopCaptureSession () {
         self.captureSession.stopRunning()
     }
     
     /// - Returns: A unique copy of current photo settings, without orientation compensation
-    public func currentPhotoSettings() -> AVCapturePhotoSettings {
-        return AVCapturePhotoSettings(from: self.photoSettings)
-    }
-    
-    /// Instructs the capture manager to capture a photo from the active physical camera.
-    /// - Parameter delegate: An object conforming to AVCapturePhotoCaptureDelegate to receive the resulting AVCapturePhoto.
-    public func capturePhoto(settings:AVCapturePhotoSettings, delegate: AVCapturePhotoCaptureDelegate) {
-        
-        if let photoOutputConnection = self.photoOutput.connection(with: .video) {
-            photoOutputConnection.videoOrientation = Orientation.AVOrientation(for: Orientation.currentInterfaceOrientation())
-        }
-        
-        self.photoOutput.capturePhoto(with: settings, delegate: delegate)
+    private func currentPhotoSettings() -> CapturePhotoSettings {
+        return ConfigurationFactory.uniquePhotoSettings(device: self.activeCaptureDevice, photoOutput: self.photoOutput)
     }
     
     /// Sets the active session's capture device to the physical camera matching the supplied type
     /// - Parameter type: The type of camera to select
     /// - Returns: true if the operation succeeded; false otherwise
-    public func selectCamera(type: LogicalCameraDevice) -> Result<Void, CaptureManagerError> {
+    func selectCamera(type: LogicalCameraDevice) -> Result<Void, CaptureManagerError> {
         if let device = self.resources.physicalDevice(from: type) {
             self.activeCaptureDevice = device
             return .success
@@ -136,34 +130,42 @@ class CaptureManager: CaptureManagerContract {
         return .failure(.captureDeviceNotFound)
     }
     
-    public func setSampleBufferDelegate(_ delegate: AVCaptureVideoDataOutputSampleBufferDelegate,
+    func setSampleBufferDelegate(_ delegate: CaptureVideoDataOutputSampleBufferDelegate,
                                  queue callbackQueue: DispatchQueue) {
-        self.videoDataOutput.setSampleBufferDelegate(delegate, queue: callbackQueue)
+        self.videoOutput.setSampleBufferDelegate(delegate, queue: callbackQueue)
     }
-    
-    internal class func configuredPhotoOutput() -> AVCapturePhotoOutput {
-        let photoOutput = AVCapturePhotoOutput()
-        photoOutput.isHighResolutionCaptureEnabled = true
-        photoOutput.isLivePhotoCaptureEnabled = false
-        photoOutput.maxPhotoQualityPrioritization = .quality // MARK: TODO: Tests to make sure this has been set before setting settings.photoQualityPrioritization
-        return photoOutput
-    }
-    
-    internal class func configuredVideoDataOutput() -> AVCaptureVideoDataOutput {
-        let videoDataOutput = AVCaptureVideoDataOutput()
-        // MARK: TODO: We mustn't assume 32BGRA pixel format is always available
-        videoDataOutput.videoSettings = [ String(kCVPixelBufferPixelFormatTypeKey) : kCVPixelFormatType_32BGRA] 
-        return videoDataOutput
-    }
-    
-    internal class func configuredPhotoSettings(for photoOutput:AVCapturePhotoOutput) -> AVCapturePhotoSettings {
-        let settings: AVCapturePhotoSettings = photoOutput.availablePhotoCodecTypes.contains(.hevc) ?
-            AVCapturePhotoSettings(format:[AVVideoCodecKey: AVVideoCodecType.hevc]) :
-            AVCapturePhotoSettings()
+}
+
+extension CaptureManager: PhotoCaptureIntermediaryDelegate {
+    func didFinishProcessingPhoto(_ photo: CapturePhoto, error: Error?) {
         
-        settings.photoQualityPrioritization = .quality
-        settings.flashMode = .off
+        precondition(self.state == .capturePending)
         
-        return settings
+        // We continue to attempt the save even if an error is returned, since the API contract guarantees |photo|
+        // to be non-nil, and we must never throw away a user's photo if there's still a chance the save might succeed
+        
+        self.photoLibrary.addPhoto(photo) { success, error in
+            self.state = ( success ? .ready : .error(.saveError) )
+        }
+    }
+}
+
+extension CaptureManager: PhotoTakerContract {
+    
+    func resetState() -> Result<PhotoTakerState, PhotoTakerError> {
+        self.state = .ready
+        return .success(.ready)
+    }
+    
+    /// Instructs the photo taker to capture a photo.
+    func takePhoto() {
+        
+        self.state = .capturePending
+        
+        if let photoOutputConnection = self.photoOutput.connection() {
+            photoOutputConnection.orientation = Orientation.currentInterfaceOrientation()
+        }
+        
+        self.photoOutput.capture(with: currentPhotoSettings(), delegate: self.photoCaptureIntermediary)
     }
 }

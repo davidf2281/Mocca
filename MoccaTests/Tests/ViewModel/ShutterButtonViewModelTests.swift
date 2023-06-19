@@ -20,7 +20,7 @@ class ShutterButtonViewModelTests: XCTestCase {
         
         shutterButtonViewModel.tapped()
         
-        XCTAssert(photoTaker.state == .capturePending)
+        XCTAssertEqual(photoTaker.takePhotoCalledCount, 1)
         print("\(shutterButtonViewModel.state)")
         let expectation = XCTestExpectation()
         
@@ -36,11 +36,10 @@ class ShutterButtonViewModelTests: XCTestCase {
         
         let photoTaker = MockPhotoTaker()
         let shutterButtonViewModel = ShutterButtonViewModel(photoTaker: photoTaker)
-        
-        XCTAssert(photoTaker.takePhotoCalled == false)
+        XCTAssertEqual(photoTaker.takePhotoCalledCount, 0)
         
         shutterButtonViewModel.tapped()
         
-        XCTAssert(photoTaker.takePhotoCalled == true)
+        XCTAssertEqual(photoTaker.takePhotoCalledCount, 1)
     }
 }
