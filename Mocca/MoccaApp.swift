@@ -30,9 +30,7 @@ final class MoccaApp: App, ObservableObject {
     
     /// Backs exposure bias indicator and receives exposure-bias UI events from preview view controller
     private let exposureBiasViewModel: ExposureBiasViewModel
-    
-    private let initialCaptureDevice: AVCaptureDevice?
-    
+        
     /// Provides access to device hardware
     private let deviceResources: DeviceResourcesContract?
     
@@ -60,11 +58,10 @@ final class MoccaApp: App, ObservableObject {
     
     init() {
                 
-        self.initialCaptureDevice = AVCaptureDevice.default(for: .video)
-        self.deviceResources = DeviceResources(captureDevice: self.initialCaptureDevice)
+        self.deviceResources = DeviceResources(captureDevice: AVCaptureDevice.default(for: .video))
         
         do {
-            guard let initialCaptureDevice = self.initialCaptureDevice, let deviceResources = self.deviceResources else {
+            guard let deviceResources = self.deviceResources else {
                 throw(MoccaSetupError.deviceResources)
             }
             
@@ -72,7 +69,7 @@ final class MoccaApp: App, ObservableObject {
                 resources: deviceResources,
                 videoPreviewLayer: previewUIView.videoPreviewLayer,
                 captureSession: AVCaptureSession(),
-                captureDeviceInput: AVCaptureDeviceInput(device: initialCaptureDevice),
+                captureDeviceInputType: AVCaptureDeviceInput.self,
                 photoOutputType: AVCapturePhotoOutput.self)
             
             self.captureManager = try CaptureManager(captureSession: config.captureSession,

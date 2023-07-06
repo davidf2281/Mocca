@@ -33,11 +33,11 @@ struct ConfigurationFactory: ConfigurationFactoryContract {
         resources: DeviceResourcesContract,
         videoPreviewLayer: CaptureVideoPreviewLayer?,
         captureSession: CaptureSession,
-        captureDeviceInput: CaptureDeviceInput,
+        captureDeviceInputType: CaptureDeviceInput.Type,
         photoOutputType: CapturePhotoOutput.Type
     ) throws -> CaptureManagerConfiguration {
         
-        let preferredStartupCamera = LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back)
+        let preferredStartupCamera = LogicalCameraDevice(type: .builtInWideAngleCamera, position: .front)
         
         guard let initialCaptureDevice =
                 resources.anyAvailableCamera(preferredDevice: preferredStartupCamera,
@@ -45,6 +45,8 @@ struct ConfigurationFactory: ConfigurationFactoryContract {
         else {
             throw CaptureManagerConfigError.captureDeviceNotFound
         }
+        
+        let captureDeviceInput = try captureDeviceInputType.make(device: initialCaptureDevice)
         
         guard let videoPreviewLayer else {
             throw CaptureManagerConfigError.videoPreviewLayerNil

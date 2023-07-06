@@ -31,7 +31,7 @@ class DeviceResources: DeviceResourcesContract {
         self.captureDevice = captureDevice
     }
     
-    /// Searches for an available phsical camera within the supplied array of supported logical camera device types.
+    /// Searches for an available physical camera within the supplied array of supported logical camera device types.
     /// - Parameter preferredDevice: The preferred type to return.
     /// - Parameter supportedCameraDevices: An array of CameraDevice
     /// - Returns: A physical camera of the preferred type, the first available if the preferred choice is not found, or nil if none are found.
