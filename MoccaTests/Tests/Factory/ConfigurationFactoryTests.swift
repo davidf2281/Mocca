@@ -15,10 +15,10 @@ final class ConfigurationFactoryTests: XCTestCase {
         resources.deviceToReturn = MockCaptureDevice()
         let videoPreviewLayer = MockCaptureVideoPreviewLayer()
         let captureSessionType = MockCaptureSession()
-        let captureDeviceInputType = MockCaptureDeviceInput()
+        let captureDeviceInputType = MockCaptureDeviceInput.self
         let photoOutputType = MockCapturePhotoOutput.self
         
-        let sut = try ConfigurationFactory.captureManagerInitializerConfiguration(resources: resources, videoPreviewLayer: videoPreviewLayer, captureSession: captureSessionType, captureDeviceInput: captureDeviceInputType, photoOutputType: photoOutputType)
+        let sut = try ConfigurationFactory.captureManagerInitializerConfiguration(resources: resources, videoPreviewLayer: videoPreviewLayer, captureSession: captureSessionType, captureDeviceInputType: captureDeviceInputType, photoOutputType: photoOutputType)
         
         XCTAssertEqual(sut.captureSession.preset, .photo)
         XCTAssertEqual(sut.photoOutput.livePhotoCaptureEnabled, false)
