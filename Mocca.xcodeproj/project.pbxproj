@@ -44,6 +44,8 @@
 		8C4E6941253B328400ED1B29 /* MockCaptureDeviceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4E6940253B328400ED1B29 /* MockCaptureDeviceInput.swift */; };
 		8C4E6947253B32F500ED1B29 /* DeviceCaptureManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4E6946253B32F500ED1B29 /* DeviceCaptureManagerTests.swift */; };
 		8C59B3FB25445DC9005D280B /* ExposureBiasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C59B3FA25445DC9005D280B /* ExposureBiasViewModel.swift */; };
+		8C61631B2A5708240036958A /* CameraSelectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C61631A2A5708240036958A /* CameraSelectionModel.swift */; };
+		8C61631D2A5708AE0036958A /* AvailableCamerasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C61631C2A5708AE0036958A /* AvailableCamerasViewModel.swift */; };
 		8C61C49B2539A7560093E78A /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 8C61C49A2539A7560093E78A /* ViewInspector */; };
 		8C61C4A12539A9240093E78A /* ShutterButtonViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C61C4A02539A9240093E78A /* ShutterButtonViewTests.swift */; };
 		8C62FEA5252B8B8B007459C9 /* SimulatorPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C62FEA4252B8B8B007459C9 /* SimulatorPreview.swift */; };
@@ -200,6 +202,8 @@
 		8C4E6940253B328400ED1B29 /* MockCaptureDeviceInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCaptureDeviceInput.swift; sourceTree = "<group>"; };
 		8C4E6946253B32F500ED1B29 /* DeviceCaptureManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCaptureManagerTests.swift; sourceTree = "<group>"; };
 		8C59B3FA25445DC9005D280B /* ExposureBiasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExposureBiasViewModel.swift; sourceTree = "<group>"; };
+		8C61631A2A5708240036958A /* CameraSelectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSelectionModel.swift; sourceTree = "<group>"; };
+		8C61631C2A5708AE0036958A /* AvailableCamerasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableCamerasViewModel.swift; sourceTree = "<group>"; };
 		8C61C4A02539A9240093E78A /* ShutterButtonViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButtonViewTests.swift; sourceTree = "<group>"; };
 		8C62FEA4252B8B8B007459C9 /* SimulatorPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorPreview.swift; sourceTree = "<group>"; };
 		8C6728A6251E10600066A836 /* MockCaptureSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockCaptureSession.swift; sourceTree = "<group>"; };
@@ -529,6 +533,7 @@
 				8CDE03DA25262BDF0083F736 /* WidgetViewModel.swift */,
 				8C0EF88D2A506E560012CFBB /* PreviewUIViewModel.swift */,
 				8C0EF8962A5080220012CFBB /* PreviewViewControllerViewModel.swift */,
+				8C61631C2A5708AE0036958A /* AvailableCamerasViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -540,6 +545,7 @@
 				8CDEB0202520A5110010DCCB /* CameraSetting.swift */,
 				8CDEB0492520C9E00010DCCB /* FocusSetting.swift */,
 				8C11811F254021E8004ED0B0 /* HistogramGenerator.swift */,
+				8C61631A2A5708240036958A /* CameraSelectionModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -747,6 +753,7 @@
 				8C62FEA5252B8B8B007459C9 /* SimulatorPreview.swift in Sources */,
 				8CC3C44D251DFD2F00CC4698 /* Delegates+DependencyInversion.swift in Sources */,
 				8C7EF032251CEAB500CF9CFE /* ContentView.swift in Sources */,
+				8C61631D2A5708AE0036958A /* AvailableCamerasViewModel.swift in Sources */,
 				8C3E35C02529E6C400D5E971 /* PhotoCaptureIntermediary.swift in Sources */,
 				8C0EF8972A5080220012CFBB /* PreviewViewControllerViewModel.swift in Sources */,
 				8C1180CE253EFE7F004ED0B0 /* CameraOperation.swift in Sources */,
@@ -772,6 +779,7 @@
 				8CE900582A4DB6C300815F95 /* AVCapturePhotoSettings+DependencyInversion.swift in Sources */,
 				8CE07E3B252B3D5A00702E14 /* CaptureManagerContract.swift in Sources */,
 				8CE9004E2A4B13ED00815F95 /* ConfigurationFactory.swift in Sources */,
+				8C61631B2A5708240036958A /* CameraSelectionModel.swift in Sources */,
 				8CE9005A2A4DB6E400815F95 /* AVCaptureConnection+DependencyInversion.swift in Sources */,
 				8C11812525405162004ED0B0 /* HistogramViewModel.swift in Sources */,
 				8CF4C4212A4F1B1C0054E8B4 /* AVCaptureSessionPreset+DependencyInversion.swift in Sources */,

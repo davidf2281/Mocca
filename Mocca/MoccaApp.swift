@@ -52,20 +52,24 @@ final class MoccaApp: App, ObservableObject {
     
     private let sampleBufferIntermediary: SampleBufferIntermediary
     
+    private let configurationFactory: ConfigurationFactoryContract = ConfigurationFactory(captureDeviceInputType: AVCaptureDeviceInput.self)
+    
+    private let cameraSelectionModel: CameraSelection
+    
     enum MoccaSetupError: Error {
         case deviceResources
     }
     
     init() {
                 
-        self.deviceResources = DeviceResources(captureDevice: AVCaptureDevice.default(for: .video), supportedCameraDevices: ConfigurationFactory.supportedCameraDevices)
+        self.deviceResources = DeviceResources(captureDevice: AVCaptureDevice.default(for: .video), supportedCameraDevices: self.configurationFactory.supportedCameraDevices)
         
         do {
             guard let deviceResources = self.deviceResources else {
                 throw(MoccaSetupError.deviceResources)
             }
             
-            let config = try ConfigurationFactory.captureManagerInitializerConfiguration(
+            let config = try self.configurationFactory.captureManagerInitializerConfiguration(
                 resources: deviceResources,
                 videoPreviewLayer: previewUIView.videoPreviewLayer,
                 captureSession: AVCaptureSession(),
@@ -79,7 +83,8 @@ final class MoccaApp: App, ObservableObject {
                                                      videoInput: config.videoInput,
                                                      resources: config.resources,
                                                      videoPreviewLayer: config.videoPreviewLayer,
-                                                     photoLibrary: config.photoLibrary)
+                                                     photoLibrary: config.photoLibrary,
+                                                     configurationFactory: self.configurationFactory)
         } catch {
             self.captureManager = nil
         }
@@ -104,7 +109,7 @@ final class MoccaApp: App, ObservableObject {
         self.previewViewController = PreviewViewControllerRepresentable(viewModel: PreviewViewControllerViewModel(previewView: self.previewUIView, orientationPublisher: self.orientationPublisher, orientation: Orientation()))
         self.shutterButtonViewModel = ShutterButtonViewModel(photoTaker: self.captureManager)
         self.exposureBiasViewModel = ExposureBiasViewModel(captureManager: captureManager)
-        
+        self.cameraSelectionModel = CameraSelectionModel(availableCameras: self.configurationFactory.supportedCameraDevices, captureManager: self.captureManager!) // TODO: Address force-unwrapped optional
         sessionQueue.async { [weak self] in
             self?.captureManager?.startCaptureSession()
             DispatchQueue.main.async {

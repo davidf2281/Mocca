@@ -99,7 +99,7 @@ class DeviceCaptureManagerTests: XCTestCase {
 
 #if targetEnvironment(simulator)
         do {
-            _ = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCaptureDevice: mockDevice, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary)
+            _ = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCaptureDevice: mockDevice, activeVideoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary)
         } catch CaptureManagerError.captureDeviceNotFound {
             // Expected error
         } catch {
@@ -107,7 +107,7 @@ class DeviceCaptureManagerTests: XCTestCase {
         }
 #else
         do {
-            _ = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCaptureDevice: mockDevice, videoInput: mockInput, resources: DeviceResources(initialCaptureDevice: AVCaptureDevice.default(for: .video))!, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary)
+            _ = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCaptureDevice: mockDevice, activeVideoInput: mockInput, resources: DeviceResources(initialCaptureDevice: AVCaptureDevice.default(for: .video))!, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary)
         } catch {
             XCTFail("Convenience init should not fail on physical device")
         }

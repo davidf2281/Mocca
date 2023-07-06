@@ -53,29 +53,34 @@ protocol PhotoTakerContract {
 class CaptureManager: CaptureManagerContract, ObservableObject {
  
     @Published fileprivate(set) var state: PhotoTakerState = .ready
+
     var statePublisher: Published<PhotoTakerState>.Publisher { $state }
     
     let videoPreviewLayer: CaptureVideoPreviewLayer
     
     private(set) var captureSession : CaptureSession
     private(set) var activeCaptureDevice : CaptureDevice
+    private var activeVideoInput: CaptureDeviceInput
 
     private let photoOutput: CapturePhotoOutput
     private let videoOutput: CaptureVideoOutput
     private let resources: DeviceResourcesContract
     private let photoLibrary: PhotoLibrary
+    private let configurationFactory: ConfigurationFactoryContract
     
     lazy private var photoCaptureIntermediary: PhotoCaptureIntermediary = PhotoCaptureIntermediary(delegate: self)
     
-    init(captureSession: CaptureSession, photoOutput: CapturePhotoOutput, videoOutput: CaptureVideoOutput, initialCaptureDevice: CaptureDevice, videoInput: CaptureDeviceInput, resources: DeviceResourcesContract, videoPreviewLayer: CaptureVideoPreviewLayer, photoLibrary: PhotoLibrary) throws {
+    init(captureSession: CaptureSession, photoOutput: CapturePhotoOutput, videoOutput: CaptureVideoOutput, initialCaptureDevice: CaptureDevice, videoInput: CaptureDeviceInput, resources: DeviceResourcesContract, videoPreviewLayer: CaptureVideoPreviewLayer, photoLibrary: PhotoLibrary, configurationFactory: ConfigurationFactoryContract) throws {
         
         self.photoOutput = photoOutput
         self.videoOutput = videoOutput
+        self.activeVideoInput = videoInput
         self.captureSession = captureSession
         self.activeCaptureDevice = initialCaptureDevice
         self.resources = resources
         self.videoPreviewLayer = videoPreviewLayer
         self.photoLibrary = photoLibrary
+        self.configurationFactory = configurationFactory
         
         // MARK: Capture-session configuration
         self.captureSession.beginConfiguration()
@@ -115,19 +120,34 @@ class CaptureManager: CaptureManagerContract, ObservableObject {
     
     /// - Returns: A unique copy of current photo settings, without orientation compensation
     private func currentPhotoSettings() -> CapturePhotoSettings {
-        return ConfigurationFactory.uniquePhotoSettings(device: self.activeCaptureDevice, photoOutput: self.photoOutput)
+        return self.configurationFactory.uniquePhotoSettings(device: self.activeCaptureDevice, photoOutput: self.photoOutput)
     }
     
     /// Sets the active session's capture device to the physical camera matching the supplied type
     /// - Parameter type: The type of camera to select
     /// - Returns: true if the operation succeeded; false otherwise
     func selectCamera(type: LogicalCameraDevice) -> Result<Void, CaptureManagerError> {
-        if let device = self.resources.physicalDevice(from: type) {
-            self.activeCaptureDevice = device
-            return .success
+        
+        guard let device = self.resources.physicalDevice(from: type) else {
+            return .failure(.captureDeviceNotFound)
         }
         
-        return .failure(.captureDeviceNotFound)
+        do {
+            let videoInput = try self.configurationFactory.videoInput(for: device)
+            self.captureSession.removeInput(self.activeVideoInput)
+            if self.captureSession.canAddInput(videoInput) {
+                self.captureSession.addInput(videoInput)
+                self.activeVideoInput = videoInput
+            } else {
+                return .failure(.addVideoInputFailed)
+            }
+        } catch {
+            return .failure(.addVideoInputFailed)
+        }
+        
+        self.activeCaptureDevice = device
+        
+        return .success
     }
     
     func setSampleBufferDelegate(_ delegate: CaptureVideoDataOutputSampleBufferDelegate,

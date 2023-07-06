@@ -17,6 +17,7 @@ protocol CaptureSession: AnyObject {
     func beginConfiguration()
     func canAddInput(_ input: CaptureInput) -> Bool
     func addInput(_ input: CaptureInput)
+    func removeInput(_ input: CaptureInput)
     func canAddOutput(_ output: CaptureOutput) -> Bool
     func addOutput(_ output: CaptureOutput)
     func commitConfiguration()
@@ -44,6 +45,16 @@ extension AVCaptureSession: CaptureSession {
         }
         
         self.addInput(avCaptureInput)
+    }
+    
+    func removeInput(_ input: CaptureInput) {
+        
+        guard let avCaptureInput = input as? AVCaptureInput else {
+            assert(false)
+            return
+        }
+        
+        self.removeInput(avCaptureInput)
     }
     
     func canAddOutput(_ output: CaptureOutput) -> Bool {
