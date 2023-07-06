@@ -46,6 +46,8 @@
 		8C59B3FB25445DC9005D280B /* ExposureBiasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C59B3FA25445DC9005D280B /* ExposureBiasViewModel.swift */; };
 		8C61631B2A5708240036958A /* CameraSelectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C61631A2A5708240036958A /* CameraSelectionModel.swift */; };
 		8C61631D2A5708AE0036958A /* AvailableCamerasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C61631C2A5708AE0036958A /* AvailableCamerasViewModel.swift */; };
+		8C61631F2A5716FD0036958A /* MockConfigurationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C61631E2A5716FD0036958A /* MockConfigurationFactory.swift */; };
+		8C6163202A57184F0036958A /* CameraSelectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C61631A2A5708240036958A /* CameraSelectionModel.swift */; };
 		8C61C49B2539A7560093E78A /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 8C61C49A2539A7560093E78A /* ViewInspector */; };
 		8C61C4A12539A9240093E78A /* ShutterButtonViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C61C4A02539A9240093E78A /* ShutterButtonViewTests.swift */; };
 		8C62FEA5252B8B8B007459C9 /* SimulatorPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C62FEA4252B8B8B007459C9 /* SimulatorPreview.swift */; };
@@ -204,6 +206,7 @@
 		8C59B3FA25445DC9005D280B /* ExposureBiasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExposureBiasViewModel.swift; sourceTree = "<group>"; };
 		8C61631A2A5708240036958A /* CameraSelectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSelectionModel.swift; sourceTree = "<group>"; };
 		8C61631C2A5708AE0036958A /* AvailableCamerasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableCamerasViewModel.swift; sourceTree = "<group>"; };
+		8C61631E2A5716FD0036958A /* MockConfigurationFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockConfigurationFactory.swift; sourceTree = "<group>"; };
 		8C61C4A02539A9240093E78A /* ShutterButtonViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButtonViewTests.swift; sourceTree = "<group>"; };
 		8C62FEA4252B8B8B007459C9 /* SimulatorPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorPreview.swift; sourceTree = "<group>"; };
 		8C6728A6251E10600066A836 /* MockCaptureSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockCaptureSession.swift; sourceTree = "<group>"; };
@@ -585,6 +588,7 @@
 				8CF4C4252A4F23560054E8B4 /* MockPhotoSettings.swift */,
 				8C0EF8982A5086440012CFBB /* MockPreviewViewControllerViewModel.swift */,
 				8C869BE12A50A671001F3501 /* MockHistogram.swift */,
+				8C61631E2A5716FD0036958A /* MockConfigurationFactory.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -814,6 +818,7 @@
 				8C7B43702A40816900CE2C9C /* FocusSetting.swift in Sources */,
 				8C4E6947253B32F500ED1B29 /* DeviceCaptureManagerTests.swift in Sources */,
 				8C7B43722A40816900CE2C9C /* DeviceResources.swift in Sources */,
+				8C6163202A57184F0036958A /* CameraSelectionModel.swift in Sources */,
 				8C0EF8902A506F770012CFBB /* PreviewUIViewModelTests.swift in Sources */,
 				8C7B43632A40816900CE2C9C /* Orientation.swift in Sources */,
 				8CE53EC4299562FE00DE5B6F /* HistogramViewModelTests.swift in Sources */,
@@ -880,6 +885,7 @@
 				8C1180E7253F2032004ED0B0 /* CameraOperationTests.swift in Sources */,
 				8C7B43752A40816900CE2C9C /* PreviewView.swift in Sources */,
 				8C7B43812A40816900CE2C9C /* PhotoCaptureIntermediary.swift in Sources */,
+				8C61631F2A5716FD0036958A /* MockConfigurationFactory.swift in Sources */,
 				8C4172482A49C08B00860F71 /* CameraErrorViewModel.swift in Sources */,
 				8CE900772A4DC3B400815F95 /* AVCaptureInput+DependencyInversion.swift in Sources */,
 				8CE53EC929957F8200DE5B6F /* MockCameraOperation.swift in Sources */,

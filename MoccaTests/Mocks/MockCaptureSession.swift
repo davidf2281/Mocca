@@ -49,6 +49,13 @@ final class MockCaptureSession: CaptureSession {
         lastAddedInput = input
     }
     
+    var removedInput: CaptureInput?
+    var removeInputCallCount = 0
+    func removeInput(_ input: CaptureInput) {
+        removeInputCallCount += 1
+        removedInput = input
+    }
+    
     func canAddOutput(_ output: CaptureOutput) -> Bool {
         
         if let _ = output as? CaptureVideoOutput {

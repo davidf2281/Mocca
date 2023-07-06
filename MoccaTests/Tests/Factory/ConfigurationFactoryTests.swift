@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import CoreMedia
+import AVFoundation
 
 final class ConfigurationFactoryTests: XCTestCase {
     
@@ -17,8 +17,8 @@ final class ConfigurationFactoryTests: XCTestCase {
         let captureSessionType = MockCaptureSession()
         let captureDeviceInputType = MockCaptureDeviceInput.self
         let photoOutputType = MockCapturePhotoOutput.self
-        
-        let sut = try ConfigurationFactory.captureManagerInitializerConfiguration(resources: resources, videoPreviewLayer: videoPreviewLayer, captureSession: captureSessionType, captureDeviceInputType: captureDeviceInputType, photoOutputType: photoOutputType)
+        let configurationFactory = ConfigurationFactory(captureDeviceInputType: AVCaptureDeviceInput.self)
+        let sut = try configurationFactory.captureManagerInitializerConfiguration(resources: resources, videoPreviewLayer: videoPreviewLayer, captureSession: captureSessionType, captureDeviceInputType: captureDeviceInputType, photoOutputType: photoOutputType)
         
         XCTAssertEqual(sut.captureSession.preset, .photo)
         XCTAssertEqual(sut.photoOutput.livePhotoCaptureEnabled, false)
@@ -26,7 +26,10 @@ final class ConfigurationFactoryTests: XCTestCase {
     }
     
     func testUniquePhotoSettings() {
-        let sut = ConfigurationFactory.uniquePhotoSettings(device: MockCaptureDevice(), photoOutput: MockCapturePhotoOutput())
+        
+        let configurationFactory = ConfigurationFactory(captureDeviceInputType: AVCaptureDeviceInput.self)
+
+        let sut = configurationFactory.uniquePhotoSettings(device: MockCaptureDevice(), photoOutput: MockCapturePhotoOutput())
         
         XCTAssertEqual(sut.photoFlashMode, .off)
         XCTAssertEqual(sut.qualityPrioritization, .quality)
