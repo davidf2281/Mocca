@@ -29,6 +29,7 @@ protocol CaptureDevice: AnyObject {
     func unlockForConfiguration()
     
     func captureDevice(withType deviceType: CaptureDeviceType, position: CaptureDevicePosition) -> CaptureDevice?
+    func availablePhysicalDevices(for logicalCameraDevices: [LogicalCameraDevice]) -> [CaptureDevice]
 }
 
 protocol AVCaptureDevicePropertyUnshadowing {
@@ -141,5 +142,35 @@ extension AVCaptureDevice {
         }
         
         return nil
+    }
+    
+    func availablePhysicalDevices(for logicalCameraDevices: [LogicalCameraDevice]) -> [CaptureDevice] {
+        let avDeviceTypes: [AVCaptureDevice.DeviceType] = logicalCameraDevices.compactMap {
+            
+            guard $0.position == .back else {
+                assert(false)
+                return nil
+            }
+            
+            switch $0.type {
+                case .builtInWideAngleCamera:
+                    return .builtInWideAngleCamera
+                case .builtInUltraWideCamera:
+                    return .builtInUltraWideCamera
+                case .builtInTelephotoCamera:
+                    return .builtInTelephotoCamera
+                case .builtInDualCamera:
+                    return .builtInDualCamera
+                case .builtInDualWideCamera:
+                    return .builtInDualWideCamera
+                case .builtInTripleCamera:
+                    return .builtInTripleCamera
+                case .unsupported:
+                    return nil
+            }
+        }
+        
+        let session = Self.DiscoverySession(deviceTypes: avDeviceTypes, mediaType: .video, position: .back)
+        return session.devices
     }
 }

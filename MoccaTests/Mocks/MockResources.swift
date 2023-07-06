@@ -10,6 +10,7 @@ import AVFoundation
 @testable import Mocca
 
 class MockResources: DeviceResourcesContract {
+    var availablePhysicalDevices: [CaptureDevice] = [MockCaptureDevice()]
     
     // Test vars
     var physicalDeviceCallShouldSucceed = true
@@ -19,7 +20,7 @@ class MockResources: DeviceResourcesContract {
     var deviceToReturn: CaptureDevice?
     var metalDevice: MTLDevice? = MTLCreateSystemDefaultDevice()
     
-    func anyAvailableCamera(preferredDevice: LogicalCameraDevice, supportedCameraDevices: [LogicalCameraDevice]) -> CaptureDevice? {
+    func anyAvailableCamera(preferredDevice: LogicalCameraDevice) -> CaptureDevice? {
         return deviceToReturn
     }
     

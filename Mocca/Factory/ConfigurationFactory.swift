@@ -21,13 +21,10 @@ struct CaptureManagerConfiguration {
 
 protocol ConfigurationFactoryContract {
     static func uniquePhotoSettings(device: CaptureDevice, photoOutput: CapturePhotoOutput) -> CapturePhotoSettings
+    static var supportedCameraDevices: [LogicalCameraDevice] { get }
 }
 
 struct ConfigurationFactory: ConfigurationFactoryContract {
-    
-    private static let supportedCameraDevices = [LogicalCameraDevice(type: .builtInTelephotoCamera, position: .back),
-                                                LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back),
-                                                LogicalCameraDevice(type: .builtInUltraWideCamera, position: .back)]
     
     static func captureManagerInitializerConfiguration(
         resources: DeviceResourcesContract,
@@ -37,11 +34,10 @@ struct ConfigurationFactory: ConfigurationFactoryContract {
         photoOutputType: CapturePhotoOutput.Type
     ) throws -> CaptureManagerConfiguration {
         
-        let preferredStartupCamera = LogicalCameraDevice(type: .builtInWideAngleCamera, position: .front)
+        let preferredStartupCamera = LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back)
         
         guard let initialCaptureDevice =
-                resources.anyAvailableCamera(preferredDevice: preferredStartupCamera,
-                                        supportedCameraDevices: Self.supportedCameraDevices)
+                resources.anyAvailableCamera(preferredDevice: preferredStartupCamera)
         else {
             throw CaptureManagerConfigError.captureDeviceNotFound
         }
@@ -58,6 +54,12 @@ struct ConfigurationFactory: ConfigurationFactoryContract {
         let photoLibrary = DevicePhotoLibrary()
                         
         return CaptureManagerConfiguration(captureSession: captureSession, photoOutput: photoOutput, videoOutput: videoOutput, initialCaptureDevice: initialCaptureDevice, videoInput: captureDeviceInput, resources: resources, videoPreviewLayer: videoPreviewLayer, photoLibrary: photoLibrary)
+    }
+    
+    static var supportedCameraDevices: [LogicalCameraDevice] {
+        [LogicalCameraDevice(type: .builtInTelephotoCamera, position: .back),
+         LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back),
+         LogicalCameraDevice(type: .builtInUltraWideCamera, position: .back)]
     }
     
     static func uniquePhotoSettings(device: CaptureDevice, photoOutput: CapturePhotoOutput) -> CapturePhotoSettings {

@@ -103,4 +103,9 @@ class MockCaptureDevice: CaptureDevice {
         captureDeviceCallCount += 1
         return captureDeviceToReturn
     }
+    
+    var availablePhysicalDevicesToReturn: [CaptureDevice] = []
+    func availablePhysicalDevices(for logicalCameraDevices: [LogicalCameraDevice]) -> [CaptureDevice] {
+        return availablePhysicalDevicesToReturn
+    }
 }

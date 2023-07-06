@@ -58,7 +58,7 @@ final class MoccaApp: App, ObservableObject {
     
     init() {
                 
-        self.deviceResources = DeviceResources(captureDevice: AVCaptureDevice.default(for: .video))
+        self.deviceResources = DeviceResources(captureDevice: AVCaptureDevice.default(for: .video), supportedCameraDevices: ConfigurationFactory.supportedCameraDevices)
         
         do {
             guard let deviceResources = self.deviceResources else {

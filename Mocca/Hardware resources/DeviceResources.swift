@@ -11,10 +11,8 @@ import AVFoundation
 protocol DeviceResourcesContract {
     
     var metalDevice: MTLDevice? { get }
-    
-    func anyAvailableCamera(preferredDevice:LogicalCameraDevice,
-                            supportedCameraDevices: [LogicalCameraDevice]) -> CaptureDevice?
-    
+    var availablePhysicalDevices: [CaptureDevice] { get }
+    func anyAvailableCamera(preferredDevice:LogicalCameraDevice) -> CaptureDevice?
     func physicalDevice(from logicalDevice: LogicalCameraDevice) -> CaptureDevice?
 }
 
@@ -22,21 +20,26 @@ class DeviceResources: DeviceResourcesContract {
             
     private(set) var metalDevice: MTLDevice? = MTLCreateSystemDefaultDevice()
     private let captureDevice: CaptureDevice
+    private let supportedCameraDevices: [LogicalCameraDevice]
     
-    init?(captureDevice: CaptureDevice?) {
+    var availablePhysicalDevices: [CaptureDevice] {
+        self.captureDevice.availablePhysicalDevices(for: self.supportedCameraDevices)
+    }
+    
+    init?(captureDevice: CaptureDevice?, supportedCameraDevices: [LogicalCameraDevice]) {
         guard let captureDevice else {
             return nil
         }
         
         self.captureDevice = captureDevice
+        self.supportedCameraDevices = supportedCameraDevices
     }
     
     /// Searches for an available physical camera within the supplied array of supported logical camera device types.
     /// - Parameter preferredDevice: The preferred type to return.
     /// - Parameter supportedCameraDevices: An array of CameraDevice
     /// - Returns: A physical camera of the preferred type, the first available if the preferred choice is not found, or nil if none are found.
-    func anyAvailableCamera(preferredDevice:LogicalCameraDevice,
-                                          supportedCameraDevices: [LogicalCameraDevice]) -> CaptureDevice? {
+    func anyAvailableCamera(preferredDevice:LogicalCameraDevice) -> CaptureDevice? {
         
         if supportedCameraDevices.contains(preferredDevice) {
             if let device = physicalDevice(from: preferredDevice) {
