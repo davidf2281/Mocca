@@ -19,10 +19,10 @@ struct ContentView: View {
     
     private let previewController: PreviewViewControllerRepresentable
     private let exposureBiasViewModel: ExposureBiasViewModel
-    private let widgetViewModel:    WidgetViewModel
+    private let widgetViewModel: WidgetViewModel
     private let shutterButtonViewModel: ShutterButtonViewModel
     private let histogramViewModel: HistogramViewModel
-    private let cameraErrorView:   CameraErrorView
+    private let cameraErrorView: CameraErrorView
     
     init(app: MoccaApp, previewViewController: PreviewViewControllerRepresentable, widgetViewModel:WidgetViewModel, shutterButtonViewModel: ShutterButtonViewModel, previewViewModel:PreviewViewModel, exposureBiasViewModel: ExposureBiasViewModel, histogramViewModel: HistogramViewModel, cameraErrorView:CameraErrorView) {
         self.app = app

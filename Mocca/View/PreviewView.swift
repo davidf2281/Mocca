@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-struct PreviewView: View {
+protocol PreviewViewContract: View {}
+
+struct PreviewView: PreviewViewContract {
     
     @Environment(\.verticalSizeClass) var verticalSizeClass
     @EnvironmentObject var orientationPublisher: OrientationPublisher
@@ -20,8 +22,8 @@ struct PreviewView: View {
     var body: some View {
         
         let aspectRatio = verticalSizeClass == .regular ?
-            self.previewViewModel.aspectRatio :
-            1 / self.previewViewModel.aspectRatio
+        self.previewViewModel.aspectRatio :
+        1 / self.previewViewModel.aspectRatio
         
         let sizeClass: UserInterfaceSizeClass = verticalSizeClass == .regular ? .regular : .compact
         
@@ -52,31 +54,31 @@ struct PreviewModifier: ViewModifier {
         let margin = CGFloat(5)
         
         let edgeInsets = verticalSizeClass == .regular ?
-            EdgeInsets(top: 0, leading: margin, bottom: 0, trailing: margin) :
-            EdgeInsets(top: margin, leading: 0, bottom: margin, trailing: 0)
+        EdgeInsets(top: 0, leading: margin, bottom: 0, trailing: margin) :
+        EdgeInsets(top: margin, leading: 0, bottom: margin, trailing: 0)
         
-        return
-            GeometryReader { parent in
-                content
-                    .border(Color(white: 1), width: 5)
-                    .overlay(WidgetView( viewModel: widgetViewModel).accessibility(label: Text("reticle")))
-                    // Drag gesture is simulating a tap gesture because SwiftUI won't tell us the location of actual tap gestures:
-                    .gesture(DragGesture(minimumDistance: 10, coordinateSpace: .local)
-                                .onChanged { gesture in
-                                    self.exposureBiasViewModel.dragged(extent: -gesture.translation.height)
-                                }
-                                .onEnded {_ in 
-                                    self.exposureBiasViewModel.dragEnded()
-                                }
-                                .exclusively(before: DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                                                .onEnded { gesture in
-                                                    let frameSize = CGSize(width: parent.size.width - (edgeInsets.leading + edgeInsets.trailing), height: parent.size.height - (edgeInsets.top + edgeInsets.bottom))
-                                                    let position = ViewConversion.tapPosition(position: gesture.location,
-                                                                                              orientation: orientationPublisher.interfaceOrientation, parentFrame: frameSize)
-                                                    self.widgetViewModel.position = position
-                                                    self.previewViewModel.tapped(position: gesture.location, frameSize:frameSize)
-                                                }))
-            }.aspectRatio(aspectRatio, contentMode: .fit)
+        GeometryReader { parent in
+            content
+                .border(Color(white: 1), width: 5)
+                .overlay(WidgetView( viewModel: widgetViewModel).accessibility(label: Text("reticle")))
+                .gesture(SpatialTapGesture()
+                    .onEnded { value in
+                        let frameSize = CGSize(width: parent.size.width - (edgeInsets.leading + edgeInsets.trailing), height: parent.size.height - (edgeInsets.top + edgeInsets.bottom))
+                        let position = ViewConversion.tapPosition(position: value.location,
+                                                                  orientation: orientationPublisher.interfaceOrientation, parentFrame: frameSize)
+                        self.widgetViewModel.position = position
+                        self.previewViewModel.tapped(position: value.location, frameSize:frameSize)
+                    }
+                )
+                .gesture(DragGesture(minimumDistance: 10, coordinateSpace: .local)
+                    .onChanged { gesture in
+                        self.exposureBiasViewModel.dragged(extent: -gesture.translation.height)
+                    }
+                    .onEnded {_ in
+                        self.exposureBiasViewModel.dragEnded()
+                    }
+                )
+        }.aspectRatio(aspectRatio, contentMode: .fit)
             .padding(edgeInsets)
             .background(Color.black)
     }

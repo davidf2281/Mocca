@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import Combine
 @testable import Mocca
 
 final class HistogramViewModelTests: XCTestCase {
@@ -33,17 +34,45 @@ final class HistogramViewModelTests: XCTestCase {
         
         waitForExpectations(timeout: 1)
     }
+    
+    func testBinPaths() throws {
+        let expectation = expectation(description: "testBinPaths")
+        var cancellables = Set<AnyCancellable>()
+        let mockHistogram = MockHistogram()
+        let mockGenerator = MockHistogramGenerator()
+        mockGenerator.histogramToReturn = mockHistogram
+        
+        let mockSampleBuffer1 = MockSampleBuffer()
+
+        let sut = HistogramViewModel(histogramGenerator: mockGenerator, processEvery: 1)
+        
+        sut.$binPaths.sink { binPaths in
+            if let _ = binPaths {
+                expectation.fulfill()
+            }
+        }.store(in: &cancellables)
+        
+        XCTAssertNil(sut.binPaths) // Check initial conditions
+        sut.processSampleBuffer(mockSampleBuffer1)
+        waitForExpectations(timeout: 1)
+        
+        XCTAssertNotNil(sut.binPaths)
+        XCTAssertEqual(sut.binPaths?.red.count, 10)
+        XCTAssertEqual(sut.binPaths?.green.count, 10)
+        XCTAssertEqual(sut.binPaths?.blue.count, 10)
+    }
 }
 
 fileprivate class MockHistogramGenerator: HistogramGeneratorContract {
     
     var generateSampleBufferCallCount = 0
-    var lastSampleBuffer: CMSampleBufferContract?
-    func generate(sampleBuffer: CMSampleBufferContract) -> Mocca.Histogram? {
+    var lastSampleBuffer: SampleBuffer?
+    var histogramToReturn = MockHistogram()
+    func generate(sampleBuffer: SampleBuffer) -> HistogramContract? {
         generateSampleBufferCallCount += 1
         lastSampleBuffer = sampleBuffer
-        return nil
+        return histogramToReturn
     }
 }
 
-fileprivate class MockSampleBuffer: CMSampleBufferContract {}
+fileprivate class MockSampleBuffer: SampleBuffer {}

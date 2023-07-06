@@ -8,8 +8,8 @@
 import Foundation
 import CoreGraphics
 
-public class FocusSetting: CameraSetting {
+class FocusSetting: CameraSetting {
     typealias Unit = Float64
-    internal var value: Float64 = 0.5
+    var value: Float64 = 0.5
     var settingState = SettingState.active
 }

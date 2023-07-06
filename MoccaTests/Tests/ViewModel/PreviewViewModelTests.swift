@@ -11,11 +11,11 @@ class PreviewViewModelTests: XCTestCase {
 
     private var sut: PreviewViewModel!
     private var manager: MockCaptureManager!
-    private var device: MockAVCaptureDevice!
-    private var layer: MockAVCaptureVideoPreviewLayer!
+    private var device: MockCaptureDevice!
+    private var layer: MockCaptureVideoPreviewLayer!
     override func setUp() {
-        device = MockAVCaptureDevice()
-        layer = MockAVCaptureVideoPreviewLayer()
+        device = MockCaptureDevice()
+        layer = MockCaptureVideoPreviewLayer()
         manager = MockCaptureManager(captureDevice: device, layer: layer)
         sut = PreviewViewModel(captureManager: manager)
     }

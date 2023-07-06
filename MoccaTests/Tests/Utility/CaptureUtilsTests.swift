@@ -6,16 +6,17 @@
 //
 
 import XCTest
+import CoreMedia.CMTime
 @testable import Mocca
 
 final class CaptureUtilsTests: XCTestCase {
 
     var sut: CaptureUtils!
-    var mockDevice: MockAVCaptureDevice!
+    var mockDevice: MockCaptureDevice!
     var mockFormat: MockAVCaptureDeviceFormat!
     override func setUpWithError() throws {
         sut = CaptureUtils()
-        mockDevice = MockAVCaptureDevice()
+        mockDevice = MockCaptureDevice()
         mockFormat = MockAVCaptureDeviceFormat()
     }
 
@@ -60,7 +61,7 @@ final class CaptureUtilsTests: XCTestCase {
         let mockFormat3 = MockAVCaptureDeviceFormat()
         mockFormat3.formatDescriptionToReturn = mockFormatDescription3
         
-        let mockDevice = MockAVCaptureDevice()
+        let mockDevice = MockCaptureDevice()
         mockDevice.formatsToReturn = [mockFormat1, mockFormat2, mockFormat3]
         let sut = CaptureUtils()
         let result = sut.highestResolutionFullRangeVideoFormat(mockDevice)
@@ -86,7 +87,7 @@ final class CaptureUtilsTests: XCTestCase {
         let mockFormat3 = MockAVCaptureDeviceFormat()
         mockFormat3.formatDescriptionToReturn = mockFormatDescription3
         
-        let mockDevice = MockAVCaptureDevice()
+        let mockDevice = MockCaptureDevice()
         mockDevice.formatsToReturn = [mockFormat1, mockFormat2, mockFormat3]
         let sut = CaptureUtils()
         let result = sut.highestResolutionFullRangeVideoFormat(mockDevice)
@@ -96,9 +97,12 @@ final class CaptureUtilsTests: XCTestCase {
 
 }
 
-private class EmptyAVCaptureDeviceFormat: AVCaptureDeviceFormatContract {}
-
-class MockAVCaptureDeviceFormat: AVCaptureDeviceFormatContract {
+class MockAVCaptureDeviceFormat: CaptureDeviceFormat {
+    var maxPhotoDimensions: [CMVideoDimensions] {
+        [CMVideoDimensions(width: 100, height: 100),
+         CMVideoDimensions(width: 3000, height: 2000),
+         CMVideoDimensions(width: 200, height: 100)]
+    }
     
     var minISOToReturn: Float = 0
     var minISO: Float {
@@ -120,14 +124,14 @@ class MockAVCaptureDeviceFormat: AVCaptureDeviceFormatContract {
         maxExposureDurationToReturn
     }
     
-    var formatDescriptionToReturn: CMFormatDescriptionContract = MockCFFormatDescription()
-    var formatDescription: CMFormatDescriptionContract {
+    var formatDescriptionToReturn: FormatDescription = MockCFFormatDescription()
+    var formatDescription: FormatDescription {
         formatDescriptionToReturn
     }
 
 }
 
-class MockCFFormatDescription: CMFormatDescriptionContract {
+class MockCFFormatDescription: FormatDescription {
     
     var dimensionsToReturn = CMVideoDimensions(width: 100, height: 50)
     var dimensions: CMVideoDimensions {

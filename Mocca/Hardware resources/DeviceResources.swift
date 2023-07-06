@@ -8,20 +8,35 @@
 import Foundation
 import AVFoundation
 
-class DeviceResources: ResourcesContract {
+protocol DeviceResourcesContract {
     
-    static let shared = DeviceResources()
+    var metalDevice: MTLDevice? { get }
     
-    private init() {}
+    func anyAvailableCamera(preferredDevice:LogicalCameraDevice,
+                            supportedCameraDevices: [LogicalCameraDevice]) -> CaptureDevice?
     
-    public private(set) var metalDevice: MTLDevice? = MTLCreateSystemDefaultDevice()
+    func physicalDevice(from logicalDevice: LogicalCameraDevice) -> CaptureDevice?
+}
+
+class DeviceResources: DeviceResourcesContract {
+            
+    private(set) var metalDevice: MTLDevice? = MTLCreateSystemDefaultDevice()
+    private let captureDevice: CaptureDevice
     
-    /// Searches for an available physical camera within the supplied array of supported logical camera device types.
+    init?(captureDevice: CaptureDevice?) {
+        guard let captureDevice else {
+            return nil
+        }
+        
+        self.captureDevice = captureDevice
+    }
+    
+    /// Searches for an available phsical camera within the supplied array of supported logical camera device types.
     /// - Parameter preferredDevice: The preferred type to return.
     /// - Parameter supportedCameraDevices: An array of CameraDevice
     /// - Returns: A physical camera of the preferred type, the first available if the preferred choice is not found, or nil if none are found.
     func anyAvailableCamera(preferredDevice:LogicalCameraDevice,
-                                          supportedCameraDevices: [LogicalCameraDevice]) -> AVCaptureDeviceContract? {
+                                          supportedCameraDevices: [LogicalCameraDevice]) -> CaptureDevice? {
         
         if supportedCameraDevices.contains(preferredDevice) {
             if let device = physicalDevice(from: preferredDevice) {
@@ -38,12 +53,7 @@ class DeviceResources: ResourcesContract {
         return nil
     }
     
-    func physicalDevice(from logicalDevice: LogicalCameraDevice) -> AVCaptureDeviceContract? {
-        let session = AVCaptureDevice.DiscoverySession(deviceTypes: [logicalDevice.type], mediaType: .video, position: logicalDevice.position)
-        if let device = session.devices.first {
-            return device
-        }
-        
-        return nil
+    func physicalDevice(from logicalDevice: LogicalCameraDevice) -> CaptureDevice? {
+        return self.captureDevice.captureDevice(withType: logicalDevice.type, position: logicalDevice.position)
     }
 }

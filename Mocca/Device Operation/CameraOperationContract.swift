@@ -6,26 +6,19 @@
 //
 
 import Foundation
-import AVFoundation
+import CoreMedia.CMTime
 
 protocol CameraOperationContract {
     
-    func setIso(_ iso : Float, for device: AVCaptureDeviceContract, utils:CaptureUtilsContract, completion: @escaping (CMTime) -> Void) throws
-
-    func setExposure(seconds : Float64, for device: AVCaptureDeviceContract, utils:CaptureUtilsContract, completion: @escaping (CMTime) -> Void) throws
-    
-    func canSetExposureTargetBias(ev: EV, for device: AVCaptureDeviceContract) -> Bool
-    
-    func setExposureTargetBias(ev: EV, for device: AVCaptureDeviceContract, completion: ( (CMTime) -> Void)?) throws
-    
+    func setIso(_ iso : Float, for device: CaptureDevice, utils:CaptureUtilsContract, completion: @escaping (CMTime) -> Void) throws
+    func setExposure(seconds : Float64, for device: CaptureDevice, utils:CaptureUtilsContract, completion: @escaping (CMTime) -> Void) throws
+    func canSetExposureTargetBias(ev: EV, for device: CaptureDevice) -> Bool
+    func setExposureTargetBias(ev: EV, for device: CaptureDevice, completion: ( (CMTime) -> Void)?) throws
     func setExposurePointOfInterest(_ point:CGPoint,
-                                    on layer: AVCaptureVideoPreviewLayerContract,
-                                           for device: AVCaptureDeviceContract) -> Result<Void, CameraOperation.OperationError>
-    
+                                    on layer: CaptureVideoPreviewLayer,
+                                           for device: CaptureDevice) -> Result<Void, CameraOperation.OperationError>
      func setFocusPointOfInterest(_ point:CGPoint,
-                                 on layer: AVCaptureVideoPreviewLayerContract,
-                                 for device: AVCaptureDeviceContract) -> Result<Void, CameraOperation.OperationError>
-    
-    func willTargetBiasHaveEffect(ev: EV, for device: AVCaptureDeviceContract) -> Bool
-
+                                 on layer: CaptureVideoPreviewLayer,
+                                 for device: CaptureDevice) -> Result<Void, CameraOperation.OperationError>
+    func willTargetBiasHaveEffect(ev: EV, for device: CaptureDevice) -> Bool
 }

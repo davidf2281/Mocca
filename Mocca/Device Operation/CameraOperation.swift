@@ -10,7 +10,7 @@ import AVFoundation
 
 class CameraOperation: CameraOperationContract {
     
-    public func setIso(_ iso : Float, for device: AVCaptureDeviceContract, utils: CaptureUtilsContract = CaptureUtils(), completion: @escaping (CMTime) -> Void) throws {
+    func setIso(_ iso : Float, for device: CaptureDevice, utils: CaptureUtilsContract = CaptureUtils(), completion: @escaping (CMTime) -> Void) throws {
         
         let minIso = utils.minIso(for: device)
         let maxIso = utils.maxIso(for: device)
@@ -26,7 +26,7 @@ class CameraOperation: CameraOperationContract {
         device.unlockForConfiguration()
     }
     
-    public func setExposure(seconds : Float64, for device: AVCaptureDeviceContract, utils: CaptureUtilsContract = CaptureUtils(), completion: @escaping (CMTime) -> Void) throws {
+    func setExposure(seconds : Float64, for device: CaptureDevice, utils: CaptureUtilsContract = CaptureUtils(), completion: @escaping (CMTime) -> Void) throws {
         
         let minExposure = utils.minExposureSeconds(for: device)
         let maxExposure = utils.maxExposureSeconds(for: device)
@@ -43,14 +43,15 @@ class CameraOperation: CameraOperationContract {
         device.unlockForConfiguration()
     }
     
-    func canSetExposureTargetBias(ev: EV, for device: AVCaptureDeviceContract) -> Bool {
+    
+    func canSetExposureTargetBias(ev: EV, for device: CaptureDevice) -> Bool {
         let minBias = device.minExposureTargetBias
         let maxBias = device.maxExposureTargetBias
         
         return ev >= minBias && ev <= maxBias
     }
     
-    func willTargetBiasHaveEffect(ev: EV, for device: AVCaptureDeviceContract) -> Bool {
+    func willTargetBiasHaveEffect(ev: EV, for device: CaptureDevice) -> Bool {
         let isoIsOnUpperLimit = device.iso >= device.activeFormat.maxISO
 
         let isoIsOnLowerLimit = device.iso <= device.activeFormat.minISO
@@ -66,7 +67,7 @@ class CameraOperation: CameraOperationContract {
         return true
     }
     
-    func setExposureTargetBias(ev: EV, for device: AVCaptureDeviceContract, completion: ((CMTime) -> Void)?) throws {
+    func setExposureTargetBias(ev: EV, for device: CaptureDevice, completion: ((CMTime) -> Void)?) throws {
 
         let minBias = device.minExposureTargetBias
         let maxBias = device.maxExposureTargetBias
@@ -82,7 +83,7 @@ class CameraOperation: CameraOperationContract {
         device.unlockForConfiguration()
     }
     
-    func setExposurePointOfInterest(_ point:CGPoint, on layer: AVCaptureVideoPreviewLayerContract, for device: AVCaptureDeviceContract) -> Result<Void, OperationError> {
+    func setExposurePointOfInterest(_ point:CGPoint, on layer: CaptureVideoPreviewLayer, for device: CaptureDevice) -> Result<Void, OperationError> {
         
         do {
             try device.lockForConfiguration()
@@ -98,7 +99,7 @@ class CameraOperation: CameraOperationContract {
         return .success
     }
     
-    func setFocusPointOfInterest(_ point:CGPoint, on layer: AVCaptureVideoPreviewLayerContract, for device: AVCaptureDeviceContract) -> Result<Void, OperationError> {
+    func setFocusPointOfInterest(_ point:CGPoint, on layer: CaptureVideoPreviewLayer, for device: CaptureDevice) -> Result<Void, OperationError> {
         
         do {
             try device.lockForConfiguration()

@@ -11,13 +11,11 @@ import SwiftUI
 @testable import Mocca
 import ViewInspector
 
-extension ShutterButtonView { }
-
-private class MockShutterButtonViewModel: ShutterButtonViewModelProtocol {
+private class MockShutterButtonViewModel: ShutterButtonViewModelContract {
     var state: PhotoTakerState = .ready
-    private(set) var tapCalled = false
+    var tappedCallCount = 0
     func tapped() {
-        self.tapCalled = true
+        tappedCallCount += 1
     }
 }
 
@@ -36,10 +34,10 @@ final class ShutterButtonViewTests: XCTestCase {
     }
     
     func testViewModelTappedCalledOnTap() throws {
-        XCTAssertFalse(viewModel.tapCalled)
+        XCTAssertEqual(viewModel.tappedCallCount, 0)
         let sut = ShutterButtonView<MockShutterButtonViewModel>(viewModel: viewModel)
         try sut.inspect().zStack().callOnTapGesture()
-        XCTAssertTrue(viewModel.tapCalled)
+        XCTAssertEqual(viewModel.tappedCallCount, 1)
     }
     
     func testOuterCircleColorIsGray() throws {

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import AVFoundation
 
 typealias EV = Float
 

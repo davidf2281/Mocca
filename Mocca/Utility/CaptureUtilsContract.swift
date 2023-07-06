@@ -6,11 +6,10 @@
 //
 
 import Foundation
-import AVFoundation
 
 protocol CaptureUtilsContract {
-    func minIso(for device:AVCaptureDeviceContract) -> Float
-    func maxIso(for device:AVCaptureDeviceContract) -> Float
-    func maxExposureSeconds(for device:AVCaptureDeviceContract) -> Float64
-    func minExposureSeconds(for device:AVCaptureDeviceContract) -> Float64
+    func minIso(for device:CaptureDevice) -> Float
+    func maxIso(for device:CaptureDevice) -> Float
+    func maxExposureSeconds(for device:CaptureDevice) -> Float64
+    func minExposureSeconds(for device:CaptureDevice) -> Float64
 }

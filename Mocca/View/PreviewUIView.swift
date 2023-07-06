@@ -6,25 +6,23 @@
 //
 
 import UIKit
-import AVFoundation
-import SwiftUI
 
 final class PreviewUIView: UIView {
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.backgroundColor = UIColor.black
+        
+    required init(viewModel: PreviewUIViewModel) {
+        super.init(frame: .zero)
+        self.backgroundColor = viewModel.backgroundColor
     }
     
     required init?(coder: NSCoder) {
-        fatalError("Use initWithFrame:")
+        fatalError("init(coder:) has not been implemented")
     }
     
-    var videoPreviewLayer: AVCaptureVideoPreviewLayer {
-        return layer as! AVCaptureVideoPreviewLayer
+    var videoPreviewLayer: CaptureVideoPreviewLayer? {
+        return self.layer as? CaptureVideoPreviewLayer
     }
     
     override class var layerClass: AnyClass {
-        return AVCaptureVideoPreviewLayer.self
+        return DeviceCaptureVideoPreviewLayer.self
     }
 }

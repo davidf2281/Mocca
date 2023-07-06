@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class System {
+final class System {
     final class func runningInSimulator() -> Bool {
         
         #if !DEBUG // Production builds always return false as an extra layer of safety
@@ -17,13 +17,5 @@ public final class System {
         #else
         return false
         #endif
-    }
-    
-    final class func appDisplayName() -> String? {
-        if let dictionary = Bundle.main.infoDictionary {
-            return dictionary["CFBundleDisplayName"] as? String
-        }
-        
-        return nil
     }
 }
