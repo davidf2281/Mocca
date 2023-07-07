@@ -11,7 +11,7 @@ import AVFoundation
 @testable import Mocca
 
 class MockCaptureDevice: CaptureDevice {
-
+   
     struct LockForConfigurationError: Error {}
     
     // Test vars
@@ -22,8 +22,8 @@ class MockCaptureDevice: CaptureDevice {
     var configurationWasUnlockedAfterLocking : Bool = false
     var configurationChangedWithoutLock             = false
     var focusModeSetLocked                          = false
-    var exposurePointOfInterestCalled = false
-    var focusPointOfInterestCalled = false
+    var exposurePointOfInterestSet = false
+    var focusPointOfInterestSet = false
     
     // Protocol conformance
     var iso: Float = 0
@@ -35,13 +35,13 @@ class MockCaptureDevice: CaptureDevice {
     
     var focusPointOfInterest = CGPoint.zero {
         willSet {
-            focusPointOfInterestCalled = true
+            focusPointOfInterestSet = true
         }
     }
     
     var exposurePointOfInterest = CGPoint.zero {
         willSet {
-            exposurePointOfInterestCalled = true
+            exposurePointOfInterestSet = true
         }
     }
     func setExposureTargetBias(_ bias: Float, completionHandler handler: ((CMTime) -> Void)?) {
@@ -102,5 +102,15 @@ class MockCaptureDevice: CaptureDevice {
         positionSet = position
         captureDeviceCallCount += 1
         return captureDeviceToReturn
+    }
+    
+    var exposurePointOfInterestSupportedToReturn = true
+    var exposurePointOfInterestSupported: Bool {
+        exposurePointOfInterestSupportedToReturn
+    }
+    
+    var focusPointOfInterestSupportedToReturn = true
+    var focusPointOfInterestSupported: Bool {
+        focusPointOfInterestSupportedToReturn
     }
 }
