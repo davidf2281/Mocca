@@ -8,38 +8,32 @@
 import Foundation
 
 protocol CameraSelection: AnyObject {
-    var availableCameras: [LogicalCameraDevice] { get }
-    var selectedCamera: LogicalCameraDevice? { get }
-    var selectedCameraPublisher: Published<LogicalCameraDevice?>.Publisher { get }
-    func selectCamera(_ camera: LogicalCameraDevice)
+    var availableCameras: [PhysicalCamera] { get }
+    var selectedCamera: PhysicalCamera { get }
+    var selectedCameraPublisher: Published<PhysicalCamera>.Publisher { get }
+    func selectCamera(cameraID: UUID)
 }
 
-class CameraSelectionModel: CameraSelection {
+class CameraSelectionModel: CameraSelection, ObservableObject {
 
-    @Published fileprivate(set) var selectedCamera: LogicalCameraDevice?
-    var selectedCameraPublisher: Published<LogicalCameraDevice?>.Publisher { $selectedCamera }
+    @Published fileprivate(set) var selectedCamera: PhysicalCamera
+    var selectedCameraPublisher: Published<PhysicalCamera>.Publisher { $selectedCamera }
 
-    private(set) var availableCameras: [LogicalCameraDevice]
+    private(set) var availableCameras: [PhysicalCamera]
     private let captureManager: CaptureManagerContract
     
-    init(availableCameras: [LogicalCameraDevice], captureManager: CaptureManagerContract) {
+    init?(availableCameras: [PhysicalCamera], captureManager: CaptureManagerContract?) {
+        
+        guard let captureManager else {
+            return nil
+        }
+        
         self.availableCameras = availableCameras
         self.captureManager = captureManager
-        
-        // TODO: Remove this test code
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
-            self.captureManager.selectCamera(type: LogicalCameraDevice(type: .builtInTelephotoCamera, position: .back))
-        }
+        self.selectedCamera = captureManager.activeCamera
     }
     
-    func selectCamera(_ camera: LogicalCameraDevice) {
-        let result = self.captureManager.selectCamera(type: camera)
-        
-        switch result {
-            case .success():
-                break
-            case .failure(_):
-                assert(false)
-        }
+    func selectCamera(cameraID: UUID) {
+        _ = self.captureManager.selectCamera(cameraID: cameraID)
     }
 }

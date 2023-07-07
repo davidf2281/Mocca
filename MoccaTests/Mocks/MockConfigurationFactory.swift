@@ -9,8 +9,9 @@ import Foundation
 @testable import Mocca
 
 class MockConfigurationFactory: ConfigurationFactoryContract {
-    var supportedCameraDevices: [LogicalCameraDevice] = []
     
+    var supportedLogicalCameras: [LogicalCamera] = []
+        
     func captureManagerInitializerConfiguration(resources: DeviceResourcesContract, videoPreviewLayer: CaptureVideoPreviewLayer?, captureSession: CaptureSession, captureDeviceInputType: CaptureDeviceInput.Type, photoOutputType: CapturePhotoOutput.Type) throws -> CaptureManagerConfiguration {
         throw(TestError.fail)
     }
@@ -19,11 +20,13 @@ class MockConfigurationFactory: ConfigurationFactoryContract {
         return MockPhotoSettings()
     }
     
+    var videoInputShouldThrow = false
     func videoInput(for device: CaptureDevice) throws -> CaptureDeviceInput {
+        if videoInputShouldThrow {
+            throw(ConfigurationFactoryError.getVideoInputFailed)
+        }
         return MockCaptureDeviceInput()
     }
-    
-    
 }
 
 enum TestError: Error {

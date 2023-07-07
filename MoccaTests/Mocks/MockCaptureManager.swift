@@ -11,6 +11,10 @@ import AVFoundation
 @testable import Mocca
 class MockCaptureManager: CaptureManagerContract {
     
+    var activeCamera: PhysicalCamera {
+        return PhysicalCamera(id: UUID(), type: .builtInTelephotoCamera, position: .back, captureDevice: MockCaptureDevice())
+    }
+    
     // Protocol conformance
     let activeCaptureDevice: CaptureDevice
     let videoPreviewLayer: CaptureVideoPreviewLayer
@@ -33,8 +37,16 @@ class MockCaptureManager: CaptureManagerContract {
         return AVCapturePhotoSettings()
     }
     
-    func selectCamera(type: LogicalCameraDevice) -> Result<Void, CaptureManagerError> {
+    func selectCamera(type: LogicalCamera) -> Result<Void, CaptureManagerError> {
         lastSelectedCameraDevice = type
+        return .success
+    }
+    
+    var selectedCameraID: UUID?
+    var selectCameraCallCOunt = 0
+    func selectCamera(cameraID: UUID) -> Result<Void, CaptureManagerError> {
+        selectedCameraID = cameraID
+        selectCameraCallCOunt += 1
         return .success
     }
     
@@ -43,5 +55,5 @@ class MockCaptureManager: CaptureManagerContract {
     // Test vars
     var capturePhotoCalled = false;
     var captureDelegate: CapturePhotoDelegate?
-    var lastSelectedCameraDevice: LogicalCameraDevice?
+    var lastSelectedCameraDevice: LogicalCamera?
 }

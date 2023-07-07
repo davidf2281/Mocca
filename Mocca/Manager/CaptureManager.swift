@@ -24,9 +24,27 @@ enum CaptureDevicePosition {
     case unsupported
 }
 
-struct LogicalCameraDevice: Equatable {
+protocol Camera {
+    var type: CaptureDeviceType { get }
+    var position: CaptureDevicePosition { get }
+}
+
+struct LogicalCamera: Camera, Equatable {
     let type: CaptureDeviceType
     let position: CaptureDevicePosition
+}
+
+struct PhysicalCamera: Camera, Identifiable {
+    let id: UUID
+    let type: CaptureDeviceType
+    let position: CaptureDevicePosition
+    let captureDevice: CaptureDevice
+}
+
+extension PhysicalCamera: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 enum PhotoTakerState: Equatable {
@@ -51,7 +69,7 @@ protocol PhotoTakerContract {
 
 /// A class to handle creation and management of fully configured video and photo capture sessions and related functions.
 class CaptureManager: CaptureManagerContract, ObservableObject {
- 
+    
     @Published fileprivate(set) var state: PhotoTakerState = .ready
 
     var statePublisher: Published<PhotoTakerState>.Publisher { $state }
@@ -60,8 +78,9 @@ class CaptureManager: CaptureManagerContract, ObservableObject {
     
     private(set) var captureSession : CaptureSession
     private(set) var activeCaptureDevice : CaptureDevice
-    private var activeVideoInput: CaptureDeviceInput
+    private(set) var activeCamera: PhysicalCamera
 
+    private var activeVideoInput: CaptureDeviceInput
     private let photoOutput: CapturePhotoOutput
     private let videoOutput: CaptureVideoOutput
     private let resources: DeviceResourcesContract
@@ -70,18 +89,18 @@ class CaptureManager: CaptureManagerContract, ObservableObject {
     
     lazy private var photoCaptureIntermediary: PhotoCaptureIntermediary = PhotoCaptureIntermediary(delegate: self)
     
-    init(captureSession: CaptureSession, photoOutput: CapturePhotoOutput, videoOutput: CaptureVideoOutput, initialCaptureDevice: CaptureDevice, videoInput: CaptureDeviceInput, resources: DeviceResourcesContract, videoPreviewLayer: CaptureVideoPreviewLayer, photoLibrary: PhotoLibrary, configurationFactory: ConfigurationFactoryContract) throws {
+    init(captureSession: CaptureSession, photoOutput: CapturePhotoOutput, videoOutput: CaptureVideoOutput, initialCamera: PhysicalCamera, videoInput: CaptureDeviceInput, resources: DeviceResourcesContract, videoPreviewLayer: CaptureVideoPreviewLayer, photoLibrary: PhotoLibrary, configurationFactory: ConfigurationFactoryContract) throws {
         
         self.photoOutput = photoOutput
         self.videoOutput = videoOutput
         self.activeVideoInput = videoInput
         self.captureSession = captureSession
-        self.activeCaptureDevice = initialCaptureDevice
+        self.activeCaptureDevice = initialCamera.captureDevice
         self.resources = resources
         self.videoPreviewLayer = videoPreviewLayer
         self.photoLibrary = photoLibrary
         self.configurationFactory = configurationFactory
-        
+        self.activeCamera = initialCamera
         // MARK: Capture-session configuration
         self.captureSession.beginConfiguration()
         
@@ -123,17 +142,14 @@ class CaptureManager: CaptureManagerContract, ObservableObject {
         return self.configurationFactory.uniquePhotoSettings(device: self.activeCaptureDevice, photoOutput: self.photoOutput)
     }
     
-    /// Sets the active session's capture device to the physical camera matching the supplied type
-    /// - Parameter type: The type of camera to select
-    /// - Returns: true if the operation succeeded; false otherwise
-    func selectCamera(type: LogicalCameraDevice) -> Result<Void, CaptureManagerError> {
-        
-        guard let device = self.resources.physicalDevice(from: type) else {
+    func selectCamera(cameraID: UUID) -> Result<Void, CaptureManagerError> {
+   
+        guard let physicalCamera = self.resources.availablePhysicalCameras.first(where: { $0.id == cameraID}) else {
             return .failure(.captureDeviceNotFound)
         }
         
         do {
-            let videoInput = try self.configurationFactory.videoInput(for: device)
+            let videoInput = try self.configurationFactory.videoInput(for: physicalCamera.captureDevice)
             self.captureSession.removeInput(self.activeVideoInput)
             if self.captureSession.canAddInput(videoInput) {
                 self.captureSession.addInput(videoInput)
@@ -145,8 +161,8 @@ class CaptureManager: CaptureManagerContract, ObservableObject {
             return .failure(.addVideoInputFailed)
         }
         
-        self.activeCaptureDevice = device
-        
+        self.activeCaptureDevice = physicalCamera.captureDevice
+        self.activeCamera = physicalCamera
         return .success
     }
     

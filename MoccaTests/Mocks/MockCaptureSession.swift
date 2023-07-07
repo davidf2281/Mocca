@@ -17,20 +17,20 @@ final class MockCaptureSession: CaptureSession {
     var preset: CaptureSessionPreset = .unsupported
 
     // MARK: Test vars
-    internal var canAddInputResponse =                     true
-    internal var canAddPhotoOutputResponse =               true
-    internal var canAddVideoOutputResponse =               true
-    internal var beginConfigirationCalled =                false
-    internal var addInputCalled =                          false
-    internal var addOuputCalled =                          false
-    internal var commitConfigurationCalled =               false
-    internal var startRunningCalled =                      false
-    internal var stopRunningCalled =                       false
-    internal var beginConfigurationNotCalledWhenRequired = false
-    internal var commitConfigurationCalledPrematurely =    false
+    var canAddInputResponse =                     true
+    var canAddPhotoOutputResponse =               true
+    var canAddVideoOutputResponse =               true
+    var beginConfigirationCalled =                false
+    var addInputCalled =                          false
+    var addOuputCalled =                          false
+    var commitConfigurationCalled =               false
+    var startRunningCalled =                      false
+    var stopRunningCalled =                       false
+    var beginConfigurationNotCalledWhenRequired = false
+    var commitConfigurationCalledPrematurely =    false
     
-    internal private(set) var lastAddedInput: CaptureInput?
-    internal private(set) var lastAddedOutput: CaptureOutput?
+    private(set) var lastAddedInput: CaptureInput?
+    private(set) var lastAddedOutput: CaptureOutput?
     
     // MARK: Protocol implementation
     
