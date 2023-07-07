@@ -29,23 +29,23 @@ class WidgetViewModelTests: XCTestCase {
     }
 
     func testDragEndedSetsDeviceFocusPointOfInterest() {
-        XCTAssertFalse(device.focusPointOfInterestCalled)
+        XCTAssertFalse(device.focusPointOfInterestSet)
         XCTAssertEqual(device.focusPointOfInterest, CGPoint.zero)
         let setPosition = CGPoint(x: 100,y: 100)
         
         sut.dragEnded(position: setPosition, frameSize: .zero)
-        XCTAssertTrue(device.focusPointOfInterestCalled)
+        XCTAssertTrue(device.focusPointOfInterestSet)
         XCTAssertEqual(device.focusPointOfInterest, setPosition)
     }
 
     func testDragEndedSetsDeviceExposurePointOfInterest() {
-        XCTAssertFalse(device.exposurePointOfInterestCalled)
+        XCTAssertFalse(device.exposurePointOfInterestSet)
         XCTAssertEqual(device.exposurePointOfInterest, CGPoint.zero)
         let setPosition = CGPoint(x: 100,y: 100)
         
         sut.dragEnded(position: setPosition, frameSize: .zero)
         
-        XCTAssertTrue(device.exposurePointOfInterestCalled)
+        XCTAssertTrue(device.exposurePointOfInterestSet)
         XCTAssertEqual(device.exposurePointOfInterest, setPosition)
     }
 }

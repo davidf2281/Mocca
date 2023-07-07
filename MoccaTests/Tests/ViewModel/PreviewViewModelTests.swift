@@ -25,22 +25,22 @@ class PreviewViewModelTests: XCTestCase {
     }
     
     func testTapSetsDeviceFocusPointOfInterest() {
-        XCTAssertFalse(device.focusPointOfInterestCalled)
+        XCTAssertFalse(device.focusPointOfInterestSet)
         XCTAssertEqual(device.focusPointOfInterest, CGPoint.zero)
         let tapPosition = CGPoint(x: 100,y: 100)
         
         sut.tapped(position: tapPosition, frameSize: .zero)
-        XCTAssertTrue(device.focusPointOfInterestCalled)
+        XCTAssertTrue(device.focusPointOfInterestSet)
         XCTAssertEqual(device.focusPointOfInterest, tapPosition)
     }
     
     func testTapSetsDeviceExposurePointOfInterest() {
-        XCTAssertFalse(device.exposurePointOfInterestCalled)
+        XCTAssertFalse(device.exposurePointOfInterestSet)
         XCTAssertEqual(device.exposurePointOfInterest, CGPoint.zero)
         let tapPosition = CGPoint(x: 100,y: 100)
         
         sut.tapped(position: tapPosition, frameSize: .zero)
-        XCTAssertTrue(device.exposurePointOfInterestCalled)
+        XCTAssertTrue(device.exposurePointOfInterestSet)
         XCTAssertEqual(device.exposurePointOfInterest, tapPosition)
     }
 }

@@ -18,8 +18,10 @@ protocol CaptureDevice: AnyObject {
     var maxExposureTargetBias: Float { get }
     var minExposureTargetBias: Float { get }
     var isExposurePointOfInterestSupported: Bool { get }
+    var exposurePointOfInterestSupported: Bool { get }
     var exposurePointOfInterest: CGPoint { get set }
     var exposureMode: AVCaptureDevice.ExposureMode { get set }
+    var focusPointOfInterestSupported: Bool { get }
     var focusPointOfInterest: CGPoint { get set }
     var focusMode: AVCaptureDevice.FocusMode { get set }
     func setFocusModeLocked(lensPosition: Float, completionHandler handler: ((CMTime) -> Void)?)
@@ -40,6 +42,15 @@ protocol AVCaptureDevicePropertyUnshadowing {
 }
 
 extension AVCaptureDevice: CaptureDevice {
+    
+    var exposurePointOfInterestSupported: Bool {
+        self.isExposurePointOfInterestSupported
+    }
+    
+    var focusPointOfInterestSupported: Bool {
+        self.isFocusPointOfInterestSupported
+    }
+
     var captureDeviceType: CaptureDeviceType {
         switch self.deviceType {
             case .builtInWideAngleCamera:

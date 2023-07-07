@@ -111,7 +111,7 @@ class CaptureManagerTests: XCTestCase {
         }
 #else
         do {
-            _ = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, activeVideoInput: mockInput, resources: DeviceResources(initialCaptureDevice: AVCaptureDevice.default(for: .video))!, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary)
+            _ = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         } catch {
             XCTFail("Convenience init should not fail on physical device")
         }
