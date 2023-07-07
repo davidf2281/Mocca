@@ -85,6 +85,10 @@ class CameraOperation: CameraOperationContract {
     
     func setExposurePointOfInterest(_ point:CGPoint, on layer: CaptureVideoPreviewLayer, for device: CaptureDevice) -> Result<Void, OperationError> {
         
+        guard device.exposurePointOfInterestSupported else {
+            return .failure(.exposurePointOfInterestUnsupported)
+        }
+        
         do {
             try device.lockForConfiguration()
         }
@@ -100,6 +104,10 @@ class CameraOperation: CameraOperationContract {
     }
     
     func setFocusPointOfInterest(_ point:CGPoint, on layer: CaptureVideoPreviewLayer, for device: CaptureDevice) -> Result<Void, OperationError> {
+        
+        guard device.focusPointOfInterestSupported else {
+            return .failure(.focusPointOfInterestUnsupported)
+        }
         
         do {
             try device.lockForConfiguration()
@@ -119,6 +127,8 @@ class CameraOperation: CameraOperationContract {
 extension CameraOperation {
     enum OperationError: Error {
         case lockForConfigurationFailed
+        case focusPointOfInterestUnsupported
+        case exposurePointOfInterestUnsupported
     }
 }
 

@@ -230,6 +230,7 @@ class CameraOperationTests: XCTestCase {
         XCTAssertEqual(mockVideoPreviewLayer.lastPointInLayer, point)
         XCTAssertEqual(mockDevice.focusPointOfInterest, point)
         XCTAssertEqual(mockDevice.focusMode, .autoFocus)
+        XCTAssertTrue(mockDevice.focusPointOfInterestSet)
     }
     
     func testSetFocusPointOfInterestFailure() throws {
@@ -250,5 +251,27 @@ class CameraOperationTests: XCTestCase {
         XCTAssertNil(mockVideoPreviewLayer.lastPointInLayer)
         XCTAssertEqual(mockDevice.focusPointOfInterest, .zero)
         XCTAssertEqual(mockDevice.focusMode, .locked)
+    }
+    
+    func testSetFocusPointOfInterestWhenUnsupported() throws {
+        
+        mockDevice.focusPointOfInterestSupportedToReturn = false
+        
+        let point = CGPoint(x: 100, y: 50)
+        let result = sut.setFocusPointOfInterest(point, on: mockVideoPreviewLayer, for: mockDevice)
+        
+        guard case .failure(let error) = result, error == .focusPointOfInterestUnsupported else { XCTFail(); return }
+        XCTAssertFalse(mockDevice.focusPointOfInterestSet)
+    }
+    
+    func testSetExposurePointOfInterestWhenUnsupported() throws {
+    
+        mockDevice.exposurePointOfInterestSupportedToReturn = false
+        
+        let point = CGPoint(x: 100, y: 50)
+        let result = sut.setExposurePointOfInterest(point, on: mockVideoPreviewLayer, for: mockDevice)
+        
+        guard case .failure(let error) = result, error == .exposurePointOfInterestUnsupported else { XCTFail(); return }
+        XCTAssertFalse(mockDevice.exposurePointOfInterestSet)
     }
 }
