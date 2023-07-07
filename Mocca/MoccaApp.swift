@@ -54,7 +54,10 @@ final class MoccaApp: App, ObservableObject {
     
     private let configurationFactory: ConfigurationFactoryContract = ConfigurationFactory(captureDeviceInputType: AVCaptureDeviceInput.self)
     
-    private let cameraSelectionModel: CameraSelection
+    private let cameraSelectionModel: CameraSelection?
+    
+    private let cameraSelectionViewModel: CameraSelectionViewModel?
+
     
     enum MoccaSetupError: Error {
         case deviceResources
@@ -62,7 +65,7 @@ final class MoccaApp: App, ObservableObject {
     
     init() {
                 
-        self.deviceResources = DeviceResources(captureDevice: AVCaptureDevice.default(for: .video), supportedCameraDevices: self.configurationFactory.supportedCameraDevices)
+        self.deviceResources = DeviceResources(captureDevice: AVCaptureDevice.default(for: .video), supportedCameraDevices: self.configurationFactory.supportedLogicalCameras)
         
         do {
             guard let deviceResources = self.deviceResources else {
@@ -79,7 +82,7 @@ final class MoccaApp: App, ObservableObject {
             self.captureManager = try CaptureManager(captureSession: config.captureSession,
                                                      photoOutput: config.photoOutput,
                                                      videoOutput: config.videoOutput,
-                                                     initialCaptureDevice: config.initialCaptureDevice,
+                                                     initialCamera: config.initialCamera,
                                                      videoInput: config.videoInput,
                                                      resources: config.resources,
                                                      videoPreviewLayer: config.videoPreviewLayer,
@@ -104,12 +107,22 @@ final class MoccaApp: App, ObservableObject {
         self.histogramViewModel = HistogramViewModel(histogramGenerator: self.histogramGenerator)
         self.sampleBufferIntermediary = SampleBufferIntermediary(sampleBufferHandler: self.histogramViewModel)
         self.captureManager?.setSampleBufferDelegate(self.sampleBufferIntermediary, queue: sampleBufferQueue)
-        self.widgetViewModel = WidgetViewModel(captureManager: captureManager, dockedPosition:CGPoint(x: 55, y: 55), displayCharacter:"f")
+        self.widgetViewModel = WidgetViewModel(captureManager: captureManager, dockedPosition: CGPoint(x: 55, y: 55), displayCharacter:"f")
         self.previewViewModel = PreviewViewModel(captureManager: captureManager)
         self.previewViewController = PreviewViewControllerRepresentable(viewModel: PreviewViewControllerViewModel(previewView: self.previewUIView, orientationPublisher: self.orientationPublisher, orientation: Orientation()))
         self.shutterButtonViewModel = ShutterButtonViewModel(photoTaker: self.captureManager)
         self.exposureBiasViewModel = ExposureBiasViewModel(captureManager: captureManager)
-        self.cameraSelectionModel = CameraSelectionModel(availableCameras: self.configurationFactory.supportedCameraDevices, captureManager: self.captureManager!) // TODO: Address force-unwrapped optional
+        
+        if let captureManager = self.captureManager,
+            let resources = deviceResources,
+            let cameraSelectionModel = CameraSelectionModel(availableCameras: resources.availablePhysicalCameras, captureManager: captureManager) {
+            self.cameraSelectionModel = cameraSelectionModel
+            self.cameraSelectionViewModel = CameraSelectionViewModel(model: cameraSelectionModel)
+        } else {
+            self.cameraSelectionModel = nil
+            self.cameraSelectionViewModel = nil
+        }
+        
         sessionQueue.async { [weak self] in
             self?.captureManager?.startCaptureSession()
             DispatchQueue.main.async {
@@ -125,13 +138,15 @@ final class MoccaApp: App, ObservableObject {
         // Compose our main app view.
         return ContentView(
             app: self,
-            previewViewController:  previewViewController,
-            widgetViewModel:        widgetViewModel,
+            previewViewController: previewViewController,
+            widgetViewModel: widgetViewModel,
             shutterButtonViewModel: shutterButtonViewModel,
-            previewViewModel:       previewViewModel,
-            exposureBiasViewModel:  exposureBiasViewModel,
-            histogramViewModel:     histogramViewModel,
-            cameraErrorView:        CameraErrorView(viewModel: CameraErrorViewModel()))
+            previewViewModel: previewViewModel,
+            exposureBiasViewModel: exposureBiasViewModel,
+            histogramViewModel: histogramViewModel,
+            cameraErrorView: CameraErrorView(viewModel: CameraErrorViewModel()),
+            cameraSelectionView: CameraSelectionView(viewModel: self.cameraSelectionViewModel)
+        )
             .environmentObject(orientationPublisher)
             .background(Color.black)
             .statusBar(hidden: true)

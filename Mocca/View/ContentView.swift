@@ -23,8 +23,9 @@ struct ContentView: View {
     private let shutterButtonViewModel: ShutterButtonViewModel
     private let histogramViewModel: HistogramViewModel
     private let cameraErrorView: CameraErrorView
+    private let cameraSelectionView: CameraSelectionView?
     
-    init(app: MoccaApp, previewViewController: PreviewViewControllerRepresentable, widgetViewModel:WidgetViewModel, shutterButtonViewModel: ShutterButtonViewModel, previewViewModel:PreviewViewModel, exposureBiasViewModel: ExposureBiasViewModel, histogramViewModel: HistogramViewModel, cameraErrorView:CameraErrorView) {
+    init(app: MoccaApp, previewViewController: PreviewViewControllerRepresentable, widgetViewModel:WidgetViewModel, shutterButtonViewModel: ShutterButtonViewModel, previewViewModel:PreviewViewModel, exposureBiasViewModel: ExposureBiasViewModel, histogramViewModel: HistogramViewModel, cameraErrorView:CameraErrorView, cameraSelectionView: CameraSelectionView?) {
         self.app = app
         self.previewController = previewViewController
         self.widgetViewModel = widgetViewModel
@@ -33,6 +34,7 @@ struct ContentView: View {
         self.exposureBiasViewModel = exposureBiasViewModel
         self.histogramViewModel = histogramViewModel
         self.cameraErrorView = cameraErrorView
+        self.cameraSelectionView = cameraSelectionView
     }
     
     var body: some View {
@@ -47,6 +49,9 @@ struct ContentView: View {
         if self.app.appState == .nominal {
             if verticalSizeClass == .regular {
                 VStack(alignment:.center) {
+                    if let cameraSelectionView {
+                        cameraSelectionView
+                    }
                     Spacer()
                     histogramView
                     Spacer()

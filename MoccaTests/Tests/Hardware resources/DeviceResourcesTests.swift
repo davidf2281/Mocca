@@ -21,9 +21,9 @@ final class DeviceResourcesTests: XCTestCase {
                         
         let sut = DeviceResources(captureDevice: mockCaptureDevice, supportedCameraDevices: [])!
 
-        let logicalCameraDevice = LogicalCameraDevice(type: .builtInUltraWideCamera, position: .front)
+        let LogicalCamera = LogicalCamera(type: .builtInUltraWideCamera, position: .front)
         
-        let _ = sut.physicalDevice(from: logicalCameraDevice)
+        let _ = sut.physicalDevice(from: LogicalCamera)
         
         XCTAssertEqual(mockCaptureDevice.positionSet, .front)
         XCTAssertEqual(mockCaptureDevice.deviceTypeSet, .builtInUltraWideCamera)
@@ -31,14 +31,14 @@ final class DeviceResourcesTests: XCTestCase {
     
     func testAnyAvailableCameraWhenPreferredDeviceAvailable() throws {
         let supportedCameraDevices = [
-            LogicalCameraDevice(type: .builtInTelephotoCamera, position: .back),
-            LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back),
-            LogicalCameraDevice(type: .builtInUltraWideCamera, position: .back)
+            LogicalCamera(type: .builtInTelephotoCamera, position: .back),
+            LogicalCamera(type: .builtInWideAngleCamera, position: .back),
+            LogicalCamera(type: .builtInUltraWideCamera, position: .back)
         ]
         
         let sut = DeviceResources(captureDevice: mockCaptureDevice, supportedCameraDevices: supportedCameraDevices)!
 
-        let preferredDevice = LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back)
+        let preferredDevice = LogicalCamera(type: .builtInWideAngleCamera, position: .back)
         
         mockCaptureDevice.captureDeviceToReturn = mockCaptureDevice
 
@@ -51,13 +51,13 @@ final class DeviceResourcesTests: XCTestCase {
     
     func testAnyAvailableCameraWhenPreferredDeviceNotAvailable() throws {
         let supportedCameraDevices = [
-            LogicalCameraDevice(type: .builtInTelephotoCamera, position: .back),
-            LogicalCameraDevice(type: .builtInUltraWideCamera, position: .back)
+            LogicalCamera(type: .builtInTelephotoCamera, position: .back),
+            LogicalCamera(type: .builtInUltraWideCamera, position: .back)
         ]
         
         let sut = DeviceResources(captureDevice: mockCaptureDevice, supportedCameraDevices: supportedCameraDevices)!
 
-        let preferredDevice = LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back)
+        let preferredDevice = LogicalCamera(type: .builtInWideAngleCamera, position: .back)
                 
         mockCaptureDevice.captureDeviceToReturn = mockCaptureDevice
 
@@ -69,13 +69,13 @@ final class DeviceResourcesTests: XCTestCase {
     
     func testAnyAvailableCameraWhenNoSupportedDevicesAvailable() throws {
         let supportedCameraDevices = [
-            LogicalCameraDevice(type: .builtInTelephotoCamera, position: .back),
-            LogicalCameraDevice(type: .builtInUltraWideCamera, position: .back)
+            LogicalCamera(type: .builtInTelephotoCamera, position: .back),
+            LogicalCamera(type: .builtInUltraWideCamera, position: .back)
         ]
         
         let sut = DeviceResources(captureDevice: mockCaptureDevice, supportedCameraDevices: supportedCameraDevices)!
 
-        let preferredDevice = LogicalCameraDevice(type: .builtInWideAngleCamera, position: .back)
+        let preferredDevice = LogicalCamera(type: .builtInWideAngleCamera, position: .back)
                 
         mockCaptureDevice.captureDeviceToReturn = nil
 

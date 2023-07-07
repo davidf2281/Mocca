@@ -28,8 +28,10 @@ protocol CaptureDevice: AnyObject {
     func lockForConfiguration() throws
     func unlockForConfiguration()
     
+    var captureDeviceType: CaptureDeviceType { get }
+    var captureDevicePosition: CaptureDevicePosition { get }
     func captureDevice(withType deviceType: CaptureDeviceType, position: CaptureDevicePosition) -> CaptureDevice?
-    func availablePhysicalDevices(for logicalCameraDevices: [LogicalCameraDevice]) -> [CaptureDevice]
+    func availablePhysicalDevices(for logicalCameraDevices: [LogicalCamera]) -> [CaptureDevice]
 }
 
 protocol AVCaptureDevicePropertyUnshadowing {
@@ -37,7 +39,37 @@ protocol AVCaptureDevicePropertyUnshadowing {
     var formats: [AVCaptureDevice.Format] { get }
 }
 
-extension AVCaptureDevice: CaptureDevice {}
+extension AVCaptureDevice: CaptureDevice {
+    var captureDeviceType: CaptureDeviceType {
+        switch self.deviceType {
+            case .builtInWideAngleCamera:
+                return .builtInWideAngleCamera
+            case .builtInUltraWideCamera:
+                return .builtInUltraWideCamera
+            case .builtInTelephotoCamera:
+                return .builtInTelephotoCamera
+            case .builtInDualCamera:
+                return .builtInDualCamera
+            case .builtInDualWideCamera:
+                return .builtInDualWideCamera
+            case .builtInTripleCamera:
+                return .builtInTripleCamera
+            default:
+                return .unsupported
+        }
+    }
+    
+    var captureDevicePosition: CaptureDevicePosition {
+        switch self.position {
+            case .back:
+                return .back
+            default:
+                assert(false)
+                return .unsupported
+        }
+    }
+}
+
 extension AVCaptureDevice: AVCaptureDevicePropertyUnshadowing {}
 
 extension CaptureDevice {
@@ -144,7 +176,7 @@ extension AVCaptureDevice {
         return nil
     }
     
-    func availablePhysicalDevices(for logicalCameraDevices: [LogicalCameraDevice]) -> [CaptureDevice] {
+    func availablePhysicalDevices(for logicalCameraDevices: [LogicalCamera]) -> [CaptureDevice] {
         let avDeviceTypes: [AVCaptureDevice.DeviceType] = logicalCameraDevices.compactMap {
             
             guard $0.position == .back else {

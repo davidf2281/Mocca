@@ -26,14 +26,14 @@ enum CaptureManagerConfigError: Error {
 
 protocol CaptureManagerContract {
     var activeCaptureDevice: CaptureDevice { get }
-    
+    var activeCamera: PhysicalCamera { get }
     // Capture manager requires a reference to the video preview layer to convert view coords to camera-device coords using
     // AVCaptureVideoPreviewLayer's point-conversion functions. Only the preview layer can do this.
     var videoPreviewLayer: CaptureVideoPreviewLayer { get }
     var captureSession : CaptureSession { get }
-    func startCaptureSession ()
-    func stopCaptureSession ()
-    func selectCamera(type: LogicalCameraDevice) -> Result<Void, CaptureManagerError>
+    func startCaptureSession()
+    func stopCaptureSession()
+    func selectCamera(cameraID: UUID) -> Result<Void, CaptureManagerError>
     func setSampleBufferDelegate(_ delegate: CaptureVideoDataOutputSampleBufferDelegate,
                                  queue callbackQueue: DispatchQueue)
 }

@@ -93,10 +93,18 @@ class MockCaptureDevice: CaptureDevice {
         }
     }
     
-    var deviceTypeSet: CaptureDeviceType?
+    var captureDeviceTypeToReturn: CaptureDeviceType = .unsupported
+    var captureDeviceType: CaptureDeviceType {
+        return captureDeviceTypeToReturn
+    }
+    
     var positionSet: CaptureDevicePosition?
     var captureDeviceCallCount = 0
     var captureDeviceToReturn: CaptureDevice?
+    var deviceTypeSet: CaptureDeviceType?
+    var captureDevicePosition: CaptureDevicePosition {
+        .back
+    }
     func captureDevice(withType deviceType: CaptureDeviceType, position: CaptureDevicePosition) -> CaptureDevice? {
         deviceTypeSet = deviceType
         positionSet = position
@@ -105,7 +113,7 @@ class MockCaptureDevice: CaptureDevice {
     }
     
     var availablePhysicalDevicesToReturn: [CaptureDevice] = []
-    func availablePhysicalDevices(for logicalCameraDevices: [LogicalCameraDevice]) -> [CaptureDevice] {
+    func availablePhysicalDevices(for logicalCameraDevices: [LogicalCamera]) -> [CaptureDevice] {
         return availablePhysicalDevicesToReturn
     }
 }
