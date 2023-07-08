@@ -19,6 +19,7 @@ struct SessionManagerConfiguration {
     let photoLibrary: PhotoLibrary
 }
 
+// TODO: Interface segregation for photo settings
 protocol ConfigurationFactoryContract {
     var supportedLogicalCameras: [LogicalCamera] { get }
     func sessionManagerInitializerConfiguration(

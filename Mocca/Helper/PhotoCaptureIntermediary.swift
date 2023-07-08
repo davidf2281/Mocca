@@ -16,11 +16,6 @@ class PhotoCaptureIntermediary: NSObject, AVCapturePhotoCaptureDelegate, Capture
 
     weak var delegate: PhotoCaptureIntermediaryDelegate?
 
-    // TODO: Delete this initializer
-    init(delegate: PhotoCaptureIntermediaryDelegate) {
-        self.delegate = delegate
-    }
-    
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         delegate?.didFinishProcessingPhoto(photo, error: error)
     }

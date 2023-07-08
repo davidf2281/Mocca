@@ -9,6 +9,13 @@
 import Foundation
 import CoreMedia.CMTime
 
+protocol CaptureUtilsContract {
+    func minIso(for device:CaptureDevice) -> Float
+    func maxIso(for device:CaptureDevice) -> Float
+    func maxExposureSeconds(for device:CaptureDevice) -> Float64
+    func minExposureSeconds(for device:CaptureDevice) -> Float64
+}
+
 struct CaptureUtils: CaptureUtilsContract {
     
     func minIso(for device:CaptureDevice) -> Float {

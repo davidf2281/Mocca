@@ -32,6 +32,9 @@ class PhotoCaptureCoordinator: PhotoCaptureCoordinating {
     init(captureManager: CaptureManager, photoLibrary: PhotoLibrary) {
         self.captureManager = captureManager
         self.photoLibrary = photoLibrary
+        
+        // TODO: Test to make sure delegate is set
+        self.captureManager.delegate = self
     }
 }
 

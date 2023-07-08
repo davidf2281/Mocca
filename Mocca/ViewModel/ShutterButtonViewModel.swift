@@ -17,15 +17,15 @@ class ShutterButtonViewModel: ShutterButtonViewModelContract {
     
     @Published private(set) var state: CaptureManagerState
     
-    private(set) var photoTaker: CaptureManagerContract?
+    private(set) var captureManager: CaptureManagerContract?
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(photoTaker: CaptureManagerContract?) {
-        self.photoTaker = photoTaker
-        self.state = photoTaker?.state ?? .error(.unknown)
+    init(captureManager: CaptureManagerContract?) {
+        self.captureManager = captureManager
+        self.state = captureManager?.state ?? .error(.unknown)
         
-        photoTaker?.statePublisher
+        captureManager?.statePublisher
             .sink() { [weak self] value in
                 DispatchQueue.main.async {
                     self?.state = value
@@ -34,6 +34,6 @@ class ShutterButtonViewModel: ShutterButtonViewModelContract {
     }
     
     func tapped () {
-        self.photoTaker?.capturePhoto()
+        self.captureManager?.capturePhoto()
     }
 }

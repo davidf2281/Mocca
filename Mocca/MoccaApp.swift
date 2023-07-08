@@ -35,7 +35,11 @@ final class MoccaApp: App, ObservableObject {
     private let deviceResources: DeviceResourcesContract?
     
     /// Session manager is the intermediary class dealing with all communication with the device's physical camera hardware.
-    private let sessionManager: (SessionManagerContract & CaptureManagerContract)?
+    private let sessionManager: SessionManagerContract?
+    
+    private let captureManager: CaptureManagerContract?
+    
+    private let captureCoordinator: PhotoCaptureCoordinator?
     
     private let histogramGenerator: HistogramGeneratorContract?
     
@@ -57,7 +61,6 @@ final class MoccaApp: App, ObservableObject {
     private let cameraSelectionModel: CameraSelection?
     
     private let cameraSelectionViewModel: CameraSelectionViewModel?
-
     
     enum MoccaSetupError: Error {
         case deviceResources
@@ -89,21 +92,28 @@ final class MoccaApp: App, ObservableObject {
                 photoOutputType: AVCapturePhotoOutput.self)
             
      
-            self.sessionManager = try SessionManager(captureSession: config.captureSession,
-                                                     photoOutput: config.photoOutput,
+            let sessionManager = try SessionManager(captureSession: config.captureSession, photoOutput: config.photoOutput,
                                                      videoOutput: config.videoOutput,
                                                      initialCamera: config.initialCamera,
                                                      videoInput: config.videoInput,
                                                      resources: config.resources,
                                                      videoPreviewLayer: config.videoPreviewLayer,
-                                                     photoLibrary: config.photoLibrary,
                                                      configurationFactory: self.configurationFactory,
                                                      sampleBufferDelegate: self.sampleBufferIntermediary,
                                                      sampleBufferQueue: sampleBufferQueue)
+            self.sessionManager = sessionManager
+            
+            let captureManager = CaptureManager(photoOutput: config.photoOutput, photoCaptureIntermediary: PhotoCaptureIntermediary(), settingsProvider: PhotoSettingsProvider(sessionManager: sessionManager, configurationProvider: self.configurationFactory))
+            
+            self.captureManager = captureManager
+            
+            self.captureCoordinator = PhotoCaptureCoordinator(captureManager: captureManager, photoLibrary: DevicePhotoLibrary())
         } catch {
             self.sessionManager = nil
+            self.captureManager = nil
+            self.captureCoordinator = nil
         }
-                
+                        
         // If capture-manager setup has failed we have a hardware problem, OR we're running in the simulator.
         self.appState = sessionManager != nil ?
             .nominal : System.runningInSimulator() ?
@@ -112,7 +122,7 @@ final class MoccaApp: App, ObservableObject {
         self.widgetViewModel = WidgetViewModel(sessionManager: sessionManager, dockedPosition: CGPoint(x: 55, y: 55), displayCharacter:"f")
         self.previewViewModel = PreviewViewModel(sessionManager: sessionManager)
         self.previewViewController = PreviewViewControllerRepresentable(viewModel: PreviewViewControllerViewModel(previewView: self.previewUIView, orientationPublisher: self.orientationPublisher, orientation: Orientation()))
-        self.shutterButtonViewModel = ShutterButtonViewModel(photoTaker: self.sessionManager)
+        self.shutterButtonViewModel = ShutterButtonViewModel(captureManager: self.captureManager)
         self.exposureBiasViewModel = ExposureBiasViewModel(sessionManager: sessionManager)
         
         if let sessionManager = self.sessionManager,

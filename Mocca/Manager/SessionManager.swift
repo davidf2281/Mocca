@@ -7,44 +7,34 @@
 
 import Foundation
 
-enum CaptureDeviceType {
-    case builtInWideAngleCamera
-    case builtInUltraWideCamera
-    case builtInTelephotoCamera
-    case builtInDualCamera
-    case builtInDualWideCamera
-    case builtInTripleCamera
-    case unsupported
+enum SessionManagerError: Error {
+    case captureDeviceNotFound
+    case addVideoInputFailed
+    case addVideoDataOutputFailed
+    case addPhotoOutputFailed
+    case findFullRangeVideoFormatFailed
+    case setIsoFailed
+    case setExposureFailed
+    case setExposureTargetBiasFailed
+    case unknown
 }
 
-enum CaptureDevicePosition {
-    case front
-    case back
-    case unspecified
-    case unsupported
+enum SessionManagerConfigError: Error {
+    case captureDeviceNotFound
+    case videoPreviewLayerNil
 }
 
-protocol Camera {
-    var type: CaptureDeviceType { get }
-    var position: CaptureDevicePosition { get }
-}
-
-struct LogicalCamera: Camera, Equatable {
-    let type: CaptureDeviceType
-    let position: CaptureDevicePosition
-}
-
-struct PhysicalCamera: Camera, Identifiable {
-    let id: UUID
-    let type: CaptureDeviceType
-    let position: CaptureDevicePosition
-    let captureDevice: CaptureDevice
-}
-
-extension PhysicalCamera: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.id == rhs.id
-    }
+protocol SessionManagerContract {
+    var activeCaptureDevice: CaptureDevice { get }
+    var activeCamera: PhysicalCamera { get }
+    // Session manager requires a reference to the video preview layer to convert view coords to camera-device coords using
+    // AVCaptureVideoPreviewLayer's point-conversion functions. Only the preview layer can do this.
+    var videoPreviewLayer: CaptureVideoPreviewLayer { get }
+    var captureSession : CaptureSession { get }
+    var photoOutput: CapturePhotoOutput { get }
+    func startCaptureSession()
+    func stopCaptureSession()
+    func selectCamera(cameraID: UUID) -> Result<Void, SessionManagerError>
 }
 
 /// A class to handle creation and management of fully configured video and photo capture sessions and related functions.
@@ -59,17 +49,23 @@ class SessionManager: SessionManagerContract, ObservableObject {
     private(set) var captureSession : CaptureSession
     private(set) var activeCaptureDevice : CaptureDevice
     private(set) var activeCamera: PhysicalCamera
+    private(set) var photoOutput: CapturePhotoOutput
 
     private var activeVideoInput: CaptureDeviceInput
-    private let photoOutput: CapturePhotoOutput
     private let videoOutput: CaptureVideoOutput
     private let resources: DeviceResourcesContract
-    private let photoLibrary: PhotoLibrary
     private let configurationFactory: ConfigurationFactoryContract
     
-    lazy private var photoCaptureIntermediary: PhotoCaptureIntermediary = PhotoCaptureIntermediary(delegate: self)
-    
-    init(captureSession: CaptureSession, photoOutput: CapturePhotoOutput, videoOutput: CaptureVideoOutput, initialCamera: PhysicalCamera, videoInput: CaptureDeviceInput, resources: DeviceResourcesContract, videoPreviewLayer: CaptureVideoPreviewLayer, photoLibrary: PhotoLibrary, configurationFactory: ConfigurationFactoryContract, sampleBufferDelegate: CaptureVideoDataOutputSampleBufferDelegate, sampleBufferQueue: DispatchQueue) throws {
+    init(captureSession: CaptureSession,
+         photoOutput: CapturePhotoOutput,
+         videoOutput: CaptureVideoOutput,
+         initialCamera: PhysicalCamera,
+         videoInput: CaptureDeviceInput,
+         resources: DeviceResourcesContract,
+         videoPreviewLayer: CaptureVideoPreviewLayer,
+         configurationFactory: ConfigurationFactoryContract,
+         sampleBufferDelegate: CaptureVideoDataOutputSampleBufferDelegate,
+         sampleBufferQueue: DispatchQueue) throws {
         
         self.photoOutput = photoOutput
         self.videoOutput = videoOutput
@@ -79,7 +75,6 @@ class SessionManager: SessionManagerContract, ObservableObject {
         self.activeCaptureDevice = initialCamera.captureDevice
         self.resources = resources
         self.videoPreviewLayer = videoPreviewLayer
-        self.photoLibrary = photoLibrary
         self.configurationFactory = configurationFactory
         self.activeCamera = initialCamera
         
@@ -146,39 +141,5 @@ class SessionManager: SessionManagerContract, ObservableObject {
         self.activeCaptureDevice = physicalCamera.captureDevice
         self.activeCamera = physicalCamera
         return .success
-    }
-}
-
-extension SessionManager: PhotoCaptureIntermediaryDelegate {
-    func didFinishProcessingPhoto(_ photo: CapturePhoto, error: Error?) {
-        
-        precondition(self.state == .capturePending)
-        
-        // We continue to attempt the save even if an error is returned, since the API contract guarantees |photo|
-        // to be non-nil, and we must never throw away a user's photo if there's still a chance the save might succeed
-        
-        self.photoLibrary.addPhoto(photo) { success, error in
-            self.state = ( success ? .ready : .error(.saveError) )
-        }
-    }
-}
-
-extension SessionManager: CaptureManagerContract {
-    
-    func resetState() -> Result<CaptureManagerState, CaptureManagerError> {
-        self.state = .ready
-        return .success(.ready)
-    }
-    
-    /// Instructs the photo taker to capture a photo.
-    func capturePhoto() {
-        
-        self.state = .capturePending
-        
-        if let photoOutputConnection = self.photoOutput.connection() {
-            photoOutputConnection.orientation = Orientation.currentInterfaceOrientation()
-        }
-        
-        self.photoOutput.capture(with: currentPhotoSettings(), delegate: self.photoCaptureIntermediary)
     }
 }
