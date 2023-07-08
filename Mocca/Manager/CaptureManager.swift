@@ -101,6 +101,7 @@ class CaptureManager: CaptureManagerContract, ObservableObject {
         self.photoLibrary = photoLibrary
         self.configurationFactory = configurationFactory
         self.activeCamera = initialCamera
+        
         // MARK: Capture-session configuration
         self.captureSession.beginConfiguration()
         

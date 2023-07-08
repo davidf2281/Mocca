@@ -9,13 +9,13 @@ import Foundation
 
 typealias EV = Float
 
-protocol ExposureBiasViewModelProtocol: ObservableObject {
+protocol ExposureBiasViewModelContract: ObservableObject {
     var compensation: EV { get }
     func dragged(extent:CGFloat)
     func dragEnded()
 }
 
-class ExposureBiasViewModel: ExposureBiasViewModelProtocol {
+class ExposureBiasViewModel: ExposureBiasViewModelContract {
     
     @Published private(set) var compensation: EV = 0
     
@@ -39,17 +39,15 @@ class ExposureBiasViewModel: ExposureBiasViewModelProtocol {
         
         let newComp = self.compensationAtDragStart + EV(extent / 100)
         
-        if let device = self.captureManager?.activeCaptureDevice {
-            
-            if (cameraOperation.canSetExposureTargetBias(ev: newComp, for: device)) {
-                if cameraOperation.willTargetBiasHaveEffect(ev: newComp, for: device){
-                    do {
-                        _ = try cameraOperation.setExposureTargetBias(ev: self.compensation, for: device, completion: nil)
-                        self.compensation = newComp
-                    } catch {
-                        // MARK: TODO: UI error feedback
-                    }
-                }
+        if let device = self.captureManager?.activeCaptureDevice,
+           cameraOperation.canSetExposureTargetBias(ev: newComp, for: device),
+           cameraOperation.willTargetBiasHaveEffect(ev: newComp, for: device)
+        {
+            do {
+                _ = try cameraOperation.setExposureTargetBias(ev: self.compensation, for: device, completion: nil)
+                self.compensation = newComp
+            } catch {
+                // MARK: TODO: UI error feedback
             }
         }
     }

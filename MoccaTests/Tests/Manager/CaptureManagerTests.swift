@@ -158,6 +158,7 @@ class CaptureManagerTests: XCTestCase {
         
         mockResources.deviceToReturn = newMockDevice
         
+        // TODO: Next: activeCaptureDevice probably no longer needs to be exposed
         XCTAssert(sut.activeCaptureDevice as! MockCaptureDevice === mockDevice)
         
         let result = sut.selectCamera(cameraID: camera.id)
