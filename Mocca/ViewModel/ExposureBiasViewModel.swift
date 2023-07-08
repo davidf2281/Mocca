@@ -19,14 +19,14 @@ class ExposureBiasViewModel: ExposureBiasViewModelContract {
     
     @Published private(set) var compensation: EV = 0
     
-    private let captureManager: CaptureManagerContract?
+    private let sessionManager: SessionManagerContract?
     
     private var compensationAtDragStart:EV = 0
     private var dragStarted = false
     private let cameraOperation: CameraOperationContract
     
-    required init(captureManager: CaptureManagerContract?, cameraOperation: CameraOperationContract = CameraOperation()) {
-        self.captureManager = captureManager
+    required init(sessionManager: SessionManagerContract?, cameraOperation: CameraOperationContract = CameraOperation()) {
+        self.sessionManager = sessionManager
         self.cameraOperation = cameraOperation
     }
     
@@ -39,7 +39,7 @@ class ExposureBiasViewModel: ExposureBiasViewModelContract {
         
         let newComp = self.compensationAtDragStart + EV(extent / 100)
         
-        if let device = self.captureManager?.activeCaptureDevice,
+        if let device = self.sessionManager?.activeCaptureDevice,
            cameraOperation.canSetExposureTargetBias(ev: newComp, for: device),
            cameraOperation.willTargetBiasHaveEffect(ev: newComp, for: device)
         {

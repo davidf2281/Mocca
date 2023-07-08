@@ -10,14 +10,14 @@ import XCTest
 class PreviewViewModelTests: XCTestCase {
 
     private var sut: PreviewViewModel!
-    private var manager: MockCaptureManager!
+    private var manager: MockSessionManager!
     private var device: MockCaptureDevice!
     private var layer: MockCaptureVideoPreviewLayer!
     override func setUp() {
         device = MockCaptureDevice()
         layer = MockCaptureVideoPreviewLayer()
-        manager = MockCaptureManager(captureDevice: device, layer: layer)
-        sut = PreviewViewModel(captureManager: manager)
+        manager = MockSessionManager(captureDevice: device, layer: layer)
+        sut = PreviewViewModel(sessionManager: manager)
     }
 
     func testCorrectAspectRatioReturned()  {

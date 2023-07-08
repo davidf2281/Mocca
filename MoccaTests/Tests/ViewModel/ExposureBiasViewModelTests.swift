@@ -10,14 +10,14 @@ import XCTest
 
 final class ExposureBiasViewModelTests: XCTestCase {
 
-    var mockCaptureManager: MockCaptureManager!
+    var mockSessionManager: MockSessionManager!
     var mockCameraOperation: MockCameraOperation!
     var sut: ExposureBiasViewModel!
     
     override func setUpWithError() throws {
-        mockCaptureManager = MockCaptureManager()
+        mockSessionManager = MockSessionManager()
         mockCameraOperation = MockCameraOperation()
-        sut = ExposureBiasViewModel(captureManager: mockCaptureManager, cameraOperation: mockCameraOperation)
+        sut = ExposureBiasViewModel(sessionManager: mockSessionManager, cameraOperation: mockCameraOperation)
     }
     
     func testDragChangesExposureCompensaton() {

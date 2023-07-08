@@ -12,15 +12,15 @@ class WidgetViewModelTests: XCTestCase {
 
     private var sut: WidgetViewModel!
 
-    private var manager: MockCaptureManager = MockCaptureManager()
+    private var manager: MockSessionManager = MockSessionManager()
     private var device: MockCaptureDevice!
     private var layer: MockCaptureVideoPreviewLayer!
     
     override func setUp() {
         device = MockCaptureDevice()
         layer = MockCaptureVideoPreviewLayer()
-        manager = MockCaptureManager(captureDevice: device, layer: layer)
-        sut = WidgetViewModel(captureManager:manager, dockedPosition:CGPoint(x: 110,y: 210), displayCharacter:"f")
+        manager = MockSessionManager(captureDevice: device, layer: layer)
+        sut = WidgetViewModel(sessionManager:manager, dockedPosition:CGPoint(x: 110,y: 210), displayCharacter:"f")
     }
 
     func testInitialization() {

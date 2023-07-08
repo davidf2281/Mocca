@@ -9,19 +9,19 @@ import Foundation
 import Combine
 
 protocol ShutterButtonViewModelContract: ObservableObject {
-    var state: PhotoTakerState { get }
+    var state: CaptureManagerState { get }
     func tapped()
 }
 
 class ShutterButtonViewModel: ShutterButtonViewModelContract {
     
-    @Published private(set) var state: PhotoTakerState
+    @Published private(set) var state: CaptureManagerState
     
-    private(set) var photoTaker: PhotoTakerContract?
+    private(set) var photoTaker: CaptureManagerContract?
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(photoTaker: PhotoTakerContract?) {
+    init(photoTaker: CaptureManagerContract?) {
         self.photoTaker = photoTaker
         self.state = photoTaker?.state ?? .error(.unknown)
         
@@ -34,6 +34,6 @@ class ShutterButtonViewModel: ShutterButtonViewModelContract {
     }
     
     func tapped () {
-        self.photoTaker?.takePhoto()
+        self.photoTaker?.capturePhoto()
     }
 }

@@ -12,7 +12,7 @@ class MockConfigurationFactory: ConfigurationFactoryContract {
     
     var supportedLogicalCameras: [LogicalCamera] = []
         
-    func captureManagerInitializerConfiguration(resources: DeviceResourcesContract, videoPreviewLayer: CaptureVideoPreviewLayer?, captureSession: CaptureSession, captureDeviceInputType: CaptureDeviceInput.Type, photoOutputType: CapturePhotoOutput.Type) throws -> CaptureManagerConfiguration {
+    func sessionManagerInitializerConfiguration(resources: DeviceResourcesContract, videoPreviewLayer: CaptureVideoPreviewLayer?, captureSession: CaptureSession, captureDeviceInputType: CaptureDeviceInput.Type, photoOutputType: CapturePhotoOutput.Type) throws -> SessionManagerConfiguration {
         throw(TestError.fail)
     }
     

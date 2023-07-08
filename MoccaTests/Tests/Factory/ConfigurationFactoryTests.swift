@@ -10,7 +10,7 @@ import AVFoundation
 
 final class ConfigurationFactoryTests: XCTestCase {
     
-    func testCaptureManagerInitializerConfiguration() throws {
+    func testSessionManagerInitializerConfiguration() throws {
         let resources = MockResources()
         resources.deviceToReturn = MockCaptureDevice()
         let videoPreviewLayer = MockCaptureVideoPreviewLayer()
@@ -18,7 +18,7 @@ final class ConfigurationFactoryTests: XCTestCase {
         let captureDeviceInputType = MockCaptureDeviceInput.self
         let photoOutputType = MockCapturePhotoOutput.self
         let configurationFactory = ConfigurationFactory(captureDeviceInputType: AVCaptureDeviceInput.self)
-        let sut = try configurationFactory.captureManagerInitializerConfiguration(resources: resources, videoPreviewLayer: videoPreviewLayer, captureSession: captureSessionType, captureDeviceInputType: captureDeviceInputType, photoOutputType: photoOutputType)
+        let sut = try configurationFactory.sessionManagerInitializerConfiguration(resources: resources, videoPreviewLayer: videoPreviewLayer, captureSession: captureSessionType, captureDeviceInputType: captureDeviceInputType, photoOutputType: photoOutputType)
         
         XCTAssertEqual(sut.captureSession.preset, .photo)
         XCTAssertEqual(sut.photoOutput.livePhotoCaptureEnabled, false)

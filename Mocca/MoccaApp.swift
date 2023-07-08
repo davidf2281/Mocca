@@ -16,7 +16,7 @@ final class MoccaApp: App, ObservableObject {
     /// Backs widget view to show current focus/exposure point.
     private let widgetViewModel: WidgetViewModel
     
-    /// Backs camera preview view, sending taps to capture manager dependency to set focus/exposure point.
+    /// Backs camera preview view, sending taps to session manager dependency to set focus/exposure point.
     private let previewViewModel: PreviewViewModel
     
     /// Representable UIViewController container for camera preview, since SwiftUI does not yet support this natively.
@@ -34,13 +34,13 @@ final class MoccaApp: App, ObservableObject {
     /// Provides access to device hardware
     private let deviceResources: DeviceResourcesContract?
     
-    /// Capture manager is the intermediary class dealing with all communication with the device's physical camera hardware.
-    private let captureManager: (CaptureManagerContract & PhotoTakerContract)?
+    /// Session manager is the intermediary class dealing with all communication with the device's physical camera hardware.
+    private let sessionManager: (SessionManagerContract & CaptureManagerContract)?
     
     private let histogramGenerator: HistogramGeneratorContract?
     
     /// Camera apps cannot conform to the Apple ideal of disregarding orientation and considering only frame bounds & size classes,
-    /// thus current device orientation needs to be consumed by various views and the capture manager.
+    /// thus current device orientation needs to be consumed by various views and the session manager.
     /// This OrientationPublisher acts as the app's source of truth for orientation.
     private let orientationPublisher = OrientationPublisher()
     
@@ -66,20 +66,30 @@ final class MoccaApp: App, ObservableObject {
     init() {
                 
         self.deviceResources = DeviceResources(captureDevice: AVCaptureDevice.default(for: .video), supportedCameraDevices: self.configurationFactory.supportedLogicalCameras)
+        if let histogramGenerator = HistogramGenerator(metalDevice: self.deviceResources?.metalDevice) {
+            self.histogramGenerator = histogramGenerator
+        } else {
+            self.histogramGenerator = nil
+        }
+
+        self.histogramViewModel = HistogramViewModel(histogramGenerator: self.histogramGenerator)
+        self.sampleBufferIntermediary = SampleBufferIntermediary(sampleBufferHandler: self.histogramViewModel)
+        let sampleBufferQueue = DispatchQueue(label: "com.mocca-app.videoSampleBufferQueue")
         
         do {
             guard let deviceResources = self.deviceResources else {
                 throw(MoccaSetupError.deviceResources)
             }
             
-            let config = try self.configurationFactory.captureManagerInitializerConfiguration(
+            let config = try self.configurationFactory.sessionManagerInitializerConfiguration(
                 resources: deviceResources,
                 videoPreviewLayer: previewUIView.videoPreviewLayer,
                 captureSession: AVCaptureSession(),
                 captureDeviceInputType: AVCaptureDeviceInput.self,
                 photoOutputType: AVCapturePhotoOutput.self)
             
-            self.captureManager = try CaptureManager(captureSession: config.captureSession,
+     
+            self.sessionManager = try SessionManager(captureSession: config.captureSession,
                                                      photoOutput: config.photoOutput,
                                                      videoOutput: config.videoOutput,
                                                      initialCamera: config.initialCamera,
@@ -87,35 +97,27 @@ final class MoccaApp: App, ObservableObject {
                                                      resources: config.resources,
                                                      videoPreviewLayer: config.videoPreviewLayer,
                                                      photoLibrary: config.photoLibrary,
-                                                     configurationFactory: self.configurationFactory)
+                                                     configurationFactory: self.configurationFactory,
+                                                     sampleBufferDelegate: self.sampleBufferIntermediary,
+                                                     sampleBufferQueue: sampleBufferQueue)
         } catch {
-            self.captureManager = nil
+            self.sessionManager = nil
         }
-
+                
         // If capture-manager setup has failed we have a hardware problem, OR we're running in the simulator.
-        self.appState = captureManager != nil ?
+        self.appState = sessionManager != nil ?
             .nominal : System.runningInSimulator() ?
             .nominal : .cameraFailure
         
-        if let histogramGenerator = HistogramGenerator(metalDevice: self.deviceResources?.metalDevice) {
-            self.histogramGenerator = histogramGenerator
-        } else {
-            self.histogramGenerator = nil
-        }
-        
-        let sampleBufferQueue = DispatchQueue(label: "com.mocca-app.videoSampleBufferQueue")
-        self.histogramViewModel = HistogramViewModel(histogramGenerator: self.histogramGenerator)
-        self.sampleBufferIntermediary = SampleBufferIntermediary(sampleBufferHandler: self.histogramViewModel)
-        self.captureManager?.setSampleBufferDelegate(self.sampleBufferIntermediary, queue: sampleBufferQueue)
-        self.widgetViewModel = WidgetViewModel(captureManager: captureManager, dockedPosition: CGPoint(x: 55, y: 55), displayCharacter:"f")
-        self.previewViewModel = PreviewViewModel(captureManager: captureManager)
+        self.widgetViewModel = WidgetViewModel(sessionManager: sessionManager, dockedPosition: CGPoint(x: 55, y: 55), displayCharacter:"f")
+        self.previewViewModel = PreviewViewModel(sessionManager: sessionManager)
         self.previewViewController = PreviewViewControllerRepresentable(viewModel: PreviewViewControllerViewModel(previewView: self.previewUIView, orientationPublisher: self.orientationPublisher, orientation: Orientation()))
-        self.shutterButtonViewModel = ShutterButtonViewModel(photoTaker: self.captureManager)
-        self.exposureBiasViewModel = ExposureBiasViewModel(captureManager: captureManager)
+        self.shutterButtonViewModel = ShutterButtonViewModel(photoTaker: self.sessionManager)
+        self.exposureBiasViewModel = ExposureBiasViewModel(sessionManager: sessionManager)
         
-        if let captureManager = self.captureManager,
+        if let sessionManager = self.sessionManager,
             let resources = deviceResources,
-            let cameraSelectionModel = CameraSelectionModel(availableCameras: resources.availablePhysicalCameras, captureManager: captureManager) {
+            let cameraSelectionModel = CameraSelectionModel(availableCameras: resources.availablePhysicalCameras, sessionManager: sessionManager) {
             self.cameraSelectionModel = cameraSelectionModel
             self.cameraSelectionViewModel = CameraSelectionViewModel(model: cameraSelectionModel)
         } else {
@@ -124,9 +126,9 @@ final class MoccaApp: App, ObservableObject {
         }
         
         sessionQueue.async { [weak self] in
-            self?.captureManager?.startCaptureSession()
+            self?.sessionManager?.startCaptureSession()
             DispatchQueue.main.async {
-                self?.previewUIView.videoPreviewLayer?.captureSession = self?.captureManager?.captureSession as? CaptureSession
+                self?.previewUIView.videoPreviewLayer?.captureSession = self?.sessionManager?.captureSession as? CaptureSession
                 self?.previewUIView.videoPreviewLayer?.captureConnection?.orientation = Orientation.currentInterfaceOrientation()
                 self?.previewUIView.videoPreviewLayer?.gravity = .resizeAspect
             }

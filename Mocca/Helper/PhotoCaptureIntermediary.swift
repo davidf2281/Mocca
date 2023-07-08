@@ -14,12 +14,13 @@ protocol PhotoCaptureIntermediaryDelegate: AnyObject {
 
 class PhotoCaptureIntermediary: NSObject, AVCapturePhotoCaptureDelegate, CapturePhotoDelegate {
 
-    private(set) weak var delegate: PhotoCaptureIntermediaryDelegate?
+    weak var delegate: PhotoCaptureIntermediaryDelegate?
 
+    // TODO: Delete this initializer
     init(delegate: PhotoCaptureIntermediaryDelegate) {
         self.delegate = delegate
     }
-
+    
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         delegate?.didFinishProcessingPhoto(photo, error: error)
     }

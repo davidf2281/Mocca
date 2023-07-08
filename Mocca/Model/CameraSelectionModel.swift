@@ -20,20 +20,20 @@ class CameraSelectionModel: CameraSelection, ObservableObject {
     var selectedCameraPublisher: Published<PhysicalCamera>.Publisher { $selectedCamera }
 
     private(set) var availableCameras: [PhysicalCamera]
-    private let captureManager: CaptureManagerContract
+    private let sessionManager: SessionManagerContract
     
-    init?(availableCameras: [PhysicalCamera], captureManager: CaptureManagerContract?) {
+    init?(availableCameras: [PhysicalCamera], sessionManager: SessionManagerContract?) {
         
-        guard let captureManager else {
+        guard let sessionManager else {
             return nil
         }
         
         self.availableCameras = availableCameras
-        self.captureManager = captureManager
-        self.selectedCamera = captureManager.activeCamera
+        self.sessionManager = sessionManager
+        self.selectedCamera = sessionManager.activeCamera
     }
     
     func selectCamera(cameraID: UUID) {
-        _ = self.captureManager.selectCamera(cameraID: cameraID)
+        _ = self.sessionManager.selectCamera(cameraID: cameraID)
     }
 }

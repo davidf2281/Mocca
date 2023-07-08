@@ -18,7 +18,7 @@ class CameraOperation: CameraOperationContract {
         let inBounds = (iso >= minIso && iso <= maxIso)
         
         if (!inBounds) {
-            throw CaptureManagerError.setIsoFailed
+            throw SessionManagerError.setIsoFailed
         }
         
         try device.lockForConfiguration()
@@ -35,7 +35,7 @@ class CameraOperation: CameraOperationContract {
         let inBounds = (seconds >= minExposure && seconds <= maxExposure)
         
         if (!inBounds) {
-            throw CaptureManagerError.setExposureFailed
+            throw SessionManagerError.setExposureFailed
         }
         
         try device.lockForConfiguration()
@@ -75,7 +75,7 @@ class CameraOperation: CameraOperationContract {
         let inBounds = (ev >= minBias && ev <= maxBias)
         
         if (!inBounds) {
-            throw CaptureManagerError.setExposureTargetBiasFailed
+            throw SessionManagerError.setExposureTargetBiasFailed
         }
         
         try device.lockForConfiguration()

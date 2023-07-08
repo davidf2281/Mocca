@@ -8,7 +8,7 @@
 import Foundation
 import AVFoundation
 
-struct CaptureManagerConfiguration {
+struct SessionManagerConfiguration {
     let captureSession: CaptureSession
     let photoOutput: CapturePhotoOutput
     let videoOutput: CaptureVideoOutput
@@ -21,13 +21,13 @@ struct CaptureManagerConfiguration {
 
 protocol ConfigurationFactoryContract {
     var supportedLogicalCameras: [LogicalCamera] { get }
-    func captureManagerInitializerConfiguration(
+    func sessionManagerInitializerConfiguration(
         resources: DeviceResourcesContract,
         videoPreviewLayer: CaptureVideoPreviewLayer?,
         captureSession: CaptureSession,
         captureDeviceInputType: CaptureDeviceInput.Type,
         photoOutputType: CapturePhotoOutput.Type
-    ) throws -> CaptureManagerConfiguration
+    ) throws -> SessionManagerConfiguration
     func uniquePhotoSettings(device: CaptureDevice, photoOutput: CapturePhotoOutput) -> CapturePhotoSettings
     func videoInput(for device: CaptureDevice) throws -> CaptureDeviceInput
 }
@@ -46,30 +46,30 @@ struct ConfigurationFactory: ConfigurationFactoryContract {
         self.captureDeviceInputType = captureDeviceInputType
     }
     
-    func captureManagerInitializerConfiguration(
+    func sessionManagerInitializerConfiguration(
         resources: DeviceResourcesContract,
         videoPreviewLayer: CaptureVideoPreviewLayer?,
         captureSession: CaptureSession,
         captureDeviceInputType: CaptureDeviceInput.Type,
         photoOutputType: CapturePhotoOutput.Type
-    ) throws -> CaptureManagerConfiguration {
+    ) throws -> SessionManagerConfiguration {
         
         let preferredStartupCamera = LogicalCamera(type: .builtInWideAngleCamera, position: .back)
         
         guard let initialCaptureDevice =
                 resources.anyAvailableCamera(preferredDevice: preferredStartupCamera)
         else {
-            throw CaptureManagerConfigError.captureDeviceNotFound
+            throw SessionManagerConfigError.captureDeviceNotFound
         }
         
         guard let initialCamera = resources.availablePhysicalCameras.first(where: { $0.type == initialCaptureDevice.captureDeviceType }) else {
-            throw CaptureManagerConfigError.captureDeviceNotFound
+            throw SessionManagerConfigError.captureDeviceNotFound
         }
         
         let captureDeviceInput = try captureDeviceInputType.make(device: initialCaptureDevice)
         
         guard let videoPreviewLayer else {
-            throw CaptureManagerConfigError.videoPreviewLayerNil
+            throw SessionManagerConfigError.videoPreviewLayerNil
         }
                 
         captureSession.preset = .photo
@@ -77,7 +77,7 @@ struct ConfigurationFactory: ConfigurationFactoryContract {
         let videoOutput = ConfigurationFactory.configuredVideoDataOutput()
         let photoLibrary = DevicePhotoLibrary()
                         
-        return CaptureManagerConfiguration(captureSession: captureSession, photoOutput: photoOutput, videoOutput: videoOutput, initialCamera: initialCamera, videoInput: captureDeviceInput, resources: resources, videoPreviewLayer: videoPreviewLayer, photoLibrary: photoLibrary)
+        return SessionManagerConfiguration(captureSession: captureSession, photoOutput: photoOutput, videoOutput: videoOutput, initialCamera: initialCamera, videoInput: captureDeviceInput, resources: resources, videoPreviewLayer: videoPreviewLayer, photoLibrary: photoLibrary)
     }
     
     var supportedLogicalCameras: [LogicalCamera] {

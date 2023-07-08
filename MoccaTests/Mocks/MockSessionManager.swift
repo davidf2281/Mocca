@@ -1,5 +1,5 @@
 //
-//  MockCaptureManager.swift
+//  MockSessionManager.swift
 //  MoccaTests
 //
 //  Created by David Fearon on 05/10/2020.
@@ -9,7 +9,7 @@ import Foundation
 import AVFoundation
 
 @testable import Mocca
-class MockCaptureManager: CaptureManagerContract {
+class MockSessionManager: SessionManagerContract {
     
     var activeCamera: PhysicalCamera {
         return PhysicalCamera(id: UUID(), type: .builtInTelephotoCamera, position: .back, captureDevice: MockCaptureDevice())
@@ -37,14 +37,14 @@ class MockCaptureManager: CaptureManagerContract {
         return AVCapturePhotoSettings()
     }
     
-    func selectCamera(type: LogicalCamera) -> Result<Void, CaptureManagerError> {
+    func selectCamera(type: LogicalCamera) -> Result<Void, SessionManagerError> {
         lastSelectedCameraDevice = type
         return .success
     }
     
     var selectedCameraID: UUID?
     var selectCameraCallCOunt = 0
-    func selectCamera(cameraID: UUID) -> Result<Void, CaptureManagerError> {
+    func selectCamera(cameraID: UUID) -> Result<Void, SessionManagerError> {
         selectedCameraID = cameraID
         selectCameraCallCOunt += 1
         return .success

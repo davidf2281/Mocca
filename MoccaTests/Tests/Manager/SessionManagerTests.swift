@@ -1,5 +1,5 @@
 //
-//  DeviceCaptureManagerTests.swift
+//  DeviceSessionManagerTests.swift
 //  MoccaTests
 //
 //  Created by David Fearon on 17/10/2020.
@@ -10,7 +10,7 @@ import AVFoundation
 
 @testable import Mocca
 
-class CaptureManagerTests: XCTestCase {
+class SessionManagerTests: XCTestCase {
     
     var mockCaptureSession: MockCaptureSession!
     var mockPhotoOutput: MockCapturePhotoOutput!
@@ -57,7 +57,7 @@ class CaptureManagerTests: XCTestCase {
     
     func testManagerInitializesCaptureSession() throws {
         
-        _ = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        _ = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         
         XCTAssertTrue(mockCaptureSession.beginConfigirationCalled)
         
@@ -78,8 +78,8 @@ class CaptureManagerTests: XCTestCase {
         mockCaptureSession.canAddInputResponse = false
         
         do {
-            _ = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
-        } catch CaptureManagerError.addVideoInputFailed {
+            _ = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        } catch SessionManagerError.addVideoInputFailed {
             // Expected error
         } catch {
             XCTFail("Unexpected error type")
@@ -91,8 +91,8 @@ class CaptureManagerTests: XCTestCase {
         mockCaptureSession.canAddVideoOutputResponse = false
         
         do {
-            _ = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
-        } catch CaptureManagerError.addVideoDataOutputFailed {
+            _ = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        } catch SessionManagerError.addVideoDataOutputFailed {
             // Expected error
         } catch {
             XCTFail("Unexpected error type")
@@ -103,15 +103,15 @@ class CaptureManagerTests: XCTestCase {
 
 #if targetEnvironment(simulator)
         do {
-            _ = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
-        } catch CaptureManagerError.captureDeviceNotFound {
+            _ = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        } catch SessionManagerError.captureDeviceNotFound {
             // Expected error
         } catch {
             XCTFail("Unexpected error type")
         }
 #else
         do {
-            _ = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+            _ = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         } catch {
             XCTFail("Convenience init should not fail on physical device")
         }
@@ -123,8 +123,8 @@ class CaptureManagerTests: XCTestCase {
         mockCaptureSession.canAddPhotoOutputResponse = false
         
         do {
-            _ = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
-        } catch CaptureManagerError.addPhotoOutputFailed {
+            _ = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        } catch SessionManagerError.addPhotoOutputFailed {
             // Expected error
         } catch {
             XCTFail("Unexpected error type")
@@ -133,7 +133,7 @@ class CaptureManagerTests: XCTestCase {
     
     func testStartSession() throws {
         
-        let sut = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         
         
         sut.startCaptureSession()
@@ -142,7 +142,7 @@ class CaptureManagerTests: XCTestCase {
     
     func testStopSession() throws {
         
-        let sut = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         
         
         sut.stopCaptureSession()
@@ -151,7 +151,7 @@ class CaptureManagerTests: XCTestCase {
     
     func testSuccessfulSelectionOfDeviceCamera() throws {
         
-        let sut = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         
         let camera = PhysicalCamera(id: UUID(), type: .builtInTelephotoCamera, position: .back, captureDevice: MockCaptureDevice())
         let newMockDevice = MockCaptureDevice()
@@ -172,7 +172,7 @@ class CaptureManagerTests: XCTestCase {
     
     func testUnsuccessfulSelectionOfDeviceCamera() throws {
         
-        let sut = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         
         let camera = PhysicalCamera(id: UUID(), type: .builtInTelephotoCamera, position: .back, captureDevice: MockCaptureDevice())
         let newMockDevice = MockCaptureDevice()
@@ -194,7 +194,7 @@ class CaptureManagerTests: XCTestCase {
     
     func testUnsuccessfulSelectionOfDeviceCameraWithAddVideoInputFail() throws {
         
-        let sut = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         
         let camera = PhysicalCamera(id: UUID(), type: .builtInTelephotoCamera, position: .back, captureDevice: MockCaptureDevice())
         let newMockDevice = MockCaptureDevice()
@@ -217,7 +217,7 @@ class CaptureManagerTests: XCTestCase {
     
     func testUnsuccessfulSelectionOfDeviceCameraWithGetVideoInputThrowing() throws {
         
-        let sut = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         
         let camera = PhysicalCamera(id: UUID(), type: .builtInTelephotoCamera, position: .back, captureDevice: MockCaptureDevice())
         let newMockDevice = MockCaptureDevice()
@@ -241,7 +241,7 @@ class CaptureManagerTests: XCTestCase {
     
     func testStateTransitionsToPendingOnTakePhoto() throws {
         
-        let sut = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         
         XCTAssertEqual(sut.state, .ready)
         
@@ -252,7 +252,7 @@ class CaptureManagerTests: XCTestCase {
     
     func testPhotoOutputCaptureCalledOnTakePhoto() throws {
         
-        let sut = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         
         XCTAssertEqual(mockPhotoOutput.captureCallCount, 0)
         
@@ -262,7 +262,7 @@ class CaptureManagerTests: XCTestCase {
     }
     
     func testResetState() throws {
-        let sut = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         
         sut.takePhoto()
         XCTAssertEqual(sut.state, .capturePending)
@@ -273,7 +273,7 @@ class CaptureManagerTests: XCTestCase {
     }
     
     func testAddsPhotoToLibraryOnNoError() throws {
-        let sut = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         
         let mockPhoto = MockPhoto()
         mockPhotoLibrary.successToReturn = true
@@ -290,7 +290,7 @@ class CaptureManagerTests: XCTestCase {
     }
     
     func testAddsPhotoToLibraryOnProcessingError() throws {
-        let sut = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         
         let mockPhoto = MockPhoto()
         mockPhotoLibrary.successToReturn = true
@@ -307,7 +307,7 @@ class CaptureManagerTests: XCTestCase {
     }
     
     func testStateIsErrorOnPhotoLibraryError() throws {
-        let sut = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         
         let mockPhoto = MockPhoto()
         mockPhotoLibrary.successToReturn = false
@@ -325,7 +325,7 @@ class CaptureManagerTests: XCTestCase {
     
     func testSetSampleBuffer() throws {
         
-        let sut = try CaptureManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
+        let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, photoLibrary: mockPhotoLibrary, configurationFactory: mockConfigurationFactory)
         
         let mockDelegate = MockCaptureVideoDataOutputSampleBufferDelegate()
         

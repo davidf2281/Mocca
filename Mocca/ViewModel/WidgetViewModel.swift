@@ -10,7 +10,7 @@ import CoreGraphics
 
 class WidgetViewModel: ObservableObject {
     
-    private let captureManager: CaptureManagerContract?
+    private let sessionManager: SessionManagerContract?
     @Published var position: CGPoint
     
     private(set) var dockedPosition: CGPoint
@@ -23,15 +23,15 @@ class WidgetViewModel: ObservableObject {
     }
     
     func dragEnded(position:CGPoint, frameSize:CGSize) {
-        if let device = self.captureManager?.activeCaptureDevice,
-           let layer = self.captureManager?.videoPreviewLayer {
+        if let device = self.sessionManager?.activeCaptureDevice,
+           let layer = self.sessionManager?.videoPreviewLayer {
             _ = cameraOperation.setFocusPointOfInterest(position, on: layer, for: device)
             _ = cameraOperation.setExposurePointOfInterest(position, on: layer, for: device)
         }
     }
     
-    required init(captureManager: CaptureManagerContract?, dockedPosition: CGPoint, displayCharacter: String, cameraOperation: CameraOperationContract = CameraOperation()) {
-        self.captureManager = captureManager
+    required init(sessionManager: SessionManagerContract?, dockedPosition: CGPoint, displayCharacter: String, cameraOperation: CameraOperationContract = CameraOperation()) {
+        self.sessionManager = sessionManager
         self.dockedPosition = dockedPosition
         self.position = dockedPosition
         self.displayCharacter = displayCharacter
