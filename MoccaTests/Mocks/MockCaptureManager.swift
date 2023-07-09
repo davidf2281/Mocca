@@ -9,7 +9,7 @@ import Foundation
 import Combine
 @testable import Mocca
 
-class MockPhotoTaker: CaptureManagerContract, ObservableObject {
+class MockCaptureManager: CaptureManagerContract, ObservableObject {
  
     @Published private(set) var state: CaptureManagerState = .ready
     var statePublisher: Published<CaptureManagerState>.Publisher { $state }
@@ -24,4 +24,13 @@ class MockPhotoTaker: CaptureManagerContract, ObservableObject {
         self.state = .capturePending
         takePhotoCalledCount += 1
     }
+    
+    var photoReceived: CapturePhoto?
+    var errorReceived: Error?
+    func didFinishProcessingPhoto(_ photo: CapturePhoto, error: Error?) {
+        photoReceived = photo
+        errorReceived = error
+    }
 }
+
+    

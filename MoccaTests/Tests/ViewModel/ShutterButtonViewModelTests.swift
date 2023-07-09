@@ -12,8 +12,8 @@ class ShutterButtonViewModelTests: XCTestCase {
 
     func testModelStateBinding() {
         
-        let photoTaker = MockPhotoTaker()
-        let shutterButtonViewModel = ShutterButtonViewModel(photoTaker: photoTaker)
+        let photoTaker = MockCaptureManager()
+        let shutterButtonViewModel = ShutterButtonViewModel(captureManager: photoTaker)
         
         XCTAssert(photoTaker.state == .ready)
         XCTAssert(shutterButtonViewModel.state == .ready)
@@ -34,8 +34,8 @@ class ShutterButtonViewModelTests: XCTestCase {
     
     func testTakePhotoCalledOnTap() {
         
-        let photoTaker = MockPhotoTaker()
-        let shutterButtonViewModel = ShutterButtonViewModel(photoTaker: photoTaker)
+        let photoTaker = MockCaptureManager()
+        let shutterButtonViewModel = ShutterButtonViewModel(captureManager: photoTaker)
         XCTAssertEqual(photoTaker.takePhotoCalledCount, 0)
         
         shutterButtonViewModel.tapped()

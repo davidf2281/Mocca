@@ -7,5 +7,4 @@
 
 import AVFoundation
 
-protocol SampleBuffer: AnyObject {}
 extension CMSampleBuffer: SampleBuffer {}

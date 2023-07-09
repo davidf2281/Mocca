@@ -12,7 +12,7 @@ import SwiftUI
 import ViewInspector
 
 private class MockShutterButtonViewModel: ShutterButtonViewModelContract {
-    var state: PhotoTakerState = .ready
+    var state: CaptureManagerState = .ready
     var tappedCallCount = 0
     func tapped() {
         tappedCallCount += 1

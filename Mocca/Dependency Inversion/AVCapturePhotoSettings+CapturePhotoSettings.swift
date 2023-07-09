@@ -7,24 +7,6 @@
 
 import AVFoundation
 
-protocol CapturePhotoSettings {
-    var qualityPrioritization: PhotoQualityPrioritization { get set }
-    var photoFlashMode: PhotoFlashMode { get set }
-    var maximumPhotoDimensions: CMVideoDimensions { get set }
-}
-
-enum PhotoQualityPrioritization {
-    case quality
-    case unsupported
-}
-
-enum PhotoFlashMode {
-    case on
-    case off
-    case auto
-    case unsupported
-}
-
 extension AVCapturePhotoSettings: CapturePhotoSettings {
     var photoFlashMode: PhotoFlashMode {
         get {

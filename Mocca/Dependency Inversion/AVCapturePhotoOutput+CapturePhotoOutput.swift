@@ -7,21 +7,6 @@
 
 import AVFoundation
 
-protocol CaptureOutput {}
-
-enum PhotoCodec {
-    case hevc
-}
-
-protocol CapturePhotoOutput: AnyObject, CaptureOutput {
-    init()
-    var livePhotoCaptureEnabled: Bool { get set }
-    var maxQualityPrioritization: PhotoQualityPrioritization { get set }
-    func capture(with settings: CapturePhotoSettings, delegate: CapturePhotoDelegate)
-    func connection() -> CaptureConnection?
-    var availablePhotoCodecs: [PhotoCodec] { get }
-}
-
 extension AVCapturePhotoOutput: CapturePhotoOutput {
 
     var livePhotoCaptureEnabled: Bool {

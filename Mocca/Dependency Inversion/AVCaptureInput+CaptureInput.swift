@@ -7,12 +7,7 @@
 
 import AVFoundation
 
-protocol CaptureInput {}
 extension AVCaptureInput: CaptureInput {}
-
-protocol CaptureDeviceInput: CaptureInput {
-    static func make(device: CaptureDevice) throws -> CaptureDeviceInput
-}
 
 extension AVCaptureDeviceInput: CaptureDeviceInput {
     
@@ -23,8 +18,4 @@ extension AVCaptureDeviceInput: CaptureDeviceInput {
         
         return try Self.init(device: device)
     }
-}
-
-enum MakeCaptureDeviceInputError: Error {
-    case failed
 }

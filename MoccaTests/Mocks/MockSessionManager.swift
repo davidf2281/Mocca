@@ -50,7 +50,10 @@ class MockSessionManager: SessionManagerContract {
         return .success
     }
     
-    func setSampleBufferDelegate(_ delegate: CaptureVideoDataOutputSampleBufferDelegate, queue callbackQueue: DispatchQueue) {}
+    var photoOutputToReturn: CapturePhotoOutput = MockCapturePhotoOutput()
+    var photoOutput: CapturePhotoOutput {
+        return photoOutputToReturn
+    }
     
     // Test vars
     var capturePhotoCalled = false;
