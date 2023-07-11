@@ -114,11 +114,6 @@ class SessionManager: SessionManagerContract, ObservableObject {
         self.captureSession.stopRunning()
     }
     
-    /// - Returns: A unique copy of current photo settings, without orientation compensation
-    private func currentPhotoSettings() -> CapturePhotoSettings {
-        return self.configurationFactory.uniquePhotoSettings(device: self.activeCaptureDevice, photoOutput: self.photoOutput)
-    }
-    
     func selectCamera(cameraID: UUID) -> Result<Void, SessionManagerError> {
    
         guard let physicalCamera = self.resources.availablePhysicalCameras.first(where: { $0.id == cameraID}) else {
