@@ -70,7 +70,7 @@ class CaptureManagerTests: XCTestCase {
         sut.didFinishProcessingPhoto(mockPhoto, error: nil)
         
         XCTAssertEqual(mockCaptureManagerDelegate.didFinishProcessingPhotoCallCount, 1)
-        XCTAssertIdentical(mockPhoto, mockCaptureManagerDelegate.photoReceived as? AnyObject)
+        XCTAssertIdentical(mockPhoto, mockCaptureManagerDelegate.photoReceived)
         XCTAssertEqual(sut.state, .ready)
     }
     
@@ -84,7 +84,7 @@ class CaptureManagerTests: XCTestCase {
         sut.didFinishProcessingPhoto(mockPhoto, error: mockError)
 
         XCTAssertEqual(mockCaptureManagerDelegate.didFinishProcessingPhotoCallCount, 1)
-        XCTAssertIdentical(mockPhoto, mockCaptureManagerDelegate.photoReceived as? AnyObject)
+        XCTAssertIdentical(mockPhoto, mockCaptureManagerDelegate.photoReceived)
         XCTAssertEqual(mockError, mockCaptureManagerDelegate.errorReceived as! TestError)
         XCTAssertEqual(sut.state, .ready)
     }
