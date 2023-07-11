@@ -12,7 +12,9 @@ final class ConfigurationFactoryTests: XCTestCase {
     
     func testSessionManagerInitializerConfiguration() throws {
         let resources = MockResources()
-        resources.deviceToReturn = MockCaptureDevice()
+        let mockCaptureDevice = MockCaptureDevice()
+        mockCaptureDevice.captureDeviceTypeToReturn = .builtInWideAngleCamera
+        resources.deviceToReturn = mockCaptureDevice
         let videoPreviewLayer = MockCaptureVideoPreviewLayer()
         let captureSessionType = MockCaptureSession()
         let captureDeviceInputType = MockCaptureDeviceInput.self

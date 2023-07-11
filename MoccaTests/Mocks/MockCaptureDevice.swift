@@ -105,6 +105,7 @@ class MockCaptureDevice: CaptureDevice {
     var captureDevicePosition: CaptureDevicePosition {
         .back
     }
+    
     func captureDevice(withType deviceType: CaptureDeviceType, position: CaptureDevicePosition) -> CaptureDevice? {
         deviceTypeSet = deviceType
         positionSet = position

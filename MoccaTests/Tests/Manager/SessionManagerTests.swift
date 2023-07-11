@@ -35,7 +35,7 @@ class SessionManagerTests: XCTestCase {
         mockPhotoLibrary = MockPhotoLibrary()
         mockInput = MockCaptureDeviceInput()
         mockConfigurationFactory = MockConfigurationFactory()
-        mockPhysicalCamera = PhysicalCamera(id: UUID(), type: .builtInTelephotoCamera, position: .back, captureDevice: MockCaptureDevice())
+        mockPhysicalCamera = PhysicalCamera(id: UUID(), type: .builtInTelephotoCamera, position: .back, captureDevice: mockDevice)
         mockSampleBufferDelegate = MockSampleBufferDelegate()
         mockDispatchQueue = DispatchQueue.global(qos: .default)
     }
@@ -157,9 +157,8 @@ class SessionManagerTests: XCTestCase {
         let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, configurationFactory: mockConfigurationFactory, sampleBufferDelegate: mockSampleBufferDelegate, sampleBufferQueue: mockDispatchQueue)
         
         let camera = PhysicalCamera(id: UUID(), type: .builtInTelephotoCamera, position: .back, captureDevice: MockCaptureDevice())
-        let newMockDevice = MockCaptureDevice()
         
-        mockResources.deviceToReturn = newMockDevice
+        mockResources.availablePhysicalCameras = [camera]
         
         // TODO: Next: activeCaptureDevice probably no longer needs to be exposed
         XCTAssert(sut.activeCaptureDevice as! MockCaptureDevice === mockDevice)
@@ -170,7 +169,7 @@ class SessionManagerTests: XCTestCase {
             return
         }
         
-        XCTAssert(sut.activeCaptureDevice as! MockCaptureDevice === newMockDevice)
+        XCTAssert(sut.activeCaptureDevice as! MockCaptureDevice === camera.captureDevice)
     }
     
     func testUnsuccessfulSelectionOfDeviceCamera() throws {
@@ -178,6 +177,8 @@ class SessionManagerTests: XCTestCase {
         let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, configurationFactory: mockConfigurationFactory, sampleBufferDelegate: mockSampleBufferDelegate, sampleBufferQueue: mockDispatchQueue)
         
         let camera = PhysicalCamera(id: UUID(), type: .builtInTelephotoCamera, position: .back, captureDevice: MockCaptureDevice())
+        mockResources.availablePhysicalCameras = []
+
         let newMockDevice = MockCaptureDevice()
         
         mockResources.deviceToReturn = newMockDevice
@@ -200,6 +201,8 @@ class SessionManagerTests: XCTestCase {
         let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, configurationFactory: mockConfigurationFactory, sampleBufferDelegate: mockSampleBufferDelegate, sampleBufferQueue: mockDispatchQueue)
         
         let camera = PhysicalCamera(id: UUID(), type: .builtInTelephotoCamera, position: .back, captureDevice: MockCaptureDevice())
+        mockResources.availablePhysicalCameras = [camera]
+
         let newMockDevice = MockCaptureDevice()
         
         mockResources.deviceToReturn = newMockDevice
@@ -223,6 +226,7 @@ class SessionManagerTests: XCTestCase {
         let sut = try SessionManager(captureSession: mockCaptureSession, photoOutput: mockPhotoOutput, videoOutput: mockVideoOutput, initialCamera: mockPhysicalCamera, videoInput: mockInput, resources: mockResources, videoPreviewLayer: mockPreviewLayer, configurationFactory: mockConfigurationFactory, sampleBufferDelegate: mockSampleBufferDelegate, sampleBufferQueue: mockDispatchQueue)
         
         let camera = PhysicalCamera(id: UUID(), type: .builtInTelephotoCamera, position: .back, captureDevice: MockCaptureDevice())
+        mockResources.availablePhysicalCameras = [camera]
         let newMockDevice = MockCaptureDevice()
         
         mockResources.deviceToReturn = newMockDevice

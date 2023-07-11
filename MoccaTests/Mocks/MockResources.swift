@@ -10,7 +10,7 @@ import AVFoundation
 @testable import Mocca
 
 class MockResources: DeviceResourcesContract {
-    var availablePhysicalCameras: [PhysicalCamera] = []
+    var availablePhysicalCameras: [PhysicalCamera] = [PhysicalCamera(id: UUID(), type: .builtInWideAngleCamera, position: .back, captureDevice: MockCaptureDevice())]
     
     var availablePhysicalDevices: [CaptureDevice] = [MockCaptureDevice()]
     
