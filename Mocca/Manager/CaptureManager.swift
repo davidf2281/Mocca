@@ -53,7 +53,8 @@ class CaptureManager: CaptureManagerContract {
     }
 
     func resetState() -> Result<CaptureManagerState, CaptureManagerError> {
-        return .failure(CaptureManagerError.resetError) // TODO: Implement me
+        self.state = .ready
+        return .success(.ready)
     }
     
     func capturePhoto() {
@@ -72,5 +73,6 @@ extension CaptureManager: PhotoCaptureIntermediaryDelegate {
         precondition(self.state == .capturePending)
 
         self.delegate?.didFinishProcessingPhoto(photo, error: error)
+        self.state = .ready
     }
 }

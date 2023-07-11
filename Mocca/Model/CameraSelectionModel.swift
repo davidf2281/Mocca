@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 protocol CameraSelection: AnyObject {
     var availableCameras: [PhysicalCamera] { get }
@@ -21,6 +22,7 @@ class CameraSelectionModel: CameraSelection, ObservableObject {
 
     private(set) var availableCameras: [PhysicalCamera]
     private let sessionManager: SessionManagerContract
+    private var cancellables = Set<AnyCancellable>()
     
     init?(availableCameras: [PhysicalCamera], sessionManager: SessionManagerContract?) {
         
@@ -34,6 +36,13 @@ class CameraSelectionModel: CameraSelection, ObservableObject {
     }
     
     func selectCamera(cameraID: UUID) {
-        _ = self.sessionManager.selectCamera(cameraID: cameraID)
+        let result = self.sessionManager.selectCamera(cameraID: cameraID)
+        
+        switch result {
+            case .success(let physicalCamera):
+                self.selectedCamera = physicalCamera
+            case .failure(_):
+                assert(false)
+        }
     }
 }

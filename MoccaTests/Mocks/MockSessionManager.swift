@@ -10,10 +10,8 @@ import AVFoundation
 
 @testable import Mocca
 class MockSessionManager: SessionManagerContract {
-    
-    var activeCamera: PhysicalCamera {
-        return PhysicalCamera(id: UUID(), type: .builtInTelephotoCamera, position: .back, captureDevice: MockCaptureDevice())
-    }
+   
+    var activeCamera: PhysicalCamera = PhysicalCamera(id: UUID(), type: .builtInTelephotoCamera, position: .back, captureDevice: MockCaptureDevice())
     
     // Protocol conformance
     let activeCaptureDevice: CaptureDevice
@@ -43,11 +41,12 @@ class MockSessionManager: SessionManagerContract {
     }
     
     var selectedCameraID: UUID?
-    var selectCameraCallCOunt = 0
-    func selectCamera(cameraID: UUID) -> Result<Void, SessionManagerError> {
+    var selectCameraCallCount = 0
+    var selectedCameraToReturn: PhysicalCamera!
+    func selectCamera(cameraID: UUID) -> Result<PhysicalCamera, SessionManagerError> {
         selectedCameraID = cameraID
-        selectCameraCallCOunt += 1
-        return .success
+        selectCameraCallCount += 1
+        return .success(selectedCameraToReturn)
     }
     
     var photoOutputToReturn: CapturePhotoOutput = MockCapturePhotoOutput()

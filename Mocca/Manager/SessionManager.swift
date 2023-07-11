@@ -34,16 +34,12 @@ protocol SessionManagerContract {
     var photoOutput: CapturePhotoOutput { get }
     func startCaptureSession()
     func stopCaptureSession()
-    func selectCamera(cameraID: UUID) -> Result<Void, SessionManagerError>
+    func selectCamera(cameraID: UUID) -> Result<PhysicalCamera, SessionManagerError>
 }
 
 /// A class to handle creation and management of fully configured video and photo capture sessions and related functions.
 class SessionManager: SessionManagerContract, ObservableObject {
-    
-    @Published fileprivate(set) var state: CaptureManagerState = .ready
 
-    var statePublisher: Published<CaptureManagerState>.Publisher { $state }
-    
     let videoPreviewLayer: CaptureVideoPreviewLayer
     
     private(set) var captureSession : CaptureSession
@@ -114,7 +110,7 @@ class SessionManager: SessionManagerContract, ObservableObject {
         self.captureSession.stopRunning()
     }
     
-    func selectCamera(cameraID: UUID) -> Result<Void, SessionManagerError> {
+    func selectCamera(cameraID: UUID) -> Result<PhysicalCamera, SessionManagerError> {
    
         guard let physicalCamera = self.resources.availablePhysicalCameras.first(where: { $0.id == cameraID}) else {
             return .failure(.captureDeviceNotFound)
@@ -135,6 +131,6 @@ class SessionManager: SessionManagerContract, ObservableObject {
         
         self.activeCaptureDevice = physicalCamera.captureDevice
         self.activeCamera = physicalCamera
-        return .success
+        return .success(physicalCamera)
     }
 }
