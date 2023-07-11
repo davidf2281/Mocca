@@ -24,6 +24,7 @@ enum CaptureManagerError: Error {
 protocol CaptureManagerContract: PhotoCaptureIntermediaryDelegate {
     var state: CaptureManagerState { get }
     var statePublisher: Published<CaptureManagerState>.Publisher { get }
+    var delegate: CaptureManagerDelegate? { get set }
     func resetState() -> Result<CaptureManagerState, CaptureManagerError>
     func capturePhoto()
 }

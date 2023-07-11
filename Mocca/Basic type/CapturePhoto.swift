@@ -7,4 +7,4 @@
 
 import Foundation
 
-protocol CapturePhoto {}
+protocol CapturePhoto: AnyObject {}

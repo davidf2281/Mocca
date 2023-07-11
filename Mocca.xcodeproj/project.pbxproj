@@ -133,6 +133,7 @@
 		8C90E2422A5D9077006AE707 /* MockCaptureManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C90E2412A5D9077006AE707 /* MockCaptureManagerDelegate.swift */; };
 		8C90E2442A5D98CC006AE707 /* CameraSelectionModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C90E2432A5D98CC006AE707 /* CameraSelectionModelTests.swift */; };
 		8C90E2462A5DA374006AE707 /* CameraSelectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C90E2452A5DA373006AE707 /* CameraSelectionViewModelTests.swift */; };
+		8C90E2492A5DA706006AE707 /* PhotoCaptureCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C90E2482A5DA706006AE707 /* PhotoCaptureCoordinatorTests.swift */; };
 		8CA9F413252DDB7200730F4C /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9F412252DDB7200730F4C /* System.swift */; };
 		8CBEB527252B2F9800D6525F /* MockPhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CBEB526252B2F9800D6525F /* MockPhotoLibrary.swift */; };
 		8CC3C44B251DFD2F00CC4698 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3C448251DFD2F00CC4698 /* SessionManager.swift */; };
@@ -286,6 +287,7 @@
 		8C90E2412A5D9077006AE707 /* MockCaptureManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCaptureManagerDelegate.swift; sourceTree = "<group>"; };
 		8C90E2432A5D98CC006AE707 /* CameraSelectionModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSelectionModelTests.swift; sourceTree = "<group>"; };
 		8C90E2452A5DA373006AE707 /* CameraSelectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSelectionViewModelTests.swift; sourceTree = "<group>"; };
+		8C90E2482A5DA706006AE707 /* PhotoCaptureCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCaptureCoordinatorTests.swift; sourceTree = "<group>"; };
 		8CA9F412252DDB7200730F4C /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		8CBEB526252B2F9800D6525F /* MockPhotoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPhotoLibrary.swift; sourceTree = "<group>"; };
 		8CC3C448251DFD2F00CC4698 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
@@ -479,6 +481,7 @@
 		8C68B17D25301A9D0040AC9A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				8C90E2472A5DA6EA006AE707 /* Coordinator */,
 				8C1180DA253F1FDA004ED0B0 /* Device Operation */,
 				8CF4C4222A4F1D510054E8B4 /* Factory */,
 				8C869BF82A56C26C001F3501 /* Hardware resources */,
@@ -587,6 +590,14 @@
 				8C19F55B2A5AD0F0008EC83D /* CaptureManagerTests.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		8C90E2472A5DA6EA006AE707 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				8C90E2482A5DA706006AE707 /* PhotoCaptureCoordinatorTests.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		8CADB30C253044A50061447C /* Supporting files */ = {
@@ -985,6 +996,7 @@
 				8C90E2462A5DA374006AE707 /* CameraSelectionViewModelTests.swift in Sources */,
 				8CE900742A4DC3B400815F95 /* AVCapturePhoto+CapturePhoto.swift in Sources */,
 				8CE9006E2A4DC3B400815F95 /* DevicePhotoLibrary.swift in Sources */,
+				8C90E2492A5DA706006AE707 /* PhotoCaptureCoordinatorTests.swift in Sources */,
 				8CE7110A2A4EEC1900560FFF /* DeviceResourcesTests.swift in Sources */,
 				8C7B43682A40816900CE2C9C /* CameraOperation.swift in Sources */,
 				8CE9006F2A4DC3B400815F95 /* AVCaptureConnection+CaptureConnection.swift in Sources */,

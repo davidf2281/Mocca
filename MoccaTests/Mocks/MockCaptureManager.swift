@@ -13,6 +13,7 @@ class MockCaptureManager: CaptureManagerContract, ObservableObject {
  
     @Published private(set) var state: CaptureManagerState = .ready
     var statePublisher: Published<CaptureManagerState>.Publisher { $state }
+    weak var delegate: CaptureManagerDelegate?
 
     func resetState() -> Result<CaptureManagerState, CaptureManagerError> {
         self.state = .ready

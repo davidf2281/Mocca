@@ -26,10 +26,10 @@ class PhotoCaptureCoordinator: PhotoCaptureCoordinating {
     @Published private(set) var state: PhotoCaptureCoordinatorState = .ready
     var statePublisher: Published<PhotoCaptureCoordinatorState>.Publisher { $state }
     
-    private let captureManager: CaptureManager
+    private let captureManager: CaptureManagerContract
     private let photoLibrary: PhotoLibrary
     
-    init(captureManager: CaptureManager, photoLibrary: PhotoLibrary) {
+    init(captureManager: CaptureManagerContract, photoLibrary: PhotoLibrary) {
         self.captureManager = captureManager
         self.photoLibrary = photoLibrary
         
