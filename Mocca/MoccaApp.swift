@@ -69,11 +69,8 @@ final class MoccaApp: App, ObservableObject {
     init() {
                 
         self.deviceResources = DeviceResources(captureDevice: AVCaptureDevice.default(for: .video), supportedCameraDevices: self.configurationFactory.supportedLogicalCameras)
-        if let histogramGenerator = HistogramGenerator(metalDevice: self.deviceResources?.metalDevice) {
-            self.histogramGenerator = histogramGenerator
-        } else {
-            self.histogramGenerator = nil
-        }
+        
+        self.histogramGenerator = HistogramGenerator(metalDevice: self.deviceResources?.metalDevice)
 
         self.histogramViewModel = HistogramViewModel(histogramGenerator: self.histogramGenerator)
         self.sampleBufferIntermediary = SampleBufferIntermediary(sampleBufferHandler: self.histogramViewModel)
@@ -90,7 +87,6 @@ final class MoccaApp: App, ObservableObject {
                 captureSession: AVCaptureSession(),
                 captureDeviceInputType: AVCaptureDeviceInput.self,
                 photoOutputType: AVCapturePhotoOutput.self)
-            
      
             let sessionManager = try SessionManager(captureSession: config.captureSession, photoOutput: config.photoOutput,
                                                      videoOutput: config.videoOutput,

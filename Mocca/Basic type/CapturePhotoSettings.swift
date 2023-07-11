@@ -20,7 +20,7 @@ enum PhotoFlashMode {
     case unsupported
 }
 
-protocol CapturePhotoSettings {
+protocol CapturePhotoSettings: AnyObject {
     var qualityPrioritization: PhotoQualityPrioritization { get set }
     var photoFlashMode: PhotoFlashMode { get set }
     var maximumPhotoDimensions: CMVideoDimensions { get set }

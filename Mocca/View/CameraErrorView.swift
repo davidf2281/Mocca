@@ -18,9 +18,8 @@ struct CameraErrorView: View {
     var body: some View {
 
         Text(viewModel.displayText)
-            .font(.system(size: 17))
-            .fontWeight(.semibold)
-            .lineSpacing(7)
+            .font(viewModel.displayTextFont)
+            .lineSpacing(viewModel.displayTextLineSpacing)
             .foregroundColor(viewModel.textColor).multilineTextAlignment(.center)
             .frame(maxWidth:275, maxHeight: .infinity)
             .offset(x: 0, y: -75)

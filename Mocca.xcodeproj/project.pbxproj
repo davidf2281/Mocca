@@ -134,6 +134,7 @@
 		8C90E2442A5D98CC006AE707 /* CameraSelectionModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C90E2432A5D98CC006AE707 /* CameraSelectionModelTests.swift */; };
 		8C90E2462A5DA374006AE707 /* CameraSelectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C90E2452A5DA373006AE707 /* CameraSelectionViewModelTests.swift */; };
 		8C90E2492A5DA706006AE707 /* PhotoCaptureCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C90E2482A5DA706006AE707 /* PhotoCaptureCoordinatorTests.swift */; };
+		8C90E24C2A5DAA42006AE707 /* PhotoSettingsProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C90E24B2A5DAA42006AE707 /* PhotoSettingsProviderTests.swift */; };
 		8CA9F413252DDB7200730F4C /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9F412252DDB7200730F4C /* System.swift */; };
 		8CBEB527252B2F9800D6525F /* MockPhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CBEB526252B2F9800D6525F /* MockPhotoLibrary.swift */; };
 		8CC3C44B251DFD2F00CC4698 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3C448251DFD2F00CC4698 /* SessionManager.swift */; };
@@ -141,6 +142,7 @@
 		8CCE88A925247D450086AF83 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6728C8251E16F50066A836 /* PreviewViewController.swift */; };
 		8CCE88B425248F070086AF83 /* Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCE88B325248F070086AF83 /* Orientation.swift */; };
 		8CD793C9252A22F00071F3F6 /* ShutterButtonViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD793C8252A22F00071F3F6 /* ShutterButtonViewModelTests.swift */; };
+		8CDAC5522A5DAD1000459273 /* MockPhotoCaptureIntermediaryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDAC5512A5DAD1000459273 /* MockPhotoCaptureIntermediaryDelegate.swift */; };
 		8CDE03DB25262BDF0083F736 /* WidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE03DA25262BDF0083F736 /* WidgetViewModel.swift */; };
 		8CDE0404252756560083F736 /* PreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE0403252756560083F736 /* PreviewViewModel.swift */; };
 		8CDEB0212520A5110010DCCB /* CameraSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDEB0202520A5110010DCCB /* CameraSetting.swift */; };
@@ -288,12 +290,14 @@
 		8C90E2432A5D98CC006AE707 /* CameraSelectionModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSelectionModelTests.swift; sourceTree = "<group>"; };
 		8C90E2452A5DA373006AE707 /* CameraSelectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSelectionViewModelTests.swift; sourceTree = "<group>"; };
 		8C90E2482A5DA706006AE707 /* PhotoCaptureCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCaptureCoordinatorTests.swift; sourceTree = "<group>"; };
+		8C90E24B2A5DAA42006AE707 /* PhotoSettingsProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSettingsProviderTests.swift; sourceTree = "<group>"; };
 		8CA9F412252DDB7200730F4C /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		8CBEB526252B2F9800D6525F /* MockPhotoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPhotoLibrary.swift; sourceTree = "<group>"; };
 		8CC3C448251DFD2F00CC4698 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		8CC3C449251DFD2F00CC4698 /* CaptureUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureUtils.swift; sourceTree = "<group>"; };
 		8CCE88B325248F070086AF83 /* Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orientation.swift; sourceTree = "<group>"; };
 		8CD793C8252A22F00071F3F6 /* ShutterButtonViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButtonViewModelTests.swift; sourceTree = "<group>"; };
+		8CDAC5512A5DAD1000459273 /* MockPhotoCaptureIntermediaryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPhotoCaptureIntermediaryDelegate.swift; sourceTree = "<group>"; };
 		8CDE03DA25262BDF0083F736 /* WidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetViewModel.swift; sourceTree = "<group>"; };
 		8CDE0403252756560083F736 /* PreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewModel.swift; sourceTree = "<group>"; };
 		8CDEB0202520A5110010DCCB /* CameraSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSetting.swift; sourceTree = "<group>"; };
@@ -481,6 +485,7 @@
 		8C68B17D25301A9D0040AC9A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				8C90E24A2A5DAA37006AE707 /* Helper */,
 				8C90E2472A5DA6EA006AE707 /* Coordinator */,
 				8C1180DA253F1FDA004ED0B0 /* Device Operation */,
 				8CF4C4222A4F1D510054E8B4 /* Factory */,
@@ -600,6 +605,14 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
+		8C90E24A2A5DAA37006AE707 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				8C90E24B2A5DAA42006AE707 /* PhotoSettingsProviderTests.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		8CADB30C253044A50061447C /* Supporting files */ = {
 			isa = PBXGroup;
 			children = (
@@ -691,6 +704,7 @@
 				8CE07E42252B457100702E14 /* MockSessionManager.swift */,
 				8C0EF8922A507CA90012CFBB /* MockUIViewControllerTransitionCoordinator.swift */,
 				8CE711072A4DE34600560FFF /* MockVideoOutput.swift */,
+				8CDAC5512A5DAD1000459273 /* MockPhotoCaptureIntermediaryDelegate.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -936,6 +950,7 @@
 				8C7B43702A40816900CE2C9C /* FocusSetting.swift in Sources */,
 				8C4E6947253B32F500ED1B29 /* SessionManagerTests.swift in Sources */,
 				8C19F54E2A5ACCE5008EC83D /* CapturePhotoSettings.swift in Sources */,
+				8C90E24C2A5DAA42006AE707 /* PhotoSettingsProviderTests.swift in Sources */,
 				8C90E2422A5D9077006AE707 /* MockCaptureManagerDelegate.swift in Sources */,
 				8C19F55A2A5ACED4008EC83D /* MockSampleBufferDelegate.swift in Sources */,
 				8C7B43722A40816900CE2C9C /* DeviceResources.swift in Sources */,
@@ -973,6 +988,7 @@
 				8C7B43712A40816900CE2C9C /* ExposureBiasViewModel.swift in Sources */,
 				8C1180D3253F17C9004ED0B0 /* MockCaptureVideoPreviewLayer.swift in Sources */,
 				8C1C8766252F50DE00001B14 /* WidgetViewModelTests.swift in Sources */,
+				8CDAC5522A5DAD1000459273 /* MockPhotoCaptureIntermediaryDelegate.swift in Sources */,
 				8CE53EBE2993F06A00DE5B6F /* HistogramGeneratorTests.swift in Sources */,
 				8C7B43822A40816900CE2C9C /* ShutterButtonViewModel.swift in Sources */,
 				8C19F5492A5ACCE5008EC83D /* CaptureInput.swift in Sources */,

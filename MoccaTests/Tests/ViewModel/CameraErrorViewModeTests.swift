@@ -21,7 +21,15 @@ final class CameraErrorViewModeTests: XCTestCase {
         XCTAssertEqual(sut.displayText, "Oh, hey!\n\nLooks like something went wrong\nand your camera failed to start. Sorry.\n\nTry restarting the app.")
     }
     
-    func testTextColor() throws {
+    func testTextColor() {
         XCTAssertEqual(sut.textColor, Color(.sRGB, red: 0.3, green: 0.3, blue: 0.3, opacity: 1))
+    }
+    
+    func testDisplayTextFont() {
+        XCTAssertEqual(sut.displayTextFont, Font.system(size: 17, weight: .semibold))
+    }
+    
+    func testDisplayTextLineSpacing() {
+        XCTAssertEqual(sut.displayTextLineSpacing, 7)
     }
 }

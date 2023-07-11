@@ -11,6 +11,6 @@ import CoreMedia
 
 class MockPhotoSettings: CapturePhotoSettings {
     var maximumPhotoDimensions: CMVideoDimensions = CMVideoDimensions(width: 0, height: 0)
-    var qualityPrioritization: PhotoQualityPrioritization = .unsupported
-    var photoFlashMode: PhotoFlashMode = .unsupported
+    var qualityPrioritization: PhotoQualityPrioritization = .quality
+    var photoFlashMode: PhotoFlashMode = .off
 }
