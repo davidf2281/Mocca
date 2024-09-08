@@ -63,16 +63,20 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 HStack {
-                    Spacer()
-                    previewView
-                    Spacer()
                     VStack {
-                        Spacer()
-                        shutterButtonView
-                        Spacer()
-                        histogramView
-                        Spacer()
+                        GeometryReader { geometry in
+                            if let cameraSelectionView {
+                                cameraSelectionView
+                                    .frame(maxWidth: .infinity)
+                            }
+                            histogramView
+                        }
                     }
+                    previewView
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    Spacer()
+                    shutterButtonView
+                    Spacer()
                 }.background(Color.black)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }

@@ -142,7 +142,7 @@ final class MoccaApp: App, ObservableObject {
     }
     
     /// Main view hierarchy for the app.
-    private var ContentViews: some View {
+    private var contentViews: some View {
         // Compose our main app view.
         return ContentView(
             app: self,
@@ -161,8 +161,8 @@ final class MoccaApp: App, ObservableObject {
     }
     
     var body: some Scene {
-        WindowGroup {
-            ContentViews
+        WindowGroup { [weak self] in
+            self?.contentViews
         }
     }
 }
